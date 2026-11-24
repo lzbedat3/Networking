@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import BidiText, { hasRtl } from "./BidiText";
 import Markdown from "./Markdown";
 
 export type Turn = { role: "user" | "assistant"; content: string; reveal?: boolean };
@@ -23,6 +24,15 @@ export default function Chat({ questionId, picked, answerVisible, suggestions, p
   const [busy, setBusy] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const boxRef = useRef<HTMLTextAreaElement>(null);
+
+  // the input grows with each typed line (up to its max height) and shrinks back after sending
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight + 2}px`;
+  }, [input]);
 
   useEffect(() => {
     if (turns.length) endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -93,8 +103,11 @@ export default function Chat({ questionId, picked, answerVisible, suggestions, p
           {turns.map((t, i) =>
             t.role === "user" ? (
               <div key={i} className="flex justify-start">
-                <div className={`max-w-[85%] rounded-2xl rounded-tr-md px-3.5 py-2 bg-route text-route-ink`}>
-                  {t.content}
+                <div
+                  dir={hasRtl(t.content) ? "rtl" : "ltr"}
+                  className={`bidi-on-accent max-w-[85%] rounded-2xl rounded-tr-md bg-route px-3.5 py-2 leading-relaxed break-words text-route-ink ${hasRtl(t.content) ? "" : "text-left"}`}
+                >
+                  <BidiText text={t.content} />
                 </div>
               </div>
             ) : (
@@ -117,6 +130,7 @@ export default function Chat({ questionId, picked, answerVisible, suggestions, p
         className="flex items-end gap-2"
       >
         <textarea
+          ref={boxRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -127,9 +141,10 @@ export default function Chat({ questionId, picked, answerVisible, suggestions, p
             }
           }}
           rows={1}
+          dir="auto"
           placeholder={placeholder}
           aria-label={placeholder}
-          className="max-h-40 min-h-12 flex-1 resize-none rounded-xl border border-line-strong bg-surface px-3.5 py-2.5 leading-relaxed outline-none focus:border-route focus:ring-2 focus:ring-route/20"
+          className="bidi-input max-h-40 min-h-12 flex-1 resize-none rounded-xl border border-line-strong bg-surface px-3.5 py-2.5 leading-relaxed outline-none focus:border-route focus:ring-2 focus:ring-route/20"
         />
         <button
           type="submit"

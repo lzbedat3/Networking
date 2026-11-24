@@ -254,6 +254,21 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+/* the user's own chat bubble sits on the accent colour, so formula chips use a translucent tint */
+.bidi-on-accent .fx,
+.bidi-on-accent .fx-block {
+  background: rgb(255 255 255 / 0.16);
+  color: inherit;
+}
+.bidi-on-accent .fx-block {
+  border-left-color: rgb(255 255 255 / 0.7);
+}
+/* every line typed in the chat box takes its own direction: Hebrew lines RTL, English lines LTR */
+.bidi-input {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
 @keyframes sheet-up {
   from { transform: translateY(24px); opacity: 0; }
   to { transform: none; opacity: 1; }
