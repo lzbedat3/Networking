@@ -49,7 +49,7 @@ export default function Pwa() {
   return (
     <div className="anim-sheet fixed inset-x-3 bottom-24 z-40 mx-auto flex max-w-md items-center gap-3 rounded-xl border border-line bg-surface p-3 shadow-[var(--shadow)] md:bottom-6">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/icons/icon-192.png" alt="" className="h-11 w-11 rounded-[10px]" />
+      <img src="/icons/icon-dark-192.png" alt="" className="h-11 w-11 rounded-[10px]" />
       <div className="min-w-0 flex-1 text-sm">
         <p className="font-bold">להתקין את מסלול לבוחן</p>
         <p className="text-muted">{iosHint ? "בספארי: שיתוף ואז \"הוסף למסך הבית\"." : "פותח כמו אפליקציה ועובד גם בלי אינטרנט."}</p>

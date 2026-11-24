@@ -1,8 +1,8 @@
 /* Service worker: the app works offline after the first visit (except the Claude assistant). */
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC = `static-${VERSION}`;
 const PAGES = `pages-${VERSION}`;
-const PRECACHE = ["/", "/route", "/simulations", "/run", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/logo.svg"];
+const PRECACHE = ["/", "/route", "/simulations", "/run", "/icons/icon-dark-192.png", "/icons/icon-dark-512.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(PAGES).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

@@ -14,18 +14,17 @@ export default function manifest(): MetadataRoute.Manifest {
     display_override: ["standalone", "minimal-ui"],
     orientation: "portrait",
     background_color: "#f3f5f8",
-    theme_color: "#0b2f23",
+    theme_color: "#07110c",
     categories: ["education"],
     icons: [
-      { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-      { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-      { src: "/icons/maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
-      { src: "/icons/logo.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+      { src: "/icons/icon-dark-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icons/icon-dark-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icons/maskable-dark-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
     shortcuts: [
-      { name: "המסלול", url: "/route", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
-      { name: "סימולציות", url: "/simulations", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
-      { name: "בוחן לדוגמה", url: "/run?mode=sample", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
+      { name: "המסלול", url: "/route", icons: [{ src: "/icons/icon-dark-192.png", sizes: "192x192" }] },
+      { name: "סימולציות", url: "/simulations", icons: [{ src: "/icons/icon-dark-192.png", sizes: "192x192" }] },
+      { name: "בוחן לדוגמה", url: "/run?mode=sample", icons: [{ src: "/icons/icon-dark-192.png", sizes: "192x192" }] },
     ],
   };
 }
