@@ -1,6 +1,7 @@
 "use client";
 
 import { Diagram as D, SeqStep } from "@/lib/types";
+import BidiText from "./BidiText";
 
 const INK = "var(--ink)";
 const MUTED = "var(--muted)";
@@ -25,7 +26,11 @@ function Frame({ children, caption, w, h }: { children: React.ReactNode; caption
         {children}
       </svg>
       </div>
-      {caption && <figcaption className="mt-2 text-center text-xs text-muted">{caption}</figcaption>}
+      {caption && (
+        <figcaption className="mt-2 text-center text-xs leading-relaxed text-muted">
+          <BidiText text={caption} />
+        </figcaption>
+      )}
     </figure>
   );
 }

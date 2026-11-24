@@ -3,9 +3,8 @@
 import { Check, ChevronDown, Lightbulb, Maximize2, X } from "lucide-react";
 import { LEVEL_VAR, levelOf } from "@/lib/mastery";
 import { Img, Question, Table } from "@/lib/types";
+import BidiText, { hasRtl } from "./BidiText";
 import Diagram from "./Diagram";
-
-const HEBREW = /[֐-׿]/;
 
 type Props = {
   q: Question;
@@ -19,7 +18,9 @@ type Props = {
 export default function QuestionView({ q, picked, revealed, score, onToggle }: Props) {
   return (
     <div className="space-y-6">
-      <p className="max-w-[68ch] text-[1.2rem] leading-[1.7] font-semibold sm:text-[1.35rem]">{q.prompt}</p>
+      <p className="max-w-[68ch] text-[1.2rem] leading-[1.7] font-semibold sm:text-[1.35rem]">
+        <BidiText text={q.prompt} givens />
+      </p>
 
       {q.images?.map((img) => <Shot key={img.src} img={img} />)}
       {q.diagram && <Diagram d={q.diagram} />}
@@ -61,7 +62,7 @@ export default function QuestionView({ q, picked, revealed, score, onToggle }: P
               wrong: ["לא נכון, וסימנת", "text-l4"],
               neutral: ["לא נכון", "text-muted"],
             } as const;
-            const ltr = !HEBREW.test(op.text);
+            const ltr = !hasRtl(op.text);
             return (
               <li key={i}>
                 <button
@@ -75,13 +76,15 @@ export default function QuestionView({ q, picked, revealed, score, onToggle }: P
                   <span className="flex items-start gap-3">
                     <Marker multi={!!q.multi} state={state} n={i + 1} />
                     <span dir={ltr ? "ltr" : "rtl"} className={`flex-1 pt-0.5 leading-relaxed ${ltr ? "text-left font-medium" : ""}`}>
-                      {op.text}
+                      <BidiText text={op.text} />
                     </span>
                   </span>
                   {revealed && state !== "idle" && state !== "picked" && (
                     <span className="anim-reveal mt-2 block pr-10 text-[0.95rem] leading-relaxed">
                       <b className={verdict[state][1]}>{verdict[state][0]}. </b>
-                      <span className="text-ink-2">{op.why}</span>
+                      <span className="text-ink-2">
+                        <BidiText text={op.why} />
+                      </span>
                     </span>
                   )}
                 </button>
@@ -100,7 +103,9 @@ export default function QuestionView({ q, picked, revealed, score, onToggle }: P
             </h3>
             {score !== undefined && <ScoreBadge score={score} />}
           </div>
-          <p className="max-w-[70ch] leading-relaxed text-ink-2">{q.explanation}</p>
+          <p className="max-w-[70ch] leading-relaxed text-ink-2">
+            <BidiText text={q.explanation} />
+          </p>
           {(q.explainDiagram || q.explainImages) && (
             <div className="mt-4 space-y-3">
               {q.explainImages?.map((img) => <Shot key={img.src} img={img} />)}
@@ -150,7 +155,9 @@ function Shot({ img }: { img: Img }) {
           <Maximize2 className="h-4 w-4" aria-hidden />
         </span>
       </a>
-      {img.caption && <figcaption className="border-t border-line px-3 py-2 text-xs text-muted">{img.caption}</figcaption>}
+      {img.caption && <figcaption className="border-t border-line px-3 py-2 text-xs text-muted">
+          <BidiText text={img.caption} />
+        </figcaption>}
     </figure>
   );
 }

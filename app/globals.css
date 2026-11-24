@@ -216,6 +216,44 @@ a {
   letter-spacing: -0.01em;
 }
 
+/* mixed-direction text: Latin runs and formulas inside Hebrew sentences (components/BidiText.tsx) */
+.lat {
+  unicode-bidi: isolate;
+}
+.fx {
+  unicode-bidi: isolate;
+  padding: 0.05em 0.35em;
+  border-radius: 6px;
+  background: var(--code-bg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.fx-block {
+  display: block;
+  direction: ltr;
+  text-align: left;
+  margin: 0.55em 0;
+  padding: 0.5em 0.85em;
+  border-left: 3px solid var(--route);
+  border-radius: 0 10px 10px 0;
+  background: var(--code-bg);
+  font-size: 0.95em;
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
+  overflow-x: auto;
+  unicode-bidi: isolate;
+}
+.fx-st {
+  display: block;
+  padding-left: 1.5em;
+  text-indent: -1.5em;
+}
+.fx-line {
+  font-variant-numeric: tabular-nums;
+}
+
 @keyframes sheet-up {
   from { transform: translateY(24px); opacity: 0; }
   to { transform: none; opacity: 1; }

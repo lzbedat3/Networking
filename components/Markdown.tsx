@@ -1,7 +1,7 @@
 "use client";
 
-import { Fragment } from "react";
 import { Diagram as DiagramSpec } from "@/lib/types";
+import { RtlInline, hasRtl } from "./BidiText";
 import Diagram from "./Diagram";
 
 /**
@@ -93,10 +93,9 @@ export default function Markdown({ text }: { text: string }) {
     blocks.push(
       <p key={key++} className="my-1.5">
         {para.map((p, j) => (
-          <Fragment key={j}>
-            {j > 0 && <br />}
+          <span key={j} dir={hasRtl(p) ? "rtl" : "ltr"} className={`block ${hasRtl(p) ? "" : "text-left"}`}>
             {inline(p)}
-          </Fragment>
+          </span>
         ))}
       </p>,
     );
@@ -175,12 +174,15 @@ function Broken() {
 
 function inline(s: string): React.ReactNode[] {
   const out: React.ReactNode[] = [];
+  // inside a Hebrew line, Latin runs and formulas are isolated so they keep their own order
+  const rtl = hasRtl(s);
+  const text = (t: string) => (rtl ? <RtlInline key={`t${k++}`} line={t} /> : t);
   const re = /(\*\*[^*]+\*\*|`[^`]+`)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   let k = 0;
   while ((m = re.exec(s))) {
-    if (m.index > last) out.push(s.slice(last, m.index));
+    if (m.index > last) out.push(text(s.slice(last, m.index)));
     const t = m[0];
     if (t.startsWith("**")) out.push(<strong key={k++}>{t.slice(2, -2)}</strong>);
     else
@@ -191,6 +193,6 @@ function inline(s: string): React.ReactNode[] {
       );
     last = m.index + t.length;
   }
-  if (last < s.length) out.push(s.slice(last));
+  if (last < s.length) out.push(text(s.slice(last)));
   return out;
 }
