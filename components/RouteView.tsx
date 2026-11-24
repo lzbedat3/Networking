@@ -90,7 +90,7 @@ export default function RouteView({ stats, examStats, mistakesCount, onSim, onRe
             <Station ready={ready} answered={answered} />
 
             {/* platforms of the last station */}
-            {SIM_EXAMS.map((ex, i) => {
+            {SIM_EXAMS.map((ex) => {
               const rec = examStats[ex.id];
               return (
                 <li key={ex.id} className="relative">
