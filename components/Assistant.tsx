@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Maximize2, Minimize2, X } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Chat, { Turn } from "./Chat";
@@ -8,6 +8,9 @@ import { AssistantIcon } from "./Icons";
 
 const CHAT_KEY = "net-quiz-assistant-v2";
 const POS_KEY = "net-quiz-bubble-pos";
+const SIZE_KEY = "net-quiz-assistant-size";
+const MIN_W = 320;
+const MIN_H = 380;
 const SIZE = 64;
 const EDGE = 14;
 
@@ -34,6 +37,9 @@ export default function AssistantBubble() {
 
   const [pos, setPos] = useState<Pos | null>(null);
   const [open, setOpen] = useState(false);
+  const [full, setFull] = useState(false);
+  const [box, setBox] = useState<{ w: number; h: number } | null>(null);
+  const resize = useRef<{ sx: number; sy: number; w: number; h: number; dirX: number; dirY: number } | null>(null);
   const [dragging, setDragging] = useState(false);
   const [turns, setTurnsState] = useState<Turn[]>([]);
   const drag = useRef<{ dx: number; dy: number; sx: number; sy: number; moved: boolean } | null>(null);
@@ -42,6 +48,8 @@ export default function AssistantBubble() {
     let saved: Pos | null = null;
     try {
       saved = JSON.parse(localStorage.getItem(POS_KEY) ?? "null");
+      const sz = JSON.parse(localStorage.getItem(SIZE_KEY) ?? "null");
+      if (sz && sz.w && sz.h) setBox(sz);
       const raw = localStorage.getItem(CHAT_KEY);
       if (raw) setTurnsState(JSON.parse(raw));
     } catch {
@@ -60,10 +68,14 @@ export default function AssistantBubble() {
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (full) setFull(false);
+      else setOpen(false);
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, full]);
 
   const setTurns = useCallback(
     (fn: (t: Turn[]) => Turn[]) =>
@@ -113,12 +125,35 @@ export default function AssistantBubble() {
   const vh = window.innerHeight;
   // phones: the window takes the screen above the tab bar and the bubble steps aside; wider screens: it opens beside the bubble
   const narrow = vw < 640;
-  const pw = narrow ? vw - 16 : Math.min(420, vw - 24);
-  const ph = narrow ? vh - 16 - 76 : Math.min(620, vh - 120);
+  const pw = narrow ? vw - 16 : Math.min(box?.w ?? 420, vw - 24);
+  const ph = narrow ? vh - 16 - 76 : Math.min(box?.h ?? 620, vh - 24);
   const left = narrow ? 8 : Math.min(Math.max(12, pos.x + SIZE / 2 < vw / 2 ? pos.x : pos.x + SIZE - pw), vw - pw - 12);
   const above = pos.y + SIZE / 2 > vh / 2;
   const top = narrow ? 8 : above ? Math.max(12, pos.y - ph - 12) : Math.min(pos.y + SIZE + 12, vh - ph - 12);
-  const hideBubble = open && narrow;
+  const hideBubble = open && (narrow || full);
+  // the resize grip sits on the corner away from the bubble; dragging it grows the window outward
+  const gripRight = pos.x + SIZE / 2 < vw / 2;
+  const onGripDown = (e: React.PointerEvent) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    resize.current = { sx: e.clientX, sy: e.clientY, w: pw, h: ph, dirX: gripRight ? 1 : -1, dirY: above ? -1 : 1 };
+  };
+  const onGripMove = (e: React.PointerEvent) => {
+    const r = resize.current;
+    if (!r) return;
+    setBox({
+      w: Math.max(MIN_W, Math.min(vw - 24, r.w + (e.clientX - r.sx) * r.dirX)),
+      h: Math.max(MIN_H, Math.min(vh - 24, r.h + (e.clientY - r.sy) * r.dirY)),
+    });
+  };
+  const onGripUp = () => {
+    resize.current = null;
+    try {
+      localStorage.setItem(SIZE_KEY, JSON.stringify(box));
+    } catch {
+      /* ignore */
+    }
+  };
 
   return (
     <>
@@ -127,9 +162,9 @@ export default function AssistantBubble() {
           role="dialog"
           aria-label="עוזר הקורס"
           className="anim-sheet fixed z-50 flex flex-col overflow-hidden rounded-2xl border border-line-strong bg-ground shadow-[0_16px_40px_-18px_rgb(9_16_28/0.4)]"
-          style={{ left, top, width: pw, height: ph }}
+          style={full && !narrow ? { left: 16, top: 16, right: 16, bottom: 16 } : { left, top, width: pw, height: ph }}
         >
-          <header className="flex items-center gap-3 bg-ink px-4 py-3 text-ground">
+          <header className="flex items-center gap-3 bg-field px-4 py-3 text-field-ink">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold" aria-hidden>
               <AssistantIcon className="h-6 w-6" />
             </span>
@@ -140,6 +175,16 @@ export default function AssistantBubble() {
             {turns.length > 0 && (
               <button onClick={() => setTurns(() => [])} className="rounded-lg px-2 py-1 text-xs font-semibold opacity-80 hover:bg-white/10 hover:opacity-100">
                 שיחה חדשה
+              </button>
+            )}
+            {!narrow && (
+              <button
+                onClick={() => setFull((f) => !f)}
+                aria-label={full ? "יציאה ממסך מלא" : "מסך מלא"}
+                title={full ? "יציאה ממסך מלא" : "מסך מלא"}
+                className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-white/10"
+              >
+                {full ? <Minimize2 className="h-4.5 w-4.5" /> : <Maximize2 className="h-4.5 w-4.5" />}
               </button>
             )}
             <button onClick={() => setOpen(false)} aria-label="סגירה" className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-white/10">
@@ -168,6 +213,22 @@ export default function AssistantBubble() {
               ]}
             />
           </div>
+          {!narrow && !full && (
+            <span
+              role="separator"
+              aria-label="שינוי גודל החלון"
+              onPointerDown={onGripDown}
+              onPointerMove={onGripMove}
+              onPointerUp={onGripUp}
+              className={`absolute ${above ? "top-0" : "bottom-0"} ${gripRight ? "right-0" : "left-0"} z-10 flex h-5 w-5 touch-none items-center justify-center text-muted ${
+                gripRight === !above ? "cursor-nwse-resize" : "cursor-nesw-resize"
+              }`}
+            >
+              <svg viewBox="0 0 10 10" className={`h-2.5 w-2.5 ${gripRight ? "" : "-scale-x-100"} ${above ? "-scale-y-100" : ""}`} aria-hidden>
+                <path d="M9 3 3 9M9 6 6 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+            </span>
+          )}
         </section>
       )}
 
@@ -184,7 +245,7 @@ export default function AssistantBubble() {
         }}
         aria-label={open ? "סגירת עוזר הקורס" : "פתיחת עוזר הקורס (אפשר לגרור)"}
         aria-expanded={open}
-        className={`fixed z-50 flex touch-none items-center justify-center rounded-full bg-ink text-gold shadow-[0_6px_16px_-6px_rgb(14_26_43/0.45)] ring-2 ring-surface transition-transform select-none ${
+        className={`fixed z-50 flex touch-none items-center justify-center rounded-full bg-field text-gold shadow-[0_6px_16px_-6px_rgb(14_26_43/0.45)] ring-2 ring-surface transition-transform select-none ${
           dragging ? "scale-110 cursor-grabbing" : "cursor-grab hover:scale-105"
         }`}
         style={{ left: pos.x, top: pos.y, width: SIZE, height: SIZE }}
