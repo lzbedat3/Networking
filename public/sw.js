@@ -1,0 +1,54 @@
+/* Service worker: the app works offline after the first visit (except the Claude assistant). */
+const VERSION = "v1";
+const STATIC = `static-${VERSION}`;
+const PAGES = `pages-${VERSION}`;
+const PRECACHE = ["/", "/route", "/simulations", "/run", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/logo.svg"];
+
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(PAGES).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+});
+
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((k) => ![STATIC, PAGES].includes(k)).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim()),
+  );
+});
+
+self.addEventListener("fetch", (e) => {
+  const req = e.request;
+  const url = new URL(req.url);
+  if (req.method !== "GET" || url.origin !== location.origin) return;
+  if (url.pathname.startsWith("/api/")) return; // the assistant always needs the network
+
+  // hashed build assets, fonts, exam screenshots, icons: cache first
+  if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/exam/") || url.pathname.startsWith("/icons/")) {
+    e.respondWith(
+      caches.match(req).then(
+        (hit) =>
+          hit ||
+          fetch(req).then((res) => {
+            const copy = res.clone();
+            caches.open(STATIC).then((c) => c.put(req, copy));
+            return res;
+          }),
+      ),
+    );
+    return;
+  }
+
+  // pages: network first, fall back to the cached copy when offline
+  if (req.mode === "navigate") {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(PAGES).then((c) => c.put(url.pathname, copy));
+          return res;
+        })
+        .catch(() => caches.match(url.pathname).then((hit) => hit || caches.match("/"))),
+    );
+  }
+});
