@@ -182,7 +182,7 @@ export default function Runner({ session, onExit, onFinish, onStatsChange }: Pro
               )}
             </p>
           </div>
-          {exam ? (
+          {exam && (
             <>
               <span className={`num rounded-lg px-2.5 py-1.5 text-base font-bold ${timerTone}`} dir="ltr" aria-label="זמן שנותר">
                 {mm}:{ss}
@@ -196,16 +196,15 @@ export default function Runner({ session, onExit, onFinish, onStatsChange }: Pro
                 <span className="hidden sm:inline">מפה</span>
               </button>
             </>
-          ) : (
-            <button
-              onClick={openAssistant}
-              aria-label="עוזר הקורס"
-              className="flex h-10 items-center gap-1.5 rounded-xl border border-line-strong px-2.5 text-sm font-semibold transition-colors hover:border-route"
-            >
-              <AssistantIcon className="h-5.5 w-5.5" />
-              <span className="hidden sm:inline">עוזר הקורס</span>
-            </button>
           )}
+          <button
+            onClick={openAssistant}
+            aria-label="עוזר הקורס"
+            className="flex h-10 items-center gap-1.5 rounded-xl border border-line-strong px-2.5 text-sm font-semibold transition-colors hover:border-route"
+          >
+            <AssistantIcon className="h-5.5 w-5.5" />
+            <span className="hidden sm:inline">עוזר הקורס</span>
+          </button>
         </div>
         <TraceStrip qs={qs} idx={idx} answers={answers} revealed={revealed} flags={flags} exam={exam} onJump={go} />
       </header>
@@ -220,11 +219,9 @@ export default function Runner({ session, onExit, onFinish, onStatsChange }: Pro
             score={isRevealed ? scoreQuestion(q, answers[idx]) : undefined}
             onToggle={toggle}
           />
-          {!exam && (
-            <div className="mt-6">
-              <Tutor key={q.id} questionId={q.id} picked={answers[idx]} answerVisible={isRevealed} />
-            </div>
-          )}
+          <div className="mt-6">
+            <Tutor key={q.id} questionId={q.id} picked={answers[idx]} answerVisible={isRevealed} />
+          </div>
         </article>
       </main>
 

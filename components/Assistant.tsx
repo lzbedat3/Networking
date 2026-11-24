@@ -1,7 +1,6 @@
 "use client";
 
 import { Maximize2, Minimize2, X } from "lucide-react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Chat, { Turn } from "./Chat";
 import { AssistantIcon } from "./Icons";
@@ -29,11 +28,8 @@ function clamp(p: Pos): Pos {
   };
 }
 
-/** Draggable floating bubble; tap opens a chat window that sits next to it. Hidden during timed simulations. */
+/** Draggable floating bubble; tap opens a chat window that sits next to it. Available on every screen. */
 export default function AssistantBubble() {
-  const path = usePathname();
-  const params = useSearchParams();
-  const hidden = path === "/run" && params.has("sim");
 
   const [pos, setPos] = useState<Pos | null>(null);
   const [open, setOpen] = useState(false);
@@ -118,7 +114,7 @@ export default function AssistantBubble() {
     } else setOpen((o) => !o);
   };
 
-  if (hidden || !pos) return null;
+  if (!pos) return null;
 
   // the window opens beside the bubble, on whichever side has room
   const vw = window.innerWidth;
