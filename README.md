@@ -126,6 +126,8 @@ Optional fields:
 
 A diagram is one of `seq`, `tree`, `delay` or `cwnd`.
 
+To mark what a question asks, add an entry to `lib/questions/focus.ts`. Phrases in `ask` get a gold underline, and phrases in `cond` (conditions that change the answer) get a dotted one. Each phrase must appear exactly as written in the prompt.
+
 ## PWA and offline
 
 The service worker (`public/sw.js`) caches build assets, icons and screenshots the first time they are loaded. Pages are fetched from the network first, and the cached copy is served when offline. API calls are never cached.

@@ -4,6 +4,7 @@ import { Check, ChevronDown, Lightbulb, Maximize2, X } from "lucide-react";
 import { LEVEL_VAR, levelOf } from "@/lib/mastery";
 import { Img, Question, Table } from "@/lib/types";
 import BidiText, { hasRtl } from "./BidiText";
+import { FOCUS } from "@/lib/questions/focus";
 import Diagram from "./Diagram";
 
 type Props = {
@@ -19,7 +20,7 @@ export default function QuestionView({ q, picked, revealed, score, onToggle }: P
   return (
     <div className="space-y-6">
       <p className="max-w-[68ch] text-[1.2rem] leading-[1.7] font-semibold sm:text-[1.35rem]">
-        <BidiText text={q.prompt} givens />
+        <BidiText text={q.prompt} givens marks={FOCUS[q.id]} />
       </p>
 
       {q.images?.map((img) => <Shot key={img.src} img={img} />)}

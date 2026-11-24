@@ -282,13 +282,58 @@ function LtrLine({ line }: { line: string }) {
   );
 }
 
-/** Renders a string with per-line direction and isolated LTR runs. Use inside a block element. */
-export default function BidiText({ text, givens = false }: { text: string; givens?: boolean }) {
-  const lines = text.split("\n");
-  if (lines.length === 1) {
-    const l = lines[0];
-    return RTL.test(l) ? <RtlInline line={l} givens={givens} /> : <LtrLine line={l} />;
+export type Marks = { ask: string[]; cond?: string[] };
+
+/** cut a line into plain and marked pieces; longer phrases win when two overlap */
+function markPieces(line: string, marks: Marks) {
+  const hits: { a: number; b: number; kind: "ask" | "cond" }[] = [];
+  const all = [...marks.ask.map((p) => ({ p, kind: "ask" as const })), ...(marks.cond ?? []).map((p) => ({ p, kind: "cond" as const }))].sort(
+    (x, y) => y.p.length - x.p.length,
+  );
+  for (const { p, kind } of all) {
+    if (!p) continue;
+    for (let at = line.indexOf(p); at !== -1; at = line.indexOf(p, at + p.length)) {
+      const end = at + p.length;
+      if (!hits.some((h) => at < h.b && end > h.a)) hits.push({ a: at, b: end, kind });
+    }
   }
+  hits.sort((x, y) => x.a - y.a);
+  const out: { s: string; kind?: "ask" | "cond" }[] = [];
+  let from = 0;
+  for (const h of hits) {
+    if (h.a > from) out.push({ s: line.slice(from, h.a) });
+    out.push({ s: line.slice(h.a, h.b), kind: h.kind });
+    from = h.b;
+  }
+  if (from < line.length) out.push({ s: line.slice(from) });
+  return out;
+}
+
+function Line({ line, givens, marks }: { line: string; givens: boolean; marks?: Marks }) {
+  if (!RTL.test(line)) return <LtrLine line={line} />;
+  if (!marks) return <RtlInline line={line} givens={givens} />;
+  return (
+    <>
+      {markPieces(line, marks).map((pc, i) =>
+        pc.kind ? (
+          <mark key={i} className={pc.kind === "ask" ? "q-ask" : "q-cond"}>
+            <RtlInline line={pc.s} />
+          </mark>
+        ) : (
+          <RtlInline key={i} line={pc.s} givens={givens} />
+        ),
+      )}
+    </>
+  );
+}
+
+/**
+ * Renders a string with per-line direction and isolated LTR runs. Use inside a block element.
+ * `givens` lifts given values onto their own lines; `marks` underlines what the question asks and its key conditions.
+ */
+export default function BidiText({ text, givens = false, marks }: { text: string; givens?: boolean; marks?: Marks }) {
+  const lines = text.split("\n");
+  if (lines.length === 1) return <Line line={lines[0]} givens={givens} marks={marks} />;
   return (
     <>
       {lines.map((l, i) =>
@@ -296,7 +341,7 @@ export default function BidiText({ text, givens = false }: { text: string; given
           <span key={i} className="block h-2" />
         ) : RTL.test(l) ? (
           <span key={i} dir="rtl" className="block">
-            <RtlInline line={l} givens={givens} />
+            <Line line={l} givens={givens} marks={marks} />
           </span>
         ) : (
           <LtrLine key={i} line={l} />

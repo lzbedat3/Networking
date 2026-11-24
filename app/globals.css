@@ -254,6 +254,29 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+/* question prompt: what is asked (gold underline) and the conditions that change the answer (dotted) */
+mark.q-ask,
+mark.q-cond {
+  background: none;
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-skip-ink: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+mark.q-ask {
+  font-weight: 800;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.3em;
+}
+mark.q-cond {
+  text-decoration-style: dotted;
+  text-decoration-color: var(--route);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.32em;
+}
+
 /* the user's own chat bubble sits on the accent colour, so formula chips use a translucent tint */
 .bidi-on-accent .fx,
 .bidi-on-accent .fx-block {
