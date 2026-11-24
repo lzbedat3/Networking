@@ -197,7 +197,11 @@ export async function POST(req: Request) {
     fallbacks: "default",
     model: MODEL,
     max_tokens: 4000,
-    system: BASE_RULES + VISUALS + (reveal ? REVEAL_RULES : NO_ANSWER_RULES) + `\n\n<course_notes>\n${COURSE_NOTES}\n</course_notes>`,
+    // stable prefix (rules + course notes) is cached; the answer-mode rules come after it
+    system: [
+      { type: "text", text: `${BASE_RULES}${VISUALS}\n\n<course_notes>\n${COURSE_NOTES}\n</course_notes>`, cache_control: { type: "ephemeral", ttl: "1h" } },
+      { type: "text", text: reveal ? REVEAL_RULES : NO_ANSWER_RULES },
+    ],
     output_config: { effort: "medium" },
     messages,
   });
