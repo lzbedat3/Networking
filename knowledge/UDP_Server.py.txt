@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""
+UDP Server - Python Implementation
+Equivalent to UDP_Server.c
+
+This server demonstrates:
+1. Creating a UDP socket
+2. Binding to a local port
+3. Receiving datagrams from clients
+4. Sending responses back to clients
+5. Running in an infinite loop to serve multiple clients
+"""
+
+import socket
+import sys
+from datetime import datetime
+
+ECHOMAX = 255  # Maximum buffer size
+
+
+def main():
+    # Check command line arguments
+    if len(sys.argv) < 2:
+        print("Error: no port provided", file=sys.stderr)
+        print("Usage: python UDP_Server.py <port>")
+        sys.exit(1)
+
+    try:
+        server_port = int(sys.argv[1])
+    except ValueError:
+        print("Error: port must be a number", file=sys.stderr)
+        sys.exit(1)
+
+    # Create a UDP socket
+    # AF_INET = IPv4, SOCK_DGRAM = UDP, IPPROTO_UDP = UDP protocol
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        print(f"UDP socket created successfully")
+    except socket.error as e:
+        print(f"socket() failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    # Bind the socket to server address and port
+    # '' or '0.0.0.0' means INADDR_ANY - accept connections on all interfaces
+    try:
+        server_address = ('', server_port)  # Bind to all interfaces
+        sock.bind(server_address)
+        print(f"Socket bound to port {server_port}")
+    except socket.error as e:
+        print(f"bind() failed: {e}", file=sys.stderr)
+        sock.close()
+        sys.exit(1)
+
+    print(f"The Server Is Ready, Waiting For Clients At Port: {server_port}")
+
+    # Run forever - server continuously handles client requests
+    try:
+        while True:
+            # Block until receive message from a client
+            # recvfrom() returns the data and the address (IP, port) of the sender
+            recv_buff, client_addr = sock.recvfrom(ECHOMAX)
+
+            if not recv_buff:
+                continue
+
+            # Decode received message
+            recv_message = recv_buff.decode().strip()
+
+            print("Handling client...")
+            print(f"Server Received: {recv_message}")
+            print(f"From: {client_addr[0]}:{client_addr[1]}")
+
+            # Get current time
+            current_time = datetime.now()
+            time_buff = current_time.strftime("%Y-%m-%d %H:%M:%S")
+            print(f"Time: {time_buff}")
+
+            # Send the time back to the client
+            # UDP is connectionless, so we specify the destination address
+            bytes_sent = sock.sendto(time_buff.encode(), client_addr)
+
+            print("Response sent...")
+            print("Server Is Waiting for NEW Clients' requests.")
+
+    except KeyboardInterrupt:
+        print("\nServer shutting down...")
+    except socket.error as e:
+        print(f"Error during communication: {e}", file=sys.stderr)
+    finally:
+        # Close the socket
+        sock.close()
+        print("Socket closed")
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

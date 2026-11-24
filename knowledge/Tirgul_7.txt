@@ -1,0 +1,184 @@
+‫‪Binary Math‬‬
+ ‫תרגול ‪7‬‬
+ ‫מר‪ .‬ויאם שאהין‬
+General info
+ • Base ten, the decimal number system which humans use, and you have been working
+ with for years.
+ • To count in base ten, you go from 0 to 9, then do combinations of two digits starting with
+ 10 all the way to 99. After 99 comes three-digit combinations from 100 – 999, etc.
+ • This combination system is true for any base you use.
+ • The only difference is how many digits you have before you go to the next combination
+ • To count in base two, which only has 0 and 1 as counting digits, you count 0,1, then switch
+ to two-digit combinations, 10,11, then to three-digit combos, 100, 101,110,111, etc.
+ Let`s convert the
+ number 37
+Decimal to To convert from
+ decimal to any other
+ 37/2 => 18 & 1
+ base we simply divide
+binary the number by the
+ base. Let`s have an
+ example: 18/2 => 9 & 0
+ 37 = 1 0 0 1 0 1 base 2 9/2 => 4 & 1
+ 4/2 => 2 & 0
+ 2/2 => 1 & 0
+ 1/2 => 0 & 1
+Binary to Decimal
+ 𝟐𝟏𝟎 𝟐𝟗 𝟐𝟖 𝟐𝟕 𝟐𝟔 𝟐𝟓 𝟐𝟒 𝟐𝟑 𝟐𝟐 𝟐𝟏 𝟐𝟎 ‫ערך‬
+ 1024 512 256 128 64 32 16 8 4 2 1
+ 11 10 9 8 7 6 5 4 3 2 1 ‫ספרה‬
+ 𝟐𝟑 𝟐𝟐 𝟐𝟏 𝟐𝟎
+ 11112 = ? 10 1+2+4+8 = 15
+ 1 1 1 1
+ 𝟐𝟓 𝟐𝟒 𝟐𝟑 𝟐𝟐 𝟐𝟏 𝟐𝟎
+ 1010112 = ? 10 1+2+8+32 = 43
+ 1 0 1 0 1 1
+Current total = 0;
+While (digits are not finished)
+ Current total = Current total * 2 + current digit
+Let` s convert the number 1011 to decimal
+2 * 0 + 1 =1
+2*1+0=2
+2*2+1=5
+2*5+1=11
+Choose 5 and solve them
+ 1011102 = ? 10
+ 11010002 = ? 10
+ 111111112 = ? 10
+ 2410 = ? 2
+ 1610 = ? 2
+ 1210 = ? 2
+ Usage
+ UDP checksum
+ Subnet mask
+ 1`s complement
+• A way for a computer to use
+ and operators to determine
+ if an IP address exists on the
+ same network.
+UDP: segment header
+ length, in bytes of
+ 32 bits UDP segment,
+ source port # dest port # including header
+ length checksum
+ why is there a UDP?
+ ▪ no connection establishment
+ application (which can add delay)
+ data
+ ▪ simple: no connection state
+ (payload)
+ at sender, receiver
+ ▪ small header size
+ ▪ no congestion control: UDP
+ UDP segment format can blast away as fast as
+ desired
+ Transport Layer 3-8
+ Checksum is used to
+ detect errors in Only detect! Not
+ transmitted correct.
+ segment.
+ segment contents
+ Do 1`s complement
+UDP – Checksum (headers & payload)
+ are treated as 16-bit
+ sum on segment
+ contents
+ integers.
+ Use the 1`s Store the checksum
+ complement to get in UDP checksum
+ the final checksum field.
+UDP Checksum
+Add the 16-bit integers
+ If there is a carryout from the
+ MSB then add it to the LSB
+ Convert 1`s to 0`s and 0`s to 1`s
+Internet checksum: example
+ example: add two 16-bit integers
+ 1 1 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0
+ 1 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1
+wraparound 1 1 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1
+ sum 1 1 0 1 1 1 0 1 1 1 0 1 1 1 1 0 0
+ checksum 1 0 1 0 0 0 1 0 0 0 1 0 0 0 0 1 1
+ Note: when adding numbers, a carryout from the most
+ significant bit needs to be added to the result
+ IP
+ • The IP address is the address of the host on the
+ internet or local network.
+ • An IP address is a string of numbers separated by
+ periods. IP addresses are expressed as a set of four
+ numbers (octets) — an example address might be
+ 192.158.1.38. Each number in the set can range
+ from 0 to 255. So, the full IP addressing range goes
+ from 0.0.0.0 to 255.255.255.255. Address is
+ converted to binary in order to be able to route
+ and forward the packets.
+255.255.255.255 = 11111111.11111111.11111111.11111111
+Private IP VS Public IP
+• Private IP address scope is local to present
+ network. And is used to communicate within the
+ network.
+• Public IP address scope is global. And is used to
+ communicate outside the network.
+ 1st 2nd
+ operand operand AND OR
+ Logical 0 0 0 0
+Operators 1 0 0 1
+ 0 1 0 1
+Subnets
+• As we saw in a previous slide,
+ an IP is always attached to a
+ subnet mask, so what is a
+ subnet mask? And what is a
+ subnet?.
+• A subnet, or subnetwork,
+ is a segmented piece of a
+ larger network. More
+ specifically, subnets are a
+ logical partition of an IP
+ network into multiple,
+ smaller network segments.
+ Prefix (/x)
+The 16 in the example represents how many of those bits are "locked down" and cannot change.
+ Subnetting List
+Subnet & subnet mask
+• Subnet - A portion of a network that
+ shares a particular subnet address.
+• Subnet mask - A 32-bit combination
+ used to describe which portion of an
+ address refers to the subnet and which
+ part refers to the host.
+• Every IP address is composed of a
+ network component and a host
+ component
+ • Subnet part are the high order bits
+ • Host part are the low order bits
+• Once you have the address and the
+ mask represented in binary, then
+ identification of the network and host ID
+ is easier. Any address bits which have
+ corresponding mask bits set to 1
+ represent the network ID. Any address
+ bits that have corresponding mask bits
+ set to 0 represent the node ID.
+• Purpose: to identify which part of an IP
+ address is the network component and
+ which part is the host component
+Let`s have
+ another
+ example
+ Another way to say it is: 8.20.15.1/8
+Example
+Your task is to determine if these devices are on the same
+subnet or different subnets. You can use the address and
+mask of each device in order to determine to which subnet
+each address belongs.
+Device A: 172.16.17.30/20
+Device B: 172.16.28.15/20
+ Example
+What subnet the following IP lies in
+• 193.62.83.108/27
+• EQUALS TO:
+• 193.62.83.108
+• 255.255.255.224
+YOU MADE IT!
+Have a nice day ☺

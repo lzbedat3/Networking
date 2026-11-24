@@ -1,0 +1,143 @@
+Chapter 3
+Transport Layer
+Sockets-‫שכבת התעבורה ו‬
+ Computer Networking: A Top-
+ Down Approach
+4 ‫תרגול‬ 7th Edition, Global Edition
+‫ ויאם שאהין‬:‫מתרגל‬ Jim Kurose, Keith Ross
+ ‫מתרגול ‪ 3‬להיום‬
+ ‫היום‬ ‫בתרגול הקודם‬
+‫למי מגיעה החבילה?‬ ‫‪cookie · proxy‬‬
+‫למה ‪ DNS‬על ‪?UDP‬‬ ‫‪DNS · TTL‬‬
+ ‫לקוח ושרת בקוד‬ ‫‪UDP · port 53‬‬
+ ‫‪1‬‬
+ 1 ‫חלק‬
+ ‫שכבת התעבורה‬
+ Transport Layer: from hosts to processes
+Python TCP vs. UDP Sockets Transport
+Transport layer
+ Application 1 between processes, not hosts
+ Transport 2 runs in the end systems only
+ Network 3 message ⇄ segments
+ Link
+ Physical
+9 functions · TCP does most · UDP almost none
+Transport vs. network
+Analogy Network
+houses hosts
+kids processes
+letters app messages
+Ann and Bill transport protocol
+the postal service network protocol
+ Ethernet IP TCP HTTP Data
+ port
+ 2 ‫חלק‬
+ ?‫למי מגיעה החבילה‬
+ Sockets and ports
+Socket = IP + port
+ User User
+ process process
+ socket socket
+ Operating Operating
+ System System
+ host process
+ IP address · 32 bits port · 16 bits
+Ports identify services
+ Server 128.2.194.242
+ 128.2.194.242:80
+ Web · 80
+ Client
+ OS
+ host
+ 128.2.194.242:7
+ Echo · 7
+Range Who Example
+0 – 1023 well-known · servers 80 · 25 · 53
+1024 – 65535 ephemeral · clients picked by the OS
+Demultiplexing: example
+ mux at the sender · demux at the receiver
+ P4 → P1: 5775 → 6428 P1 → P4: 6428 → 5775
+ 3 ‫חלק‬
+ TCP vs. UDP
+ Two kinds of transport service
+TCP vs. UDP
+ TCP UDP
+Socket SOCK_STREAM SOCK_DGRAM
+Connection handshake first none
+Delivery guaranteed best effort
+Order in order may be out of order
+Calls connect · send · recv sendto · recvfrom
+Used for web · email · files DNS · video · games
+ TCP = a phone call · UDP = postcards
+DNS on UDP, HTTP on TCP
+1 DNS: one small question · one small answer
+2 no handshake – saves a whole RTT
+3 no connection state – many clients
+ HTTP → TCP
+ DNS lost? ask again
+ complete and in order
+Today: HTTP/3 = QUIC on top of UDP
+‫שאלות‬
+ ‫בדקו את עצמכם‬
+ ‫‪16‬‬ ‫כמה ביטים יש במספר פורט?‬ ‫‪1‬‬
+ ‫‪80‬‬ ‫על איזה פורט מאזין שרת ‪?Web‬‬ ‫‪2‬‬
+ ‫‪UDP‬‬ ‫שיחת וידאו‪ TCP :‬או ‪?UDP‬‬ ‫‪3‬‬
+ ‫מערכת ההפעלה‬ ‫מי בוחר את הפורט של הלקוח?‬ ‫‪4‬‬
+ ‫‪12‬‬
+ 4 ‫חלק‬
+ ‫לקוח ושרת בקוד‬
+ Socket programming in Python
+TCP and UDP: the calls
+ socket socket socket socket
+ bind bind
+ listen sendto recvfrom
+ connect accept recvfrom sendto
+ send recv close close
+ recv send
+ close close
+ green = client · navy = server
+UDP in Python
+server
+sock = socket(AF_INET, SOCK_DGRAM)
+sock.bind(('', 5000))
+while True:
+ data, addr = sock.recvfrom(255)
+ sock.sendto(now().encode(), addr)
+client
+SERVER = ("127.0.0.1", 5000)
+sock.sendto(b"What's the time?", SERVER)
+data, addr = sock.recvfrom(255)
+sock.close()
+TCP in Python
+server = socket(AF_INET, SOCK_STREAM)
+server.bind(('', 27015)); server.listen(5)
+conn, addr = server.accept() # new socket
+conn.send(answer(conn.recv(255)))
+sock = socket(AF_INET, SOCK_STREAM)
+sock.connect(("127.0.0.1", 27015)) # handshake
+sock.send(b"What's the time?"); sock.recv(255)
+ accept() returns a new socket per client
+ ‫סדנה‬
+Run a client and a server
+ Workshop – open your laptop
+Workshop: run it
+1 terminal 1 – the server first
+2 terminal 2 – the client
+python UDP_Server.py 5000
+python UDP_Client.py 5000
+3 then TCP_BlockingServer.py + TCP_Client.py
+4 bonus: Wireshark · loopback · udp.port == 5000
+‫‪Workshop: questions‬‬
+ ‫מה הפורט של הלקוח? הריצו פעמיים – הוא משתנה?‬ ‫‪1‬‬
+ ‫‪ :UDP‬הריצו את הלקוח בלי שרת – מה קורה?‬ ‫‪2‬‬
+ ‫‪ :TCP‬הריצו את הלקוח בלי שרת – מה קורה?‬ ‫‪3‬‬
+ ‫הריצו שני לקוחות במקביל – השרת עונה לשניהם?‬ ‫‪4‬‬
+ ‫בונוס – כמה חבילות לבקשה אחת ב‪ ?UDP-‬וב‪?TCP-‬‬ ‫‪5‬‬
+ ‫‪19‬‬
+ ‫סיכום ובתרגול הבא‬
+‫בתרגול הבא‬ ‫תרגיל בית‬ ‫היום‬
+ ‫‪Review‬‬ ‫להריץ ‪UDP‬‬ ‫‪IP + port‬‬
+‫‪Socket API‬‬ ‫תרגיל בית ‪1‬‬ ‫‪TCP · UDP‬‬
+‫‪HW 2: DNS‬‬ ‫להגיש‬ ‫‪sockets‬‬
+ ‫שאלות?‬
+ ‫‪20‬‬

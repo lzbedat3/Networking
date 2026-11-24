@@ -1,0 +1,31 @@
+ TCP SOCKET
+MULTIPLEXING
+Connection-oriented demux
+ • TCP socket identified by 4- • Server host may support
+ tuple: many simultaneous TCP
+ • source IP address sockets:
+ • source port number • each socket identified by its
+ • dest IP address own 4-tuple
+ • dest port number • Web servers have different
+ • recv host uses all four sockets for each connecting
+ values to direct segment to client
+ appropriate socket • non-persistent HTTP will have
+ different socket for each
+ request
+Transport Layer 2
+Connection-oriented demux (cont)
+ P1 P4 P5 P6 P2 P1P3
+ SP: 5775
+ DP: 80
+ S-IP: B
+ D-IP:C
+ SP: 9157 SP: 9157
+ client DP: 80 DP: 80 Client
+ server
+ IP: A S-IP: A IP: C S-IP: B IP:B
+ D-IP:C D-IP:C
+Transport Layer 3
+Connection-oriented demux: Threaded Web
+Server
+ P1 P4 P2 P1P3
+Transport Layer 4

@@ -1,0 +1,55 @@
+ When TCP Protocol Behave Badly
+Imagine hiring an entire armored convoy just to deliver a single note
+ It sounds ridiculous, right?
+ In the world of networking, this happens more often than we’d like.
+ It's called Silly Window Syndrome
+ and today we’ll see why it’s so silly…
+ 1 Byte of data
+ Quick TCP Reminder
+ TCP Flow Control
+ =
+prevent a fast sender from overrunning a slower receiver
+ TCP uses a sliding window
+ only a limited amount of unacknowledged data can be “in flight”.
+ If the receiver can’t keep up the window shrinks → sender slows down / pauses.
+ Sliding Window
+ Concept
+Sender can transmit multiple segments without waiting for individual ACKs.
+Receiver advertises a Window Size= Available space in the receive Buffer.
+ The receiver puts data from
+ the sender in its buffer
+ The Ideal: TCP Sliding Window
+ in each ACK, the reciver tells
+ Window should be large enough Keep the network pipe full the sender:
+ to maximize throughput. “You can send up to X more
+ bytes.”
+ If the receive buffer is full →
+ receiver advertises window = 0
+ → sender must pause sending.
+When the receiver advertises a window size of 0, the sender is not allowed to send any more data (the
+window can stay at 0 for a long time).
+From the sender’s point of view, the connection is still open, but it looks “frozen”- no new data can be
+transmitted, and throughput drops to zero.
+In the extreme case, if no ACK with an updated window is received, both sides can end up in a:
+ Zero window deadlock
+ the sender waits forever, while the receiver has nothing new to acknowledge.
+ The Efficiency Problem
+Normal Packet 97.6 2.4
+ Silly Packet 2.4 97.6
+ Overhead Payload
+ 1‫עמודה‬
+ a der
+ TCP he
+ SWS “Tinygram” Normal TCP Segment
+ Header: 40 Bytes Header: 40 Bytes
+ Payload: 1 Bytes Payload: 1460 Bytes
+Sender side Reciver side
+ The root cause
+ Why SWS Happens?
+ SOLUTIONS
+ The Sender Solution: Nagle The Reciver Solution: Clark
+Concept: Patience Concept: Stop lying about available space.
+Rule: Do not send tiny data unless: Rule: Advertise a "Zero Window" until:
+1. You have a full segment's worth. 1. You have enough space for a Maximum Segment (MSS).
+OR OR
+2. You received an ACK for the previous data. 2. The buffer is at least 50% empty.

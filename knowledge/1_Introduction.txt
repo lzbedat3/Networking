@@ -1,0 +1,499 @@
+Computer Networks
+ Osnat (Ossi) Mokryn
+ Information Systems
+ Introduction 1
+Goals for today
+ Introduction 2
+ Goals for today
+❑Talk about commonly used terms in the app world
+❑Understand URLs and webpages
+ Introduction 3
+What’s this?
+• An app
+• Where does it get its
+ information from?
+• Additional information in the
+ app (traffic, restaurants,
+ ratings, etc.)
+ Application
+❑A user activated program
+ • In a computer (desktop) or a laptop or a device (e.g., smartphone)
+ • Program = code running on a device
+ • Feels like it is alone – gets the CPU, a piece of the memory, etc., all to itself
+ • Can communicate with other programs
+ • On the device (via a file, shared memory,..)
+ • On other devices (communication)
+ Introduction 5
+Service
+❑Always on program
+ • Waiting for incoming requests
+ • Gives a service = reply to requests
+❑ Applications on devices need to know
+ how to reach a service
+❑ Examples for services?
+ Introduction 6
+ Applications communicating
+❑On a user’s device: client application
+❑On a server: service application
+❑Client –server Paradigm
+ • Server is always on
+ • Server is reachable – it is known how to reach it
+ • Clients come and go
+ • Clients always initiates communication with service (server)
+ Introduction 7
+ Client-Server Paradigm
+❑ Server is always on
+❑ Client always has to
+ initiate communication
+❑ Examples:
+ • Youtube app / site
+ • Facebook app / site
+ • Google.com / site
+ • Cnn.com / site
+ Introduction 8
+ Guidelines for the course
+❑Almost All lectures slides are online.
+❑The slides are meant to remind you of what you learnt, they are
+ not “the course book”.
+❑Lots of terminology. Some is new, some is not. Don’t be shy –
+ when in doubt, ask!
+ Introduction 9
+‫דרישות הקורס ואופן החישוב‬
+ ‫• סילבוס‬
+ ❑ It is the largest network in the world that connects
+ hundreds of thousands of individual networks all over
+ the world.
+ ❑ The popular term for the Internet is the “information
+ highway”.
+Internet ❑ Rather than moving through geographical space, it
+ moves your ideas and information through
+ cyberspace.
+ ❑ Cyberspace = where communication between
+ computer networks occur
+Cyberspace in minecraft
+ Introduction 12
+Technological networks
+14
+Internet - Technology network
+ Internet Live Stats
+ Check it out: http://www.internetlivestats.com 15
+ What’s the Internet: “nuts and bolts” view
+ PC ❑ millions of connected Mobile network
+ server computing devices: hosts Global ISP
+ = end systems
+ wireless • running network apps
+ laptop
+ cellular Home network
+ handheld
+ Regional ISP
+ ❑ communication links
+ access ❖ fiber, copper, radio,
+ points satellite Institutional network
+ wired ❖ transmission rate =
+ links
+ bandwidth
+ router ❑ routers: forward packets (chunks
+ of data)
+ Introduction 17
+Internet
+❑ No one owns it
+❑ It has no formal management organization.
+❑ As it was originally developed by the Department of
+ defense, this lack of centralization made it less vulnerable
+ to wartime or terrorist attacks.
+❑ To access the Internet, an existing network need to pay a
+ small registration fee and agree to certain standards based
+ on the TCP/IP (Transmission Control Protocol/Internet
+ Protocol) .
+Can we do that?
+ Introduction 19
+How to access the Internet?
+ ❑ Many schools and businesses have direct access to the
+ Internet using special high-speed communication lines
+ and equipment.
+ ❑ Students and employees can access through the
+ organization’s local area networks (LAN) or through their
+ own personal computers, or a local WiFi
+ ❑ Homes are connected to the Internet through Internet
+ Service Providers (ISP).
+ ❑ Examples?
+ ❑ To access the Internet, an existing network need to pay a small
+ registration fee and agree to certain standards based on the TCP/IP
+ (Transmission Control Protocol/Internet Protocol) reference model.
+ ❑ Each organization pays for its own networks and its own telephone
+ bills, but those costs usually exist independent of the internet.
+ ❑ The regional Internet companies route and forward all traffic, and
+ the cost is still only that of a local telephone call.
+Internet Service Providers – class work
+• Work in groups
+• What is an ISP?
+• Give two examples from Israel, the US, Japan, France, Kenya,
+ Egypt
+ The uses of the Internet
+❑Send e-mail messages.
+❑Send (upload) or receive (down load) files between computers.
+❑Be part of a social network
+❑Online Gaming, chatting, …
+❑Audio VoIP (Skype,..), Streaming
+❑Surfing the web
+What’s the Internet: a service view
+❑Enables distributed
+ applications:
+ • Web, VoIP, email, games,
+ e-commerce, file sharing
+❑communication services
+ provided to apps:
+ • reliable data delivery from
+ source to destination
+ • “best effort” (unreliable)
+ data delivery
+ Introduction 24
+The Internet
+❑Definitions
+ • internet = network of networks
+ • Internet =
+ network of networks running the
+ Internet Protocol
+ Introduction 25
+❑ network edge:
+ applications and
+ hosts
+❑ access networks,
+ physical media:
+ wired, wireless
+ communication links
+❑ network core:
+ ❖ interconnected routers
+ ❖ network of networks
+ Introduction 26
+ The network edge:
+❑ end systems (hosts):
+ ❖ run application programs
+ ❖ e.g. Web, email
+ ❖ at “edge of network”
+❑ client/server model
+ ❖ client host requests, receives
+ service from always-on
+ server client/server
+ ❖ e.g. Web browser/server;
+ email client/server
+❑ end systems are
+ communication devices
+ Introduction 27
+ What is an end system device?
+❑Let us define:
+ • Has a processing ability
+ • Can transmit information
+ • Can receive information
+ • To communicate– needs to be connected to a
+ network
+ Introduction 28
+ End System Devices
+❑So.. Which of the following is a communication device?
+ • Smartphone
+ • Traditional Nokia phone
+ • Laptop / computer
+ • Traditional Television
+ • Set-top Box (aka “Yes” or “Hot” Boxes)
+ • A temperature sensor
+ • Smart watch
+ Introduction 29
+Introduction 30
+ What is Web?
+❑ The Web (World Wide Web) consists of information
+ organized into Web pages containing text and graphic
+ images.
+❑ It contains hypertext links, or highlighted keywords and
+ images that lead to related information.
+❑ A collection of linked Web pages that has a common
+ theme or focus is called a Web site.
+❑ The main page that all of the pages on a particular Web
+ site are organized around and link back to is called the
+ site’s home page.
+Client/Server Structure of the Web
+ ❑ Web is a collection of files that reside on computers, called
+ Web servers, that are located all over the world and are
+ connected to each other through the Internet.
+ ❑ When you use your Internet connection to become part of
+ the Web, your computer becomes a Web client in a
+ worldwide client/server network.
+ ❑ A Web browser is the software that you run on your
+ computer to make it work as a web client.
+Client-server Archicture
+ server:
+ • always-on host
+ • permanent IP address
+ • server farms for scaling
+ clients:
+ • communicate with server
+ • may be intermittently
+ connected
+ • may have dynamic IP
+ addresses
+ • do not communicate directly
+ with each other
+ Application Layer 33
+34
+35
+36
+37
+38
+How to access the Web?
+ ❑ Once you have your Internet connection, then you need
+ special software called a browser to access the Web.
+ ❑ Web browsers are used to connect you to remote
+ computers, open and transfer files, display text and
+ ❑ Web browsers are specialized programs.
+ ❑ Examples of Web browser: ?
+ Web
+❑Web browser is a client
+❑Web server is the server
+❑How do they “talk”?
+ • Internet communication is defined by protocols
+❑Web protocols:
+ • The communication protocol: HTTP
+ • Hyper Text Transfer Protocol
+ • Transfers “hyper text”
+ Introduction 40
+❑ protocols control sending, receiving of Mobile network
+ msgs Global ISP
+ • e.g., TCP, IP, HTTP, Skype, Ethernet
+❑ Internet: “network of networks” Home network
+ • loosely hierarchical
+ • public Internet versus private intranet
+ Institutional network
+❑ Internet standards
+ • RFC: Request for comments
+ • IETF: Internet Engineering Task Force
+ Introduction 41
+What’s a protocol?
+ network protocols:
+human protocols: ❑ machines rather than humans
+❑ “what’s the time?” ❑ all communication activity in
+❑ “I have a question” Internet governed by protocols
+❑ introductions
+… specific msgs sent
+… specific actions taken
+ when msgs received, or
+ other events
+ protocols define format, order of msgs
+ sent and received among network
+ entities, and actions taken on msg
+ transmission, receipt
+ Introduction 42
+a human protocol and a computer network protocol:
+ Hi
+ TCP connection
+ Hi request
+ Got the response
+ time? Get http://www.awl.com/kurose-ross
+ 2:00
+ <file>
+ time
+ Q: Other human protocols? Q: Other network protocols?
+ Introduction 43
+Protocol “Layers”
+Networks are complex!
+❑many “pieces”:
+ • hosts
+ • routers Question:
+ • links of various Is there any hope of organizing
+ media structure of network?
+ • applications
+ • protocols Or at least our discussion of
+ • hardware, software networks?
+ Introduction 44
+Organization of air travel
+ ticket (purchase) ticket (complain)
+ baggage (check) baggage (claim)
+ gates (load) gates (unload)
+ runway takeoff runway landing
+ airplane routing airplane routing
+ airplane routing
+ ❑ a series of steps
+ Introduction 45
+Layering of airline functionality
+ticket (purchase) ticket (complain) ticket
+baggage (check) baggage (claim baggage
+ gates (load) gates (unload) gate
+runway (takeoff) runway (land) takeoff/landing
+airplane routing airplane routing airplane routing airplane routing airplane routing
+ departure intermediate air-traffic arrival
+ airport control centers airport
+Layers: each layer implements a service
+ • via its own internal-layer actions
+ • relying on services provided by layer below
+ Introduction 46
+Why layering?
+Dealing with complex systems:
+❑ explicit structure allows identification, relationship of
+ complex system’s pieces
+ • layered reference model for discussion
+❑ modularization eases maintenance, updating of system
+ • change of implementation of layer’s service transparent
+ to rest of system
+ • e.g., change in gate procedure doesn’t affect rest of
+ system
+❑ layering considered harmful?
+ Introduction 47
+Internet protocol stack
+❑ application: supporting network applications
+ • FTP, SMTP, HTTP
+❑ transport: process-process data transfer application
+ • TCP, UDP
+❑ network: routing of datagrams from source to transport
+ destination
+ • IP, routing protocols network
+❑ link: data transfer between neighboring
+ link
+ network elements
+ • PPP, Ethernet
+ physical
+❑ physical: bits “on the wire”
+ Introduction 48
+ISO/OSI reference model
+❑ presentation: allow applications to interpret
+ meaning of data, e.g., encryption,
+ application
+ compression, machine-specific
+ conventions presentation
+❑ session: synchronization, checkpointing, session
+ recovery of data exchange transport
+❑ Internet stack “missing” these layers! network
+ • these services, if needed, must be
+ implemented in application link
+ • needed? physical
+ Introduction 49
+ source
+ message M application
+ Encapsulation
+ segment Ht M transport
+datagram Hn Ht M network
+frame Hl Hn Ht M link
+ switch
+ destination Hn Ht M network
+ Hl Hn Ht M link Hn Ht
+ M application M
+ Ht M transport physical
+ Hn Ht M network
+Hl Hn Ht M link router
+ Introduction 50
+Internet History
+1961-1972: Early packet-switching principles
+❑ 1961: Kleinrock - queueing ❑ 1972:
+ theory shows effectiveness of ❖ ARPAnet public demonstration
+ packet-switching
+ ❖ NCP (Network Control Protocol)
+❑ 1964: Baran - packet-
+ switching in military nets first host-host protocol
+ ❖ first e-mail program
+❑ 1967: ARPAnet conceived by
+ ❖ ARPAnet has 15 nodes
+ Advanced Research Projects
+ Agency
+❑ 1969: first ARPAnet node
+ operational
+ Introduction 51
+ Internet History
+ 1972-1980: Internetworking, new and proprietary nets
+❑ 1970: ALOHAnet satellite network Cerf and Kahn’s internetworking
+ in Hawaii principles:
+❑ 1974: Cerf and Kahn - architecture ❖ minimalism, autonomy - no
+ for interconnecting networks internal changes required to
+❑ 1976: Ethernet at Xerox PARC interconnect networks
+ ❖ best effort service model
+❑ ate70’s: proprietary architectures:
+ ❖ stateless routers
+ DECnet, SNA, XNA ❖ decentralized control
+❑ late 70’s: switching fixed length
+ define today’s Internet architecture
+ packets (ATM precursor)
+❑ 1979: ARPAnet has 200 nodes
+ Introduction 52
+1980-1990: new protocols, a proliferation of networks
+❑ 1983: deployment of TCP/IP ❑ new national networks: Csnet,
+❑ 1982: smtp e-mail protocol BITnet, NSFnet, Minitel
+ defined ❑ 100,000 hosts connected to
+❑ 1983: DNS defined for name-
+ confederation of networks
+ to-IP-address translation
+❑ 1985: ftp protocol defined
+❑ 1988: TCP congestion control
+ Introduction 53
+1990, 2000’s: commercialization, the Web, new apps
+❑ Early 1990’s: ARPAnet Late 1990’s – 2000’s:
+ decommissioned
+ ❑ more killer apps: instant
+❑ 1991: NSF lifts restrictions on
+ commercial use of NSFnet messaging, P2P file sharing
+ (decommissioned, 1995)
+ ❑ network security to forefront
+❑ early 1990s: Web
+ • hypertext [Bush 1945, Nelson ❑ est. 50 million host, 100
+ 1960’s] million+ users
+ • HTML, HTTP: Berners-Lee
+ • 1994: Mosaic, later Netscape ❑ backbone links running at
+ • late 1990’s: commercialization of the Gbps
+ Introduction 54
+2007: Today?
+❑ ~500 million hosts
+❑ Voice, Video over IP
+❑ P2P applications: BitTorrent (file
+ sharing) Skype (VoIP), PPLive
+ (video)
+❑ more applications: YouTube, gaming
+❑ wireless, mobility
+ Introduction 55
+Units
+❑ Bits are the units used to describe an amount of data in a network
+ • 1 kilobit (Kbit) ~1 x 103 bits = 1,000 bits
+ • 1 megabit (Mbit) ~1 x 106 bits = 1,000,000 bits
+ • 1 gigabit (Gbit) ~1 x 109 bits = 1,000,000,000 bits
+❑ Seconds are the units used to measure time
+ • 1 millisecond (msec) = 1 x 10-3 seconds = 0.001 seconds
+ • 1 microsecond (µsec) = 1 x 10-6 seconds = 0.000001 seconds
+ • 1 nanosecond (nsec) = 1 x 10-9 seconds = 0.000000001 seconds
+❑ Bits per second are the units used to measure channel capacity/bandwidth and
+ throughput
+ • bit per second (bps)
+ • kilobits per second (Kbps)
+ • megabits per second (Mbps)
+❑ Bytes are units that describe a series of eight bits
+ • 1 Byte = 8 bits
+ • Bytes per second (Bps)
+ Introduction 56
+ What about WhatsApp?
+❑Client A wants to talk with another client B
+ • What if B’s device is closed?
+ • What if B’s app is closed?
+❑A client always initiates communication
+ • How does B receive the message?
+ • Why can’t the server just “send B the message”?
+ Introduction 57
+ Why do clients have to initiate?
+❑ Client devices may be on or off
+❑ All devices need a IP address to be found
+❑ IP address: Internet Protocol address
+❑ IP address is like a postal address
+ • E.g., IP address may change with location
+ • Unlike an ID or license number
+❑ Server cannot assume it knows a client’s IP address before the
+ client initiated comm.
+ Introduction 58
+ How does a server find a client?
+❑In the mobile world there is a need to “find” a device and notify it
+ that it has a message
+❑Hence, the “Notifications” architecture
+❑Let’s do it on the board
+ Introduction 59
+Client – Server Paradigm
+ ❑Server
+ • Always on
+ • Well-Known IP addr.
+ • Waiting for incoming
+ requests
+ ❑Client
+ • Initiates
+ • Requests a service
+ • Receive replies
+ Introduction 60

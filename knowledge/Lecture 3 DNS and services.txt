@@ -1,0 +1,480 @@
+Chapter 2
+Application Layer
+The Application Layer:
+Domain Name Server Computer
+ Networking: A Top
+ Down Approach
+ 7th Edition, Global Edition
+ Jim Kurose, Keith Ross
+ April 2016
+ Application Layer 2-2
+Locating a computer by name
+Number of Host Systems
+on the Internet 2018
+Top 21
+countries by
+number of
+Internet hosts
+Web and HTTP
+First, a review…
+• web page consists of objects
+• object can be HTML file, JPEG image, Java applet,
+ audio file,…
+• web page consists of base HTML-file which includes
+ several referenced objects
+• each object is addressable by a URL, e.g.,
+ www.someschool.edu/someDept/pic.gif
+ host name path name
+ Application Layer 2-6
+DNS: domain name system
+people: many identifiers: Domain Name System:
+ • SSN, name, passport # • distributed database
+Internet hosts, routers: implemented in hierarchy of
+ • IP address (32 bit) - many name servers
+ used for addressing • application-layer protocol: hosts,
+ datagrams name servers communicate to
+ • “name”, e.g., resolve names (address/name
+ www.yahoo.com - used translation)
+ by humans • note: core Internet function,
+ implemented as application-
+Q: how to map between IP
+ layer protocol
+ address and name, and vice
+ versa ? • complexity at network’s
+ “edge”
+ Application Layer 2-7
+DNS: services, structure
+DNS services why not centralize DNS?
+• hostname to IP address • single point of failure
+ translation • traffic volume
+• host aliasing • distant centralized database
+ • canonical, alias names • maintenance
+• mail server aliasing A: doesn‘t scale!
+• load distribution
+ • replicated Web servers:
+ many IP addresses
+ correspond to one
+ name
+ Application Layer 2-8
+DNS: a distributed, hierarchical database
+ Root DNS Servers
+ … …
+ com DNS servers org DNS servers edu DNS servers
+ pbs.org poly.edu umass.edu
+yahoo.com amazon.com
+ DNS servers DNS serversDNS servers
+DNS servers DNS servers
+client wants IP for www.amazon.com; 1st approximation:
+• client queries root server to find com DNS server
+• client queries .com DNS server to get amazon.com DNS server
+• client queries amazon.com DNS server to get IP address for
+ www.amazon.com
+ Application Layer 2-9
+ DNS: root name servers
+ • contacted by local name server that can not resolve name
+ • root name server:
+ • contacts authoritative name server if name mapping not known
+ • gets mapping
+ • returns mapping to local name server
+ c. Cogent, Herndon, VA (5 other sites)
+ d. U Maryland College Park, MD k. RIPE London (17 other sites)
+ h. ARL Aberdeen, MD
+ j. Verisign, Dulles VA (69 other sites ) i. Netnod, Stockholm (37 other sites)
+e. NASA Mt View, CA m. WIDE Tokyo
+f. Internet Software C. (5 other sites)
+Palo Alto, CA (and 48 other
+sites)
+a. Verisign, Los Angeles CA
+ 13 logical root name
+ (5 other sites)
+b. USC-ISI Marina del Rey, CA
+ “servers” worldwide
+l. ICANN Los Angeles, CA •each “server” replicated
+ (41 other sites)
+ g. US DoD Columbus, many times
+ OH (5 other sites)
+ Application Layer 2-10
+TLD, authoritative servers
+top-level domain (TLD) servers:
+ • responsible for com, org, net, edu, aero, jobs, museums, and
+ all top-level country domains, e.g.: uk, fr, ca, jp
+ • Network Solutions maintains servers for .com TLD
+ • Educause for .edu TLD
+authoritative DNS servers:
+ • organization’s own DNS server(s), providing authoritative
+ hostname to IP mappings for organization’s named hosts
+ • can be maintained by organization or service provider
+ Application Layer 2-11
+ Local DNS name server
+• does not strictly belong to hierarchy
+• each ISP (residential ISP, company, university) has one
+ • also called “default name server”
+• when host makes DNS query, query is sent to its local DNS server
+ • has local cache of recent name-to-address translation pairs (but may be out of
+ date!)
+ • acts as proxy, forwards query into hierarchy
+ Application Layer 2-12
+DNS name root DNS server
+resolution example
+• host at cis.poly.edu wants 3
+ TLD DNS server
+ IP address for 4
+ gaia.cs.umass.edu 5
+ local DNS server
+ iterated query: dns.poly.edu
+ ▪ contacted server 7 6
+ 1 8
+ replies with name of
+ server to contact
+ authoritative DNS server
+ ▪ “I don’t know this dns.cs.umass.edu
+ name, but ask this requesting host
+ cis.poly.edu
+ server”
+ gaia.cs.umass.edu
+ Application Layer 2-13
+ 2 3
+recursive query: 6
+▪ puts burden of name TLD DNS
+ server
+ resolution on
+ contacted name local DNS server
+ server dns.poly.edu 5 4
+▪ heavy load at upper 1 8
+ levels of hierarchy?
+ dns.cs.umass.edu
+ requesting host
+ Application Layer 2-14
+DNS: caching, updating records
+• once (any) name server learns mapping, it caches
+ mapping
+ • cache entries timeout (disappear) after some time (TTL)
+ • TLD servers typically cached in local name servers
+ • thus root name servers not often visited
+• cached entries may be out-of-date (best effort name-
+ to-address translation!)
+ • if name host changes IP address, may not be known
+ Internet-wide until all TTLs expire
+• update/notify mechanisms proposed IETF standard
+ • RFC 2136
+ Application Layer 2-15
+DNS records
+DNS: distributed database storing resource records (RR)
+ RR format: (name, value, type, ttl)
+type=A type=CNAME
+ ▪ name is hostname ▪ name is alias name for some
+ ▪ value is IP address “canonical” (the real) name
+type=NS ▪ www.ibm.com is really
+ • name is domain (e.g., servereast.backup2.ibm.com
+ foo.com) ▪ value is canonical name
+ • value is hostname of
+ authoritative name
+ server for this domain
+ type=MX
+ ▪ value is name of mailserver
+ associated with name
+ Application Layer 2-16
+DNS protocol, messages
+• query and reply messages, both with same message format
+ 2 bytes 2 bytes
+message header identification flags
+▪ identification: 16 bit # for query, # questions # answer RRs
+ reply to query uses same #
+ # authority RRs # additional RRs
+▪ flags:
+ ▪ query or reply questions (variable # of questions)
+ ▪ recursion desired
+ ▪ recursion available
+ answers (variable # of RRs)
+ ▪ reply is authoritative
+ authority (variable # of RRs)
+ additional info (variable # of RRs)
+ Application Layer 2-17
+ identification flags
+ # questions # answer RRs
+ name, type fields
+ questions (variable # of questions)
+ for a query
+ RRs in response answers (variable # of RRs)
+ to query
+ records for
+ authoritative servers
+ additional “helpful” additional info (variable # of RRs)
+ info that may be used
+ Application Layer 2-18
+Inserting records into DNS
+• example: new startup “Network Utopia”
+• register name networkuptopia.com at DNS registrar
+ (e.g., Network Solutions)
+ • provide names, IP addresses of authoritative name server
+ (primary and secondary)
+ • registrar inserts two RRs into .com TLD server:
+ (networkutopia.com, dns1.networkutopia.com, NS)
+ (dns1.networkutopia.com, 212.212.212.1, A)
+• create authoritative server type A record for
+ www.networkuptopia.com; type MX record for
+ networkutopia.com
+ Application Layer 2-19
+Attacking DNS
+DDoS attacks redirect attacks
+• bombard root servers ▪ man-in-middle
+ with traffic • Intercept queries
+ • not successful to date ▪ DNS poisoning
+ • traffic filtering ▪ Send bogus relies to
+ • local DNS servers cache DNS server, which
+ IPs of TLD servers, caches
+ allowing root server
+ bypass exploit DNS for DDoS
+• bombard TLD servers ▪ send queries with
+ • potentially more spoofed source
+ dangerous address: target IP
+ ▪ requires amplification
+ Application Layer 2-20
+ Client-server architecture
+ server:
+ • always-on host
+ • permanent IP address
+ • data centers for scaling
+ clients:
+ • communicate with server
+client/server
+ • may be intermittently connected
+ • may have dynamic IP addresses
+ • do not communicate directly
+ with each other
+ Application Layer 2-21
+P2P architecture
+• no always-on server peer-peer
+• arbitrary end systems
+ directly communicate
+• peers request service from
+ other peers, provide service
+ in return to other peers
+ • self scalability – new peers
+ bring new service
+ capacity, as well as new
+ service demands
+• peers are intermittently
+ connected and change IP
+ addresses
+ • complex management
+ Application Layer 2-22
+Processes communicating
+process: program running clients, servers
+ within a host client process: process that
+• within same host, two initiates communication
+ processes communicate server process: process that
+ using inter-process waits to be contacted
+ communication (defined by
+ OS)
+• processes in different hosts ▪ aside: applications with P2P
+ communicate by exchanging architectures have client
+ messages processes & server
+ processes
+ Application Layer 2-23
+Sockets
+• process sends/receives messages to/from its socket
+• socket analogous to door
+ • sending process shoves message out door
+ • sending process relies on transport infrastructure on other
+ side of door to deliver message to socket at receiving
+ process
+ application application
+ socket controlled by
+ process process app developer
+ transport transport
+ network network controlled
+ link by OS
+ link Internet
+ physical physical
+ Application Layer 2-24
+Addressing processes
+ • to receive messages, process • identifier includes both IP
+ must have identifier address and port numbers
+ • host device has unique 32-bit associated with process on
+ IP address host.
+ • Q: does IP address of host • example port numbers:
+ on which process runs • HTTP server: 80
+ suffice for identifying the • mail server: 25
+ process?
+ ▪ A: no, many processes • to send HTTP message to
+ can be running on same gaia.cs.umass.edu web server:
+ host • IP address: 128.119.245.12
+ • port number: 80
+ • more shortly…
+ Application Layer 2-25
+App-layer protocol defines
+• types of messages open protocols:
+ exchanged,
+ • e.g., request, response • defined in RFCs
+• message syntax: • allows for interoperability
+ • what fields in messages • e.g., HTTP, SMTP
+ & how fields are
+ delineated proprietary protocols:
+• message semantics • e.g., Skype
+ • meaning of information
+ in fields
+• rules for when and how
+ processes send & respond
+ to messages
+ Application Layer 2-26
+What transport service does an app need?
+ data integrity throughput
+ ▪ some apps (e.g., file transfer, ▪ some apps (e.g.,
+ web transactions) require multimedia) require
+ minimum amount of
+ 100% reliable data transfer
+ throughput to be
+ ▪ other apps (e.g., audio) can “effective”
+ tolerate some loss ▪ other apps (“elastic apps”)
+ timing make use of whatever
+ • some apps (e.g., Internet throughput they get
+ telephony, interactive security
+ games) require low delay ▪ encryption, data integrity,
+ to be “effective” …
+ Application Layer 2-27
+ Transport service requirements: common apps
+ application data loss throughput time sensitive
+ file transfer no loss elastic no
+ e-mail no loss elastic no
+ Web documents no loss elastic no
+real-time audio/video loss-tolerant audio: 5kbps-1Mbps yes, 100’s
+ video:10kbps-5Mbps msec
+ stored audio/video loss-tolerant same as above
+ interactive games loss-tolerant few kbps up yes, few secs
+ text messaging no loss elastic yes, 100’s
+ msec
+ yes and no
+ Application Layer 2-28
+Internet transport protocols services
+ TCP service: UDP service:
+ • reliable transport between ▪ unreliable data transfer
+ sending and receiving process between sending and
+ • flow control: sender won’t receiving process
+ overwhelm receiver ▪ does not provide: reliability,
+ • congestion control: throttle flow control, congestion
+ sender when network control, timing,
+ overloaded throughput guarantee,
+ • does not provide: timing, security, or connection
+ minimum throughput setup,
+ guarantee, security
+ • connection-oriented: setup Q: why bother? Why is
+ required between client and there a UDP?
+ server processes
+ Application Layer 2-29
+Internet apps: application, transport protocols
+ application underlying
+ application layer protocol transport protocol
+ e-mail SMTP [RFC 2821] TCP
+remote terminal access Telnet [RFC 854] TCP
+ Web HTTP [RFC 2616] TCP
+ file transfer FTP [RFC 959] TCP
+ streaming multimedia HTTP (e.g., YouTube), TCP or UDP
+ RTP [RFC 1889]
+ Internet telephony SIP, RTP, proprietary
+ (e.g., Skype) TCP or UDP
+ Application Layer 2-30
+ISO/OSI reference model
+❑ presentation: allow applications to
+ interpret meaning of data, e.g., encryption, application
+ compression, machine-specific
+ conventions presentation
+❑ session: synchronization, checkpointing, session
+ recovery of data exchange transport
+❑ Internet stack “missing” these layers! network
+ • these services, if needed, must be link
+ implemented in application physical
+ • needed?
+ Introduction 3
+ message M
+ source
+ application
+ Encapsulation
+ segment Ht M transport
+datagram Hn Ht M network
+frame Hl Hn Ht M link
+ physical
+ link
+ switch
+ destination Hn Ht M network
+ M application Hl Hn Ht M link Hn Ht M
+ Ht M transport physical
+ Hn Ht M network
+Hl Hn Ht M link router
+Internet History
+1961-1972: Early packet-switching principles
+❑ 1961: Kleinrock - queueing ❑ 1972:
+ theory shows effectiveness of
+ ❖ ARPAnet public demonstration
+ packet-switching
+ ❖ NCP (Network Control Protocol)
+❑ 1964: Baran - packet-
+ switching in military nets first host-host protocol
+ ❖ first e-mail program
+❑ 1967: ARPAnet conceived by
+ Advanced Research Projects ❖ ARPAnet has 15 nodes
+ Agency
+❑ 1969: first ARPAnet node
+ operational
+ Internet History
+ 1972-1980: Internetworking, new and proprietary nets
+❑ 1970: ALOHAnet satellite network Cerf and Kahn’s internetworking
+ in Hawaii principles:
+❑ 1974: Cerf and Kahn - architecture ❖ minimalism, autonomy - no
+ for interconnecting networks internal changes required to
+❑ 1976: Ethernet at Xerox PARC interconnect networks
+ ❖ best effort service model
+❑ ate70’s: proprietary architectures: ❖ stateless routers
+ DECnet, SNA, XNA ❖ decentralized control
+❑ late 70’s: switching fixed length define today’s Internet architecture
+ packets (ATM precursor)
+❑ 1979: ARPAnet has 200 nodes
+1980-1990: new protocols, a proliferation of networks
+❑ 1983: deployment of TCP/IP ❑ new national networks: Csnet,
+❑ 1982: smtp e-mail protocol BITnet, NSFnet, Minitel
+ defined
+ ❑ 100,000 hosts connected to
+❑ 1983: DNS defined for name-
+ confederation of networks
+ to-IP-address translation
+❑ 1985: ftp protocol defined
+❑ 1988: TCP congestion control
+1990, 2000’s: commercialization, the Web, new apps
+❑ Early 1990’s: ARPAnet Late 1990’s – 2000’s:
+ decommissioned
+❑ 1991: NSF lifts restrictions on ❑ more killer apps: instant
+ commercial use of NSFnet messaging, P2P file sharing
+ (decommissioned, 1995)
+ ❑ network security to forefront
+❑ early 1990s: Web
+ • hypertext [Bush 1945, Nelson ❑ est. 50 million host, 100
+ 1960’s] million+ users
+ • HTML, HTTP: Berners-Lee
+ • 1994: Mosaic, later Netscape ❑ backbone links running at Gbps
+ • late 1990’s: commercialization of
+ the Web
+2007: Today?
+❑ ~500 million hosts
+❑ Voice, Video over IP
+❑ P2P applications: BitTorrent (file
+ sharing) Skype (VoIP), PPLive (video)
+❑ more applications: YouTube,
+ gaming
+❑ wireless, mobility
+Units
+❑ Bits are the units used to describe an amount of data in a network
+ • 1 kilobit (Kbit) ~1 x 103 bits = 1,000 bits
+ • 1 megabit (Mbit) ~1 x 106 bits = 1,000,000 bits
+ • 1 gigabit (Gbit) ~1 x 109 bits = 1,000,000,000 bits
+❑ Seconds are the units used to measure time
+ • 1 millisecond (msec) = 1 x 10-3 seconds = 0.001 seconds
+ • 1 microsecond (sec) = 1 x 10-6 seconds = 0.000001 seconds
+ • 1 nanosecond (nsec) = 1 x 10-9 seconds = 0.000000001 seconds
+❑ Bits per second are the units used to measure channel capacity/bandwidth and
+ throughput
+ • bit per second (bps)
+ • kilobits per second (Kbps)
+ • megabits per second (Mbps)
+❑ Bytes are units that describe a series of eight bits
+ • 1 Byte = 8 bits
+ • Bytes per second (Bps)

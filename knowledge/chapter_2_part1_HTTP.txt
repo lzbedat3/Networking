@@ -1,0 +1,452 @@
+Chapter 2
+Application Layer
+The Application Layer:
+ DNS, HTTP, Intro to Computer
+ sockets Networking: A Top
+ Down Approach
+ 7th Edition, Global Edition
+ Jim Kurose, Keith Ross
+ April 2016
+ Application Layer 1
+Chapter 2: outline
+ 2.1 principles of 2.5 P2P applications
+ network 2.6 video streaming
+ applications and content
+ 2.2 Web and HTTP distribution
+ 2.3 electronic mail networks
+ • SMTP, POP3, IMAP 2.7 socket
+ 2.4 DNS programming with
+ UDP and TCP
+ Application Layer 2
+Application Layer
+ Our goals: • learn about protocols by
+ • conceptual, examining popular
+ implementation aspects application-level
+ of network application protocols
+ protocols • HTTP
+ • transport-layer service • DNS
+ models • programming network
+ • client-server paradigm applications
+ • peer-to-peer paradigm • socket API
+ Application Layer 3
+Chapter 2: application layer
+our goals: • learn about protocols by
+• conceptual, examining popular
+ • transport-layer • DNS
+ service models
+ • creating network
+ • client-server applications
+ paradigm
+ • peer-to-peer • socket API
+ • content distribution
+ networks
+ Application Layer 4
+Some network apps
+• e-mail • voice over IP (e.g.,
+• web Skype)
+• text messaging • real-time video
+• remote login conferencing
+• P2P file sharing • social networking
+• multi-user network • search
+ games •…
+• streaming stored •…
+ video (YouTube,
+ Hulu, Netflix)
+ Application Layer 5
+Creating a network app application
+ transport
+ network
+ data link
+ physical
+write programs that:
+• run on (different) end systems
+• communicate over network
+• e.g., web server software
+ communicates with browser
+ software
+ application
+no need to write software transport
+ for network-core devices physical
+• network-core devices do not data link
+ run user applications
+• applications on end systems
+ allows for rapid app
+ development, propagation
+ Application Layer 6
+ Application architectures
+possible structure of applications:
+• client-server
+• peer-to-peer (P2P)
+ Application Layer 7
+Client-server architecture
+ server:
+ • always-on host
+ • permanent IP address
+ • data centers for scaling
+ clients:
+ • communicate with server
+client/server • may be intermittently connected
+ • may have dynamic IP
+ addresses
+ • do not communicate directly
+ with each other
+ Application Layer 8
+P2P architecture
+• no always-on server peer-peer
+• arbitrary end systems
+ directly communicate
+• peers request service from
+ other peers, provide service
+ in return to other peers
+ • self scalability – new
+ peers bring new service
+ capacity, as well as new
+ service demands
+• peers are intermittently
+ connected and change IP
+ • complex management
+ Application Layer 9
+Processes communicating
+process: program clients, servers
+ running within a host client process: process
+• within same host, two that initiates
+ processes communicate communication
+ using inter-process server process: process
+ communication (defined by that waits to be contacted
+ OS)
+• processes in different ▪ aside: applications with
+ hosts communicate by P2P architectures have
+ exchanging messages client processes & server
+ processes
+ Application Layer 10
+Sockets
+• process sends/receives messages to/from its socket
+• socket analogous to door
+ • sending process shoves message out door
+ • sending process relies on transport infrastructure on
+ other side of door to deliver message to socket at
+ receiving process
+ application application
+ socket controlled by
+ process process app developer
+ transport transport
+ network network controlled
+ by OS
+ link Internet link
+ physical physical
+ Application Layer 11
+Addressing processes
+ • to receive messages, • identifier includes both IP
+ process must have address and port numbers
+ identifier associated with process on
+ • host device has unique 32- host.
+ bit IP address • example port numbers:
+ • Q: does IP address of host • HTTP server: 80
+ on which process runs • mail server: 25
+ suffice
+ ▪ A: for
+ no,identifying
+ many the • to send HTTP message to
+ process?
+ processes can be gaia.cs.umass.edu web
+ running on same host server:
+ • IP address: 128.119.245.12
+ • port number: 80
+ • more shortly…
+ Application Layer 12
+App-layer protocol defines
+• types of messages open protocols:
+ exchanged,
+ • defined in RFCs
+ • e.g., request, response
+ • allows for interoperability
+• message syntax:
+ • what fields in • e.g., HTTP, SMTP
+ messages & how fields proprietary protocols:
+ are delineated
+ • e.g., Skype
+• message semantics
+ • meaning of information
+ in fields
+• rules for when and how
+ processes send & respond
+ to messages
+ Application Layer 13
+What transport service does an app
+need?
+ data integrity throughput
+ ▪ some apps (e.g., file transfer, ▪ some apps (e.g.,
+ web transactions) require multimedia) require
+ minimum amount of
+ 100% reliable data transfer
+ throughput to be
+ ▪ other apps (e.g., audio) can “effective”
+ tolerate some loss ▪ other apps (“elastic
+ timing apps”) make use of
+ • some apps (e.g., Internet whatever throughput
+ telephony, interactive they get
+ security
+ games) require low ▪ encryption, data integrity,
+ delay to be “effective” …
+ Application Layer 14
+Transport service requirements: common apps
+ application data loss throughput time sensitive
+ file transfer no loss elastic no
+ e-mail no loss elastic no
+ Web documents no loss elastic no
+real-time audio/video loss-tolerant audio: 5kbps-1Mbps yes, 100’s msec
+ video:10kbps-5Mbps
+ stored audio/video loss-tolerant same as above yes, few secs
+ interactive games loss-tolerant few kbps up yes, 100’s msec
+ text messaging no loss elastic yes and no
+ Application Layer 15
+Internet transport protocols services
+TCP service: UDP service:
+• reliable transport between
+ sending and receiving ▪ unreliable data transfer
+ process between sending and
+• flow control: sender won’t receiving process
+ overwhelm receiver ▪ does not provide:
+• congestion control: throttle reliability, flow control,
+ sender when network congestion control,
+ overloaded timing, throughput
+• does not provide: timing, guarantee, security, or
+ minimum throughput connection setup,
+ guarantee, security
+• connection-oriented: setup Q: why bother? Why is
+ required between client and
+ server processes there a UDP?
+ Application Layer 16
+Internet apps: application, transport protocols
+ application underlying
+ application layer protocol transport protocol
+ e-mail SMTP [RFC 2821] TCP
+remote terminal access Telnet [RFC 854] TCP
+ Web HTTP [RFC 2616] TCP
+ file transfer FTP [RFC 959] TCP
+ streaming multimedia HTTP (e.g., YouTube), TCP or UDP
+ RTP [RFC 1889]
+ Internet telephony SIP, RTP, proprietary
+ (e.g., Skype) TCP or UDP
+ Application Layer 17
+ Application Layer 18
+Web and HTTP
+First, a review…
+• web page consists of objects
+• object can be HTML file, JPEG image, Java
+ applet, audio file,…
+• web page consists of base HTML-file which
+ includes several referenced objects
+• each object is addressable by a URL, e.g.,
+ www.someschool.edu/someDept/pic.gif
+ host name path name
+ Application Layer 19
+HTTP overview
+HTTP: hypertext
+ transfer protocol HT
+ TP
+ r
+• Web’s application layer PC running
+ equ
+ est
+ HT
+ protocol Firefox browser TP
+ resp
+ ons
+• client/server model e
+ • client: browser that
+ requests, receives, e st
+ re qu server
+ (using HTTP protocol) P e
+ T ns
+ HT po running
+ and “displays” Web res Apache Web
+ objects TTP server
+ H
+ • server: Web server
+ sends (using HTTP iPhone running
+ protocol) objects in Safari browser
+ response to requests
+ Application Layer 20
+HTTP overview (continued)
+uses TCP: HTTP is “stateless”
+▪ client initiates TCP • server maintains no
+ connection (creates information about
+ socket) to server, port 80 past client requests
+▪ server accepts TCP aside
+ connection from client
+▪ HTTP messages protocols that maintain
+ (application-layer protocol “state” are complex!
+ ▪ past history (state) must be
+ messages) exchanged maintained
+ between browser (HTTP ▪ if server/client crashes, their
+ client) and Web server views of “state” may be
+ (HTTP server) inconsistent, must be
+▪ TCP connection closed reconciled
+ Application Layer 21
+HTTP connections
+ persistent HTTP
+non-persistent HTTP
+ • multiple objects can
+• at most one object sent over
+ be sent over single
+ TCP connection TCP connection
+ • connection then closed between client,
+• downloading multiple objects server
+ required multiple connections
+ Application Layer 22
+ Non-persistent HTTP
+suppose user enters URL: (contains text,
+ www.someSchool.edu/someDepartment/home.index references to 10
+ jpeg images)
+ 1a. HTTP client initiates TCP
+ connection to HTTP server
+ 1b. HTTP server at host
+ (process) at
+ www.someSchool.edu on port www.someSchool.edu
+ 80 waiting for TCP connection
+ at port 80. “accepts”
+ 2. HTTP client sends HTTP connection, notifying client
+ request message (containing
+ URL) into TCP connection 3. HTTP server receives
+ socket. Message indicates request message, forms
+ that client wants object response message
+ someDepartment/ containing requested object,
+ home.index and sends message into its
+time socket
+ Application Layer 23
+ Non-persistent HTTP (cont.)
+ 4. HTTP server closes TCP
+ connection.
+ 5. HTTP client receives response
+ message containing html file,
+ displays html. Parsing html file,
+ finds 10 referenced jpeg objects
+time
+ 6. Steps 1-5 repeated for each
+ of 10 jpeg objects
+ Application Layer 24
+Non-persistent HTTP: response time
+ RTT (definition): time for a small
+ packet to travel from client to
+ server and back
+ HTTP response time: initiate TCP
+ • one RTT to initiate TCP connection
+ connection RTT
+ • one RTT for HTTP request request
+ file
+ and first few bytes of HTTP
+ time to
+ response to return RTT transmit
+ • file transmission time
+ • non-persistent HTTP received
+ response time =
+ 2RTT+ file transmission time time
+ time
+ Application Layer 25
+Persistent HTTP
+non-persistent HTTP persistent HTTP:
+ issues: ▪ server leaves connection
+▪ requires 2 RTTs per object open after sending
+ response
+▪ OS overhead for each ▪ subsequent HTTP
+ TCP connection messages between
+▪ browsers often open same client/server sent
+ over open connection
+ parallel TCP connections
+ to fetch referenced objects ▪ client sends requests as
+ soon as it encounters a
+ referenced object
+ ▪ as little as one RTT for
+ all the referenced objects
+ Application Layer 26
+ HTTP request message
+ • two types of HTTP messages: request, response
+ • HTTP request message:
+ • ASCII (human-readable format) carriage return character
+ line-feed character
+request line
+(GET, POST, GET /index.html HTTP/1.1\r\n
+HEAD commands) Host: www-net.cs.umass.edu\r\n
+ User-Agent: Firefox/3.6.10\r\n
+ Accept: text/html,application/xhtml+xml\r\n
+ header Accept-Language: en-us,en;q=0.5\r\n
+ lines Accept-Encoding: gzip,deflate\r\n
+ Accept-Charset: ISO-8859-1,utf-8;q=0.7\r\n
+carriage return, Keep-Alive: 115\r\n
+line feed at start Connection: keep-alive\r\n
+of line indicates \r\n
+end of header lines
+* Check out the online interactive exercises for more
+ Application Layer
+examples: http://gaia.cs.umass.edu/kurose_ross/interactive/ 27
+HTTP request message: general format
+ method sp URL sp version cr lf request
+ line
+ header field name value cr lf
+ ~ header
+ ~
+ ~ ~ lines
+ cr lf
+ ~ entity body ~
+ ~ body
+ Application Layer 28
+Uploading form input
+ POST method:
+ ▪ web page often includes
+ form input
+ ▪ input is uploaded to
+ server in entity body
+ URL method:
+ ▪ uses GET method
+ ▪ input is uploaded in URL
+ field of request line:
+ www.somesite.com/animalsearch?monkeys&banana
+ Application Layer 29
+Method types
+HTTP/1.0: HTTP/1.1:
+• GET • GET, POST, HEAD
+• POST • PUT
+• HEAD • uploads file in entity
+ • asks server to leave body to path
+ requested object out specified in URL field
+ of response • DELETE
+ • deletes file specified
+ in the URL field
+ Application Layer 30
+ HTTP response message
+status line
+(protocol
+status code HTTP/1.1 200 OK\r\n
+status phrase) Date: Sun, 26 Sep 2010 20:09:20 GMT\r\n
+ Server: Apache/2.0.52 (CentOS)\r\n
+ Last-Modified: Tue, 30 Oct 2007 17:00:02
+ GMT\r\n
+ ETag: "17dc6-a5c-bf716880"\r\n
+ header Accept-Ranges: bytes\r\n
+ lines Content-Length: 2652\r\n
+ Keep-Alive: timeout=10, max=100\r\n
+ Connection: Keep-Alive\r\n
+ Content-Type: text/html;
+ charset=ISO-8859-1\r\n
+data, e.g., \r\n
+ data data data data data ...
+requested
+HTML file
+ * Check out the online interactive exercises for more
+ examples: http://gaia.cs.umass.edu/kurose_ross/interactive/ 31
+HTTP response status codes
+▪ status code appears in 1st line in server-to-
+ client response message.
+▪ some sample codes:
+ 200 OK
+ • request succeeded, requested object later in this msg
+ 301 Moved Permanently
+ • requested object moved, new location specified later in this msg
+ (Location:)
+ 400 Bad Request
+ • request msg not understood by server
+ 404 Not Found
+ • requested document not found on this server
+ 505 HTTP Version Not Supported
+ Application Layer 32

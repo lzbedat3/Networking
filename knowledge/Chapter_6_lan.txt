@@ -1,0 +1,617 @@
+Chapter 6
+The Link Layer
+and LANs
+Osnat (Ossi) Mokryn
+ Computer
+Information Systems Networking: A Top
+ Down Approach
+ 7th Edition, Global Edition
+ Jim Kurose, Keith Ross
+J.F Kurose and K.W. Ross, All Rights Reserved
+ April 2016
+ Link Layer and LANs 6-1
+Chapter 6: Link layer and LANs
+our goals:
+§ understand principles behind link layer
+ services:
+ • link layer addressing
+ • local area networks: Ethernet, VLANs
+§ instantiation, implementation of various link
+ layer technologies
+ Link Layer and LANs 6-2
+Link layer: introduction
+terminology:
+§ hosts and routers: nodes
+§ communication channels that
+ connect adjacent nodes along
+ communication path: links
+ • wired links
+ • wireless links
+ • LANs
+§ layer-2 packet: frame,
+ encapsulates datagram
+data-link layer has responsibility of
+transferring datagram from one node
+to physically adjacent node over a link
+ Link Layer and LANs 6-3
+Link layer: context
+§ datagram transferred by transportation analogy:
+ different link protocols over § trip from Princeton to Lausanne
+ different links: • limo: Princeton to JFK
+ • e.g., Ethernet on first link, • plane: JFK to Geneva
+ frame relay on • train: Geneva to Lausanne
+ intermediate links, 802.11 § tourist = datagram
+ on last link § transport segment =
+§ each link protocol provides communication link
+ different services § transportation mode = link
+ • e.g., may or may not layer protocol
+ provide rdt over link § travel agent = routing
+ algorithm
+ Link Layer and LANs 6-4
+Link layer services
+§ framing, link access:
+ • encapsulate datagram into frame, adding header, trailer
+ • channel access if shared medium
+ • “MAC” addresses used in frame headers to identify
+ source, destination
+ • different from IP address!
+§ reliable delivery between adjacent nodes
+ • we learned how to do this already (chapter 3)!
+ • seldom used on low bit-error link (fiber, some twisted
+ pair)
+ • wireless links: high error rates
+ • Q: why both link-level and end-end reliability?
+ Link Layer and LANs 6-5
+Where is the link layer implemented?
+§ in each and every host
+§ link layer implemented in
+ “adaptor” (aka network
+ interface card NIC) or on a
+ chip application
+ • Ethernet card, 802.11 transport
+ network cpu memory
+ card; Ethernet chipset link
+ • implements link, physical host
+ layer controller
+ bus
+ (e.g., PCI)
+ link
+§ attaches into host’s system physical
+ physical
+ buses transmission
+§ combination of hardware,
+ software, firmware network adapter
+ card
+ Link Layer and LANs 6-6
+Adaptors communicating
+ datagram datagram
+ controller controller
+ sending host receiving host
+ datagram
+ frame
+§ sending side: § receiving side
+ • encapsulates datagram in • looks for errors, rdt,
+ frame flow control, etc.
+ • adds error checking bits, • extracts datagram, passes
+ rdt, flow control, etc. to upper layer at
+ receiving side
+ Link Layer and LANs 6-7
+MAC addresses and ARP
+§ 32-bit IP address:
+ • network-layer address for interface
+ • used for layer 3 (network layer) forwarding
+§ MAC (or LAN or physical or Ethernet) address:
+ • function: used ‘locally” to get frame from one interface to
+ another physically-connected interface (same network, in IP-
+ addressing sense)
+ • 48 bit MAC address (for most LANs) burned in NIC
+ ROM, also sometimes software settable
+ • e.g.: 1A-2F-BB-76-09-AD
+ hexadecimal (base 16) notation
+ (each “numeral” represents 4 bits)
+ Link Layer and LANs 6-8
+ LAN addresses and ARP
+ each adapter on LAN has unique LAN address
+ 1A-2F-BB-76-09-AD
+ LAN
+ (wired or adapter
+ wireless)
+71-65-F7-2B-08-53
+ 58-23-D7-FA-20-B0
+ 0C-C4-11-6F-E3-98
+ Link Layer and LANs 6-9
+LAN addresses (more)
+§ MAC address allocation administered by IEEE
+§ manufacturer buys portion of MAC address space
+ (to assure uniqueness)
+§ analogy:
+ • MAC address: like Social Security Number
+ • IP address: like postal address
+§ MAC flat address ➜ portability
+ • can move LAN card from one LAN to another
+§ IP hierarchical address not portable
+ • address depends on IP subnet to which node is
+ attached
+ Link Layer and LANs 6-10
+ ARP: address resolution protocol
+ Question: how to determine
+ interface’s MAC address,
+ knowing its IP address? ARP table: each IP node (host,
+ router) on LAN has table
+ 137.196.7.78
+ • IP/MAC address
+ mappings for some LAN
+ nodes:
+ 137.196.7.23
+ 137.196.7.14 < IP address; MAC address; TTL>
+ • TTL (Time To Live):
+ LAN time after which address
+71-65-F7-2B-08-53 mapping will be
+ forgotten (typically 20
+ min)
+ 137.196.7.88
+ Link Layer and LANs 6-11
+ARP protocol: same LAN
+§ A wants to send datagram
+ to B
+ • B’s MAC address not in § A caches (saves) IP-to-
+ A’s ARP table. MAC address pair in its
+§ A broadcasts ARP query ARP table until information
+ packet, containing B's IP becomes old (times out)
+ address • soft state: information that
+ • destination MAC address = times out (goes away)
+ FF-FF-FF-FF-FF-FF unless refreshed
+ • all nodes on LAN receive § ARP is “plug-and-play”:
+ ARP query • nodes create their ARP
+§ B receives ARP packet, tables without intervention
+ from net administrator
+ replies to A with its (B's)
+ MAC address
+ • frame sent to A’s MAC
+ address (unicast)
+ Link Layer and LANs 6-12
+ Addressing: routing to another LAN
+walkthrough: send datagram from A to B via R
+ § focus on addressing – at IP (datagram) and MAC layer (frame)
+ § assume A knows B’s IP address
+ § assume A knows IP address of first hop router, R (how?)
+ § assume A knows R’s MAC address (how?)
+ A B
+ R
+ 111.111.111.111
+ 222.222.222.222
+ 74-29-9C-E8-FF-55
+ 49-BD-D2-C7-56-2A
+ 222.222.222.220
+ 1A-23-F9-CD-06-9B
+ 111.111.111.112 111.111.111.110 222.222.222.221
+ CC-49-DE-D0-AB-7D E6-E9-00-17-BB-4B 88-B2-2F-54-1A-0F
+ Link Layer and LANs 6-13
+Addressing: routing to another LAN
+§ A creates IP datagram with IP source A, destination B
+§ A creates link-layer frame with R's MAC address as destination address,
+ frame contains A-to-B IP datagram
+ MAC src: 74-29-9C-E8-FF-55
+ MAC dest: E6-E9-00-17-BB-4B
+ IP src: 111.111.111.111
+ IP dest: 222.222.222.222
+ IP
+Eth
+Phy
+A B
+111.111.111.111
+74-29-9C-E8-FF-55
+ Link Layer and LANs 6-14
+§ frame sent from A to R
+§ frame received at R, datagram removed, passed up to IP
+ IP src: IP dest: 222.222.222.222
+ IP IP
+Eth Eth
+Phy Phy
+ Link Layer and LANs 6-15
+§ R forwards datagram with IP source A, destination B
+§ R creates link-layer frame with B's MAC address as destination address,
+ MAC src: 1A-23-F9-CD-06-9B
+ MAC dest: 49-BD-D2-C7-56-2A
+ IP Eth
+ Eth Phy
+ Phy
+ Link Layer and LANs 6-16
+ Link Layer and LANs 6-17
+ § R forwards datagram with IP source A, destination B
+ § R creates link-layer frame with B's MAC address as dest, frame contains
+ A-to-B IP datagram
+ Eth
+* Check out the online interactive exercises for more
+examples: http://gaia.cs.umass.edu/kurose_ross/interactive/
+ Link Layer and LANs 6-18
+Ethernet
+“dominant” wired LAN technology:
+§ single chip, multiple speeds (e.g., Broadcom BCM5761)
+§ first widely used LAN technology
+§ simpler, cheap
+§ kept up with speed race: 10 Mbps – 10 Gbps
+ Metcalfe’s Ethernet sketch
+ Link Layer and LANs 6-19
+Ethernet: physical topology
+§ bus: popular through mid 90s
+ • all nodes in same collision domain (can collide with each
+ other)
+§ star: prevails today
+ • active switch in center
+ • each “spoke” runs a (separate) Ethernet protocol (nodes
+ do not collide with each other)
+ switch
+ star
+ bus: coaxial cable
+ Link Layer and LANs 6-20
+Ethernet frame structure
+sending adapter encapsulates IP datagram (or other
+ network layer protocol packet) in Ethernet frame
+ type
+ dest. source
+ preamble address address data CRC
+ (payload)
+preamble:
+§ 7 bytes with pattern 10101010 followed by one
+ byte with pattern 10101011
+§ used to synchronize receiver, sender clock rates
+ Link Layer and LANs 6-21
+Ethernet frame structure (more)
+§ addresses: 6 byte source, destination MAC addresses
+ • if adapter receives frame with matching destination
+ address, or with broadcast address (e.g. ARP packet), it
+ passes data in frame to network layer protocol
+ • otherwise, adapter discards frame
+§ type: indicates higher layer protocol (mostly IP but
+ others possible, e.g., Novell IPX, AppleTalk)
+§ CRC: cyclic redundancy check at receiver
+ • error detected: frame is dropped
+ Link Layer and LANs 6-22
+Ethernet: unreliable, connectionless
+§ connectionless: no handshaking between sending and
+ receiving NICs
+§ unreliable: receiving NIC doesn't send acks or nacks
+ to sending NIC
+ • data in dropped frames recovered only if initial
+ sender uses higher layer rdt (e.g., TCP), otherwise
+ dropped data lost
+§ Ethernet’s MAC protocol: unslotted CSMA/CD with
+ binary backoff
+ Link Layer and LANs 6-23
+802.3 Ethernet standards: link & physical layers
+ § many different Ethernet standards
+ • common MAC protocol and frame format
+ • different speeds: 2 Mbps, 10 Mbps, 100 Mbps, 1Gbps,
+ 10 Gbps, 40 Gbps
+ • different physical layer media: fiber, cable
+ MAC protocol
+ application and frame format
+ transport
+ network 100BASE-TX 100BASE-T2 100BASE-FX
+ link 100BASE-T4 100BASE-SX 100BASE-BX
+ copper (twister fiber physical layer
+ pair) physical layer
+ Link Layer and LANs 6-24
+Ethernet switch
+§ link-layer device: takes an active role
+ • store, forward Ethernet frames
+ • examine incoming frame’s MAC address,
+ selectively forward frame to one-or-more
+ outgoing links when frame is to be forwarded on
+ segment, uses CSMA/CD to access segment
+§ transparent
+ • hosts are unaware of presence of switches
+§ plug-and-play, self-learning
+ • switches do not need to be configured
+ Link Layer and LANs 6-25
+Switch: multiple simultaneous transmissions
+§ hosts have dedicated, direct A
+ connection to switch
+ C’ B
+§ switches buffer packets
+§ Ethernet protocol used on each 6 1 2
+ incoming link, but no collisions;
+ full duplex 5 4 3
+ • each link is its own collision
+ domain B’ C
+§ switching: A-to-A’ and B-to-B’
+ can transmit simultaneously, A’
+ without collisions switch with six interfaces
+ (1,2,3,4,5,6)
+ Link Layer and LANs 6-26
+Switch forwarding table
+Q: how does switch know A’ A
+reachable via interface 4, B’ B
+ C’
+reachable via interface 5?
+§ A: each switch has a switch 6 1 2
+ table, each entry:
+ 5 4 3
+ § (MAC address of host, interface
+ to reach host, time stamp) B’ C
+ § looks like a routing table!
+ A’
+Q: how are entries created, switch with six interfaces
+maintained in switch table? (1,2,3,4,5,6)
+ § something like a routing
+ protocol?
+ Link Layer and LANs 6-27
+Switch: self-learning Source: A
+ Dest: A’
+ A A A’
+§ switch learns which hosts
+ can be reached through
+ which interfaces
+ • when frame received, 6 1 2
+ switch “learns” location
+ of sender: incoming 5 4 3
+ LAN segment
+ • records sender/location B’ C
+ pair in switch table
+ MAC addr interface TTL
+ A 1 60 Switch table
+ (initially empty)
+ Link Layer and LANs 6-28
+Switch: frame filtering/forwarding
+when frame received at switch:
+ 1. record incoming link, MAC address of sending host
+ 2. index switch table using MAC destination address
+ 3. if entry found for destination
+ then {
+ if destination on segment from which frame arrived
+ then drop frame
+ else forward frame on interface indicated by entry
+ }
+ else flood /* forward on all interfaces except arriving
+ interface */
+ Link Layer and LANs 6-29
+Self-learning, forwarding: example Source: A
+§ frame destination, A’,
+ B
+ location unknown: flood C’
+§ destination A location 6 1 2
+ known: selectively send A A’
+ on just one link B’ C
+ A’ A
+ A 1 60 switch table
+ A’ 4 60 (initially empty)
+ Link Layer and LANs 6-30
+Interconnecting switches
+self-learning switches can be connected together:
+ S4
+ S1
+ S3
+ A S2
+ F
+ D I
+ B C
+ G H
+ E
+Q: sending from A to G - how does S1 know to
+forward frame destined to G via S4 and S3?
+ § A: self learning! (works exactly the same as in
+ single-switch case!)
+ Link Layer and LANs 6-31
+Institutional network
+ mail server
+to external
+network
+ router web server
+ IP subnet
+ Link Layer and LANs 6-32
+Switches vs. routers
+ application
+both are store-and-forward:
+ datagram network
+§ routers: network-layer frame link
+ devices (examine network- physical link frame
+ layer headers) physical
+§ switches: link-layer devices
+ (examine link-layer headers) switch
+both have forwarding tables: network datagram
+§ routers: compute tables using frame
+ routing algorithms, IP
+ addresses application
+§ switches: learn forwarding transport
+ table using flooding, learning, network
+ MAC addresses link
+ Link Layer and LANs 6-33
+VLANs: motivation
+ consider:
+ § CS user moves office to EE,
+ but wants connect to CS
+ switch?
+ § single broadcast domain:
+ • all layer-2 broadcast
+ traffic (ARP, DHCP,
+Computer
+ unknown location of
+Science Electrical
+ Engineering destination MAC
+ Engineering address) must cross
+ entire LAN
+ • security/privacy,
+ efficiency issues
+ Link Layer and LANs 6-34
+ port-based VLAN: switch ports
+VLANs grouped (by switch management
+ software) so that single physical
+ switch ……
+Virtual Local
+ 1 7 9 15
+Area Network 2 8 10 16
+switch(es) supporting
+VLAN capabilities can … …
+be configured to Electrical Engineering Computer Science
+define multiple virtual (VLAN ports 1-8) (VLAN ports 9-15)
+LANS over single … operates as multiple virtual switches
+physical LAN
+infrastructure. 1 7 9 15
+ 2 8 10 16
+ … …
+ Electrical Engineering Computer Science
+ (VLAN ports 1-8) (VLAN ports 9-16)
+ Link Layer and LANs 6-35
+ Port-based VLAN
+ router
+§ traffic isolation: frames to/from
+ ports 1-8 can only reach ports
+ • can also define VLAN based on
+ MAC addresses of endpoints,
+ rather than switch port
+§ dynamic membership: ports
+ can be dynamically assigned … …
+ among VLANs Electrical Engineering Computer Science
+ (VLAN ports 1-8) (VLAN ports 9-15)
+§ forwarding between VLANS: done
+ via routing (just as with separate
+ switches)
+ • in practice vendors sell combined
+ switches plus routers
+ Link Layer and LANs 6-36
+Synthesis: a day in the life of a web request
+§ journey down protocol stack complete!
+ • application, transport, network, link
+§ putting-it-all-together: synthesis!
+ • goal: identify, review, understand protocols (at all
+ layers) involved in seemingly simple scenario:
+ requesting www page
+ • scenario: student attaches laptop to campus network,
+ requests/receives www.google.com
+ Link Layer and LANs 6-40
+ A day in the life: scenario
+browser DNS server
+ Comcast network
+ 68.80.0.0/13
+ school network
+ 68.80.2.0/24
+ web page
+ web server Google’s network
+ 64.233.169.105 64.233.160.0/19
+ Link Layer and LANs 6-41
+A day in the life… connecting to the Internet
+ DHCP DHCP § connecting laptop needs to
+ UDP
+ DHCP
+ DHCP IP
+ get its own IP address, addr
+ DHCP Eth of first-hop router, addr of
+ Phy DNS server: use DHCP
+ § DHCP request encapsulated
+ in UDP, encapsulated in IP,
+ DHCP UDP
+ encapsulated in 802.3
+ DHCP IP Ethernet
+ DHCP Eth router
+ Phy (runs DHCP) § Ethernet frame broadcast
+ (dest: FFFFFFFFFFFF) on LAN,
+ received at router running
+ DHCP server
+ § Ethernet demuxed to IP
+ demuxed, UDP demuxed to
+ Link Layer and LANs 6-42
+ DHCP DHCP § DHCP server formulates
+ DHCP UDP DHCP ACK containing
+ DHCP IP client’s IP address, IP
+ DHCP Eth address of first-hop router
+ Phy for client, name & IP address
+ of DNS server
+ § encapsulation at DHCP
+ DHCP DHCP server, frame forwarded
+ DHCP UDP (switch learning) through
+ DHCP IP LAN, demultiplexing at client
+ Phy (runs DHCP)
+ DHCP § DHCP client receives DHCP
+ ACK reply
+ Client now has IP address, knows name & addr of DNS
+ server, IP address of its first-hop router
+ Link Layer and LANs 6-43
+A day in the life… ARP (before DNS, before HTTP)
+ DNS DNS § before sending HTTP request, need
+ DNS UDP IP address of www.google.com:
+ DNS
+ ARP
+ IP DNS
+ARP query Eth
+ Phy § DNS query created, encapsulated in
+ UDP, encapsulated in IP,
+ encapsulated in Eth. To send frame
+ to router, need MAC address of
+ ARP reply Eth
+ Phy router interface: ARP
+ § ARP query broadcast, received by
+ (runs DHCP) router, which replies with ARP
+ reply giving MAC address of
+ router interface
+ § client now knows MAC address
+ of first hop router, so can now
+ send frame containing DNS
+ query
+ Link Layer and LANs 6-44
+A day in the life… using DNS DNS
+ DNS UDP DNS server
+ DNS IP
+ DNS DNS DNS Eth
+ DNS UDP DNS Phy
+ DNS Eth
+ router § IP datagram forwarded from
+ (runs DHCP) campus network into Comcast
+ § IP datagram containing DNS network, routed (tables created
+ query forwarded via LAN by RIP, OSPF, IS-IS and/or BGP
+ switch from client to 1st hop routing protocols) to DNS server
+ router § demuxed to DNS server
+ § DNS server replies to client
+ with IP address of
+ www.google.com
+ Link Layer and LANs 6-45
+A day in the life…TCP connection carrying HTTP
+HTTP
+ HTTP
+SYNACK
+ SYN TCP
+ SYN IP
+ SYN Eth
+ § to send HTTP request,
+ client first opens TCP
+ router socket to web server
+ (runs DHCP) § TCP SYN segment (step 1 in 3-
+ SYNACK
+ way handshake) inter-domain
+ SYN Eth routed to web server
+ Phy § web server responds with TCP
+ SYNACK (step 2 in 3-way
+ web server handshake)
+ 64.233.169.105 § TCP connection established!
+ Link Layer and LANs 6-46
+A day in the life… HTTP request/reply
+ HTTP HTTP
+ § web page finally (!!!) displayed
+ HTTP TCP
+ HTTP IP
+ HTTP Eth
+ § HTTP request sent into
+ TCP socket
+ router § IP datagram containing HTTP
+ HTTP (runs DHCP)
+ request routed to
+ HTTP IP www.google.com
+ HTTP Eth § web server responds with
+ Phy HTTP reply (containing web
+ page)
+ web server
+ 64.233.169.105
+ § IP datagram containing HTTP
+ reply routed back to client
+ Link Layer and LANs 6-47
+Chapter 6: let’s take a breath
+§ journey down protocol stack complete (except
+ PHY)
+§ solid understanding of networking principles,
+ practice
+§ ….. could stop here …. but lots of interesting
+ topics!
+ • wireless
+ • multimedia
+ • security
+ Link Layer and LANs 6-48

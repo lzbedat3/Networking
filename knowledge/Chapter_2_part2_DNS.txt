@@ -1,0 +1,303 @@
+Chapter 2
+Application Layer
+The Application Layer:
+Domain Name Server Computer
+ Networking: A Top
+ Down Approach
+ 7th Edition, Global Edition
+ Jim Kurose, Keith Ross
+ April 2016
+ Application Layer 2-1
+Locating a computer by name
+Number of Host Systems
+on the Internet 2009
+Top 21
+countries by
+number of
+Internet hosts
+
+DNS: domain name system
+people: many identifiers: Domain Name System:
+ • SSN, name, passport # § distributed database
+Internet hosts, routers: implemented in hierarchy of
+ • IP address (32 bit) - many name servers
+ used for addressing § application-layer protocol: hosts,
+ datagrams name servers communicate to
+ • name, e.g., resolve names (address/name
+ www.yahoo.com - translation)
+ used by humans • note: core Internet function,
+Q: how to map between IP implemented as application-
+ address and name, and layer protocol
+ vice versa ? • complexity at networks
+ edge
+ Application Layer 2-5
+DNS: services, structure
+DNS services why not centralize DNS?
+§ hostname to IP address § single point of failure
+ translation § traffic volume
+§ host aliasing § distant centralized database
+ • canonical, alias names § maintenance
+§ mail server aliasing
+§ load distribution A: doesn‘t scale!
+ • replicated Web
+ servers: many IP
+ addresses correspond
+ to one name
+ Application Layer 2-6
+DNS: a distributed, hierarchical database
+ Root DNS Servers
+ … …
+ com DNS servers org DNS servers edu DNS servers
+ pbs.org poly.edu umass.edu
+yahoo.com amazon.com
+ DNS servers DNS serversDNS servers
+DNS servers DNS servers
+client wants IP for www.amazon.com; 1st approximation:
+§ client queries root server to find com DNS server
+§ client queries .com DNS server to get amazon.com DNS server
+§ client queries amazon.com DNS server to get IP address for
+ www.amazon.com
+ Application Layer 2-7
+ DNS: root name servers
+ § contacted by local name server that can not resolve name
+ § root name server:
+ • contacts authoritative name server if name mapping not known
+ • gets mapping
+ • returns mapping to local name server
+ c. Cogent, Herndon, VA (5 other sites)
+ d. U Maryland College Park, MD k. RIPE London (17 other sites)
+ h. ARL Aberdeen, MD
+ j. Verisign, Dulles VA (69 other sites ) i. Netnod, Stockholm (37 other sites)
+e. NASA Mt View, CA m. WIDE Tokyo
+f. Internet Software C. (5 other sites)
+Palo Alto, CA (and 48 other
+sites)
+a. Verisign, Los Angeles CA
+ 13 logical root name
+ (5 other sites)
+b. USC-ISI Marina del Rey, CA
+ servers worldwide
+l. ICANN Los Angeles, CA •each “server” replicated
+ (41 other sites)
+ g. US DoD Columbus, many times
+ OH (5 other sites)
+ Application Layer 2-8
+TLD, authoritative servers
+top-level domain (TLD) servers:
+ • responsible for com, org, net, edu, aero, jobs, museums,
+ and all top-level country domains, e.g.: uk, fr, ca, jp
+ • Network Solutions maintains servers for .com TLD
+ • Educause for .edu TLD
+authoritative DNS servers:
+ • organizations own DNS server(s), providing
+ authoritative hostname to IP mappings for organizations
+ named hosts
+ • can be maintained by organization or service provider
+ Application Layer 2-9
+Local DNS name server
+§ does not strictly belong to hierarchy
+§ each ISP (residential ISP, company, university) has
+ one
+ • also called default name server
+§ when host makes DNS query, query is sent to its
+ local DNS server
+ • has local cache of recent name-to-address translation
+ pairs (but may be out of date!)
+ • acts as proxy, forwards query into hierarchy
+ Application Layer 2-10
+DNS name root DNS server
+resolution example
+§ host at cis.poly.edu 3
+ TLD DNS server
+ wants IP address for 4
+ gaia.cs.umass.edu
+ iterated query: dns.poly.edu
+ § contacted server 7 6
+ 1 8
+ replies with name of
+ server to contact
+ authoritative DNS server
+ § I dont know this dns.cs.umass.edu
+ name, but ask this requesting host
+ cis.poly.edu
+ server
+ Application Layer 2-11
+ 2 3
+recursive query: 7
+§ puts burden of name TLD DNS
+ server
+ resolution on
+ contacted name local DNS server
+ server dns.poly.edu 5 4
+§ heavy load at upper 1 8
+ levels of hierarchy?
+ dns.cs.umass.edu
+ requesting host
+ Application Layer 2-12
+DNS: caching, updating records
+§ once (any) name server learns mapping, it caches
+ mapping
+ • cache entries timeout (disappear) after some time (TTL)
+ • TLD servers typically cached in local name servers
+ • thus root name servers not often visited
+§ cached entries may be out-of-date (best effort
+ name-to-address translation!)
+ • if name host changes IP address, may not be known
+ Internet-wide until all TTLs expire
+§ update/notify mechanisms proposed IETF standard
+ • RFC 2136
+ Application Layer 2-13
+DNS records
+DNS: distributed database storing resource records (RR)
+ RR format: (name, value, type, ttl)
+type=A type=CNAME
+ § name is hostname § name is alias name for some
+ § value is IP address canonical (the real) name
+type=NS § www.ibm.com is really
+ • name is domain (e.g., servereast.backup2.ibm.com
+ foo.com) § value is canonical name
+ • value is hostname of
+ authoritative name type=MX
+ server for this domain § value is name of mailserver
+ associated with name
+ Application Layer 2-14
+DNS protocol, messages
+§ query and reply messages, both with same message
+ format 2 bytes 2 bytes
+message header identification flags
+§ identification: 16 bit # for # questions # answer RRs
+ query, reply to query uses
+ # authority RRs # additional RRs
+ same #
+§ flags: questions (variable # of questions)
+ § query or reply
+ § recursion desired answers (variable # of RRs)
+ § recursion available
+ § reply is authoritative authority (variable # of RRs)
+ additional info (variable # of RRs)
+ Application Layer 2-15
+ 2 bytes 2 bytes
+ identification flags
+ # questions # answer RRs
+ name, type fields
+ questions (variable # of questions)
+ for a query
+ RRs in response answers (variable # of RRs)
+ to query
+ records for
+ authority (variable # of RRs)
+ authoritative servers
+ additional helpful additional info (variable # of RRs)
+ info that may be used
+ Application Layer 2-16
+Inserting records into DNS
+§ example: new startup Network Utopia
+§ register name networkuptopia.com at DNS registrar
+ (e.g., Network Solutions)
+ • provide names, IP addresses of authoritative name server
+ (primary and secondary)
+ • registrar inserts two RRs into .com TLD server:
+ (networkutopia.com, dns1.networkutopia.com, NS)
+ (dns1.networkutopia.com, 212.212.212.1, A)
+§ create authoritative server type A record for
+ www.networkuptopia.com; type MX record for
+ networkutopia.com
+ Application Layer 2-17
+Chapter 2: outline
+2.1 principles of network 2.7 socket programming
+ applications with UDP and TCP
+2.2 Web and HTTP
+2.4 DNS
+ Application Layer 2-42
+Socket programming
+goal: learn how to build client/server applications that
+ communicate using sockets
+socket: door between application process and end-
+ end-transport protocol
+ application application
+ socket controlled by
+ process process app developer
+ transport transport
+ network network controlled
+ link by OS
+ link Internet
+ physical physical
+ Application Layer 2-43
+ Socket programming
+ Two socket types for two transport services:
+ • UDP: unreliable datagram
+ • TCP: reliable, byte stream-oriented
+Application Example:
+ 1. client reads a line of characters (data) from its
+ keyboard and sends data to server
+ 2. server receives the data and converts characters
+ to uppercase
+ 3. server sends modified data to client
+ 4. client receives modified data and displays line on
+ its screen
+ Application Layer 2-44
+Socket programming with UDP
+UDP: no connection between client & server
+§ no handshaking before sending data
+§ sender explicitly attaches IP destination address and
+ port # to each packet
+§ receiver extracts sender IP address and port# from
+ received packet
+UDP: transmitted data may be lost or received
+ out-of-order
+Application viewpoint:
+§ UDP provides unreliable transfer of groups of bytes
+ (datagrams) between client and server
+ Application Layer 2-45
+Client/server socket interaction: UDP
+server (running on serverIP) client
+ create socket:
+ create socket, port= x: clientSocket =
+ serverSocket = socket(AF_INET,SOCK_DGRAM)
+ socket(AF_INET,SOCK_DGRAM)
+ Create datagram with server IP and
+ port=x; send datagram via
+ read datagram from clientSocket
+ serverSocket
+ write reply to
+ serverSocket read datagram from
+ specifying clientSocket
+ client address,
+ port number close
+ clientSocket
+ Application 2-46
+Socket programming with TCP
+client must contact server § when contacted by client,
+§ server process must first be server TCP creates new socket
+ running for server process to
+§ server must have created communicate with that
+ socket (door) that particular client
+ welcomes clients contact • allows server to talk with
+ multiple clients
+client contacts server by: • source port numbers used
+§ Creating TCP socket, to distinguish clients
+ specifying IP address, port (more in Chap 3)
+ number of server process
+§ when client creates socket: application viewpoint:
+ client TCP establishes TCP provides reliable, in-order
+ connection to server TCP byte-stream transfer (pipe)
+ between client and server
+ Application Layer 2-49
+Client/server socket interaction: TCP
+ server (running on hostid) client
+ create socket,
+ port=x, for incoming
+ request:
+ serverSocket = socket()
+ wait for incoming create socket,
+ connection request
+ TCP connect to hostid, port=x
+ connectionSocket = connection setup clientSocket = socket()
+ serverSocket.accept()
+ send request using
+ read request from clientSocket
+ connectionSocket
+ connectionSocket read reply from
+ close
+ connectionSocket close
+ Application Layer 2-50

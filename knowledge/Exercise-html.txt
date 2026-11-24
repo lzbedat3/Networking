@@ -1,0 +1,36 @@
+Exercise: Build a Minimal Website (Local Only)
+Goal: Create a simple static website using only plain HTML and verify that it loads correctly in a browser from your own computer.
+Tasks:
+	•	Create a folder named my_web.
+	•	Inside it, create two files:
+	•	index.html
+	•	about.html
+	•	In index.html include:
+	•	A title
+	•	One main heading (<h1>)
+	•	One paragraph
+	•	One image stored locally in a subfolder img/
+	•	A link to about.html
+	•	In about.html include:
+	•	A heading
+	•	A short paragraph
+	•	A link back to index.html
+	•	Save an image in my_web/img/ and reference it with a relative path.
+	•	Open index.html by double-clicking it and check that:
+	•	The page displays correctly
+	•	The link to about.html works
+	•	The image loads
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My First Website</title>
+</head>
+<body>
+  <h1>Welcome</h1>
+  <p>This is my first local website.</p>
+  <img src="img/photo.jpg" alt="Example image">
+  <a href="about.html">About this site</a>
+</body>
+</html>

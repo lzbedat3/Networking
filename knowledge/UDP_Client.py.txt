@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""
+UDP Client - Python Implementation
+Equivalent to UDP_Client.c
+
+This client demonstrates:
+1. Creating a UDP socket
+2. Sending datagram to server
+3. Receiving response from server
+4. Proper socket cleanup
+"""
+
+import socket
+import sys
+
+ECHOMAX = 255  # Maximum buffer size
+
+
+def main():
+    # Check command line arguments
+    if len(sys.argv) < 2:
+        print("Error: no server port provided", file=sys.stderr)
+        print("Usage: python UDP_Client.py <server_port>")
+        sys.exit(1)
+
+    try:
+        server_port = int(sys.argv[1])
+    except ValueError:
+        print("Error: port must be a number", file=sys.stderr)
+        sys.exit(1)
+
+    # Server configuration
+    server_address = "127.0.0.1"
+
+    # Create a UDP socket
+    # AF_INET = IPv4, SOCK_DGRAM = UDP
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        print(f"UDP socket created successfully")
+    except socket.error as e:
+        print(f"socket() failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        # Prepare message to send
+        send_buff = "What's the time?"
+
+        # Send the message to the server
+        # UDP is connectionless, so we use sendto() with destination address
+        bytes_sent = sock.sendto(send_buff.encode(), (server_address, server_port))
+        print(f"Sent {bytes_sent} bytes to {server_address}:{server_port}")
+
+        # Receive response from server
+        # recvfrom() returns data and the address of the sender
+        recv_buff, from_addr = sock.recvfrom(ECHOMAX)
+
+        print(f"Client Received: {recv_buff.decode()}")
+        print(f"From: {from_addr[0]}:{from_addr[1]}")
+
+    except socket.error as e:
+        print(f"Error during communication: {e}", file=sys.stderr)
+        sys.exit(1)
+    finally:
+        # Always close the socket
+        print("Closing Connection.")
+        sock.close()
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

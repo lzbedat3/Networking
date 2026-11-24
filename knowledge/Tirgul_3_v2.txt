@@ -1,0 +1,136 @@
+Chapter 2
+Application Layer
+DNS-‫ ו‬Cookies, Proxy
+ Computer Networking: A Top-
+ Down Approach
+3 ‫תרגול‬ 7th Edition, Global Edition
+‫ ויאם שאהין‬:‫מתרגל‬ Jim Kurose, Keith Ross
+ ‫מתרגול ‪ 2‬להיום‬
+ ‫היום‬ ‫בתרגול הקודם‬
+‫איך אתר זוכר אותנו?‬ ‫‪stateless‬‬
+‫איך מוצאים כתובת?‬ ‫‪304 · cache‬‬
+ ‫‪Wireshark: DNS‬‬ ‫‪IP + port‬‬
+ ‫‪1‬‬
+ 1 ‫חלק‬
+ Cookies
+ How a stateless protocol remembers you
+Wireshark DNS Cache Cookies
+What's a cookie?
+1 server creates a unique ID
+2 browser stores it
+3 sent with every request
+ ✓ Essential Vulnerability
+ login · cart · preferences tracking · selling your data
+Cookies in action
+ response
+ Set-Cookie: id=1678
+ Max-Age=604800
+ next request
+ Cookie: id=1678
+ header · header · file · database
+ 2 ‫חלק‬
+ Web cache
+ Browser cache and proxy servers
+Cache vs. cookie
+ Cache Cookie
+ files: images, fonts, info about you: cart,
+Stores
+ CSS login
+Same for all? almost no – per user
+Clear it pages load slower log in again
+ Remember 304 Not Modified? → the cache is still fresh
+Web caching: proxy server
+ browser → proxy (TCP +
+ HTTP)
+ 2 hit: send the copy
+ 3 miss: fetch from origin
+ 4 store a copy, then send
+A proxy is a server and a client
+ 3 ‫חלק‬
+ DNS
+ Domain Name System
+ ‫ משמות לכתובות‬:DNS
+ 132 . 74 . 123 . 116
+ 4 bytes · 0–255 each · hierarchical
+ is-web.hevra.haifa.ac.il ?
+Browser
+ server
+ 132.74.123.116
+ UDP · port 53
+DNS: Domain Name System
+ What Services
+• distributed database • hostname → IP
+• name space • host aliasing
+• servers • mail aliasing
+• resolvers • load distribution
+DNS hierarchy
+ Single point Traffic Distant
+ Maintenance
+ of failure volume database
+Types of DNS servers
+ Root 13 names: a … m · anycast
+ TLD one per ending: com · org · il
+ Authoritative the organization's own records
+ Local DNS your ISP – asked first
+Iterative vs. recursive
+ local DNS asks each server each server asks the next
+Caching and records
+ Name Value Type TTL
+Type Value Example
+A IP address 93.184.216.34
+NS authoritative server ns1.exampledns.com
+CNAME canonical name www → example.com
+MX mail server mail.example.com
+ Cached answers expire after the TTL
+nslookup and ipconfig
+> nslookup wikipedia.com ipconfig /displaydns
+Server: 209.222.18.222
+Address: 209.222.18.222#53
+ ipconfig /flushdns
+Non-authoritative answer:
+Name: wikipedia.com
+Address: 208.80.154.224 ipconfig /all
+ show · flush · your DNS
+How DNS travels
+Transport Port When
+UDP 53 normal queries
+TCP 53 large reply · zone transfer
+HTTPS (DoH) 443 browsers
+TLS (DoT) 853 private resolvers
+QUIC (DoQ) 853 modern apps
+DTLS 853 rare
+ Plain DNS: anyone on the path sees every site
+‫שאלות‬
+ ‫בדקו את עצמכם‬
+ ‫אצל הלקוח‬ ‫איפה נשמר ה‪?cookie-‬‬ ‫‪1‬‬
+ ‫שניהם‬ ‫‪ proxy‬הוא לקוח או שרת?‬ ‫‪2‬‬
+ ‫‪ 40%‬נענות מה‪ :proxy-‬כמה מתוך‬
+ ‫‪60‬‬ ‫‪3‬‬
+ ‫‪ 100‬יוצאות?‬
+ ‫השרת המקומי‬ ‫באיטרטיבית – מי עושה את העבודה?‬ ‫‪4‬‬
+ ‫‪17‬‬
+ ‫סדנה‬
+Wireshark Lab: DNS
+ Workshop – open your laptop
+DNS lab: short version
+ 1 ipconfig /flushdns 2 start capturing
+ incognito: 4 stop capturing
+ http://www.ietf.org
+Filter:
+ip.addr == YOUR_IP && dns
+tcp.flags.syn==1 && tcp.flags.ack==0
+‫‪DNS lab: questions‬‬
+ ‫השאילתה והתשובה – מעל ‪ UDP‬או ‪?TCP‬‬ ‫‪1‬‬
+ ‫מה פורט היעד של השאילתה? ומקור התשובה?‬ ‫‪2‬‬
+ ‫לאיזה ‪ IP‬נשלחה השאילתה? זה שרת ה‪ DNS-‬שלכם?‬ ‫‪3‬‬
+ ‫מה ה‪ Type-‬של השאילתה? יש בה ‪?answers‬‬ ‫‪4‬‬
+ ‫כמה ‪ answers‬יש בתשובה? מה כל אחת מכילה?‬ ‫‪5‬‬
+ ‫ה‪ SYN-‬שאחרי‪ :‬היעד שלו מופיע בתשובה?‬ ‫‪6‬‬
+ ‫לפני כל תמונה – נשלחת שאילתת ‪ DNS‬חדשה?‬ ‫‪7‬‬
+ ‫‪20‬‬
+ ‫סיכום ובתרגול הבא‬
+‫בתרגול הבא‬ 1 ‫תרגיל בית‬ ‫היום‬
+ Transport Wireshark cookie · cache
+ Sockets HTTP + DNS proxy
+TCP vs. UDP ‫בזוגות‬ DNS · TTL
+ ?‫שאלות‬

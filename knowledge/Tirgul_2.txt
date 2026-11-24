@@ -1,0 +1,461 @@
+Chapter 2
+Application Layer
+Wireshark-‫ ו‬HTTP
+ Computer Networking: A Top-
+ Down Approach
+2 ‫תרגול‬ 7th Edition, Global Edition
+‫ ויאם שאהין‬:‫מתרגל‬ Jim Kurose, Keith Ross
+ ‫איפה אנחנו?‬
+‫‪application‬‬ ‫היום‬ ‫בתרגול הקודם‬
+ ‫מודל השכבות ו‪encapsulation-‬‬
+‫‪transport‬‬
+ ‫השהיות‪dproc, dqueue, :‬‬
+ ‫‪dtrans, dprop‬‬
+ ‫‪network‬‬
+ ‫היום‬
+ ‫‪link‬‬
+ ‫איך הדפדפן מדבר עם שרת‪HTTP :‬‬
+ ‫איך רואים את זה בעיניים‪:‬‬
+ ‫‪physical‬‬
+ ‫‪Wireshark‬‬
+ ‫סדנה מעשית – פתחו מחשבים‬
+ ‫‪1‬‬
+ ‫מה נעשה היום‬
+ ‫שכבת האפליקציה ותקשורת בין תהליכים‬
+ ‫‪process, socket, port‬‬
+ ‫‪ :HTTP‬חיבורים ו‪RTT-‬‬
+ ‫‪2‬‬
+ ‫‪HTTP 1.0 / 1.1 / 2 / 3‬‬
+ ‫הודעות ‪ :HTTP‬בקשה‪ ,‬תשובה וקודי מצב‬
+ ‫‪3‬‬
+ ‫‪GET, POST, 200, 404, 304‬‬
+ ‫‪ :Wireshark‬סדנה מעשית‬
+ ‫‪4‬‬
+ ‫לוכדים ומנתחים תעבורה אמיתית‬
+‫הסדנה בסוף ‪:‬ודאו ש ‪-Wireshark‬מותקן אצלכם‬
+ 1 ‫חלק‬
+ ‫שכבת האפליקציה‬
+Application layer and processes
+Application-layer protocol
+Defines how processes on different end systems pass
+messages to each other:
+ Message types Syntax
+ e.g., request and response the fields in a message and
+ how they are delineated
+ Semantics Rules
+ the meaning of the when and how a process
+ information in the fields sends and responds
+ ‫פרוטוקולים מהיומיום‬
+Application Protocol Transport Port
+Web HTTP TCP 80
+Secure web HTTPS TCP 443
+Email (send) SMTP TCP 25
+Names → IP DNS UDP 53
+File transfer FTP TCP 21
+ Web-‫ – הפרוטוקול של ה‬HTTP-‫מתמקדים ב‬
+Client and server: who starts?
+The process that initiates the communication is the client.
+The process that waits to be contacted is the server.
+ Client Server
+ initiates contact waits for requests
+ e.g., your browser always on, fixed address
+ e.g., a web server
+ Example
+ You open youtube.com → your browser is the client, YouTube’s
+ computer is the server
+Processes communication
+ host A host B
+ process process
+ socket socket
+ transport, network, Internet transport, network,
+ link (OS) link (OS)
+• A process is a program running within an end system
+• Processes communicate by sending messages through
+ sockets
+ ‫‪ :Socket‬הדלת של התהליך‬
+‫‪ Socket‬הוא הממשק בין שכבת האפליקציה לשכבת התעבורה‬
+ ‫בתוך המחשב‪.‬‬
+ ‫דלת‬ ‫אדם בבית‬ ‫בית‬
+ ‫= ה‪socket-‬‬ ‫= התהליך (‪)process‬‬ ‫= המחשב (‪)host‬‬
+ ‫למה זה חשוב?‬
+ ‫המתכנת שולט במה שמעל ה‪( socket-‬הקוד שלנו)‪.‬‬
+ ‫מתחת ל‪ – socket-‬מערכת ההפעלה מטפלת (‪.)...TCP/UDP, IP‬‬
+ ‫‪8‬‬
+Addressing a process: IP + port
+To reach a process we need two identifiers:
+ 65.208.228.223 : 80
+ IP address → which host port → which process
+Well-known ports HTTP HTTPS DNS
+port number 80 443 53
+ Your browser also gets a port, e.g., 3372 – we’ll see it in Wireshark
+What apps need from transport
+ Reliable data transfer Throughput
+no data loss minimum bits/sec
+e.g., file transfer, web e.g., video streaming
+ Timing Security
+low delay encryption
+e.g., online games, calls e.g., banking
+HTTP
+needs reliable transfer → runs over TCP
+‫שאלות‬
+ ‫בדקו את עצמכם‬
+ ‫אילו שני נתונים מזהים תהליך ברשת?‬ ‫‪1‬‬
+ ‫למה ‪ HTTP‬רץ מעל ‪ TCP‬ולא מעל ‪?UDP‬‬ ‫‪2‬‬
+ ‫בשיחת ‪ – Zoom‬איזו דרישה מהתעבורה הכי חשובה?‬ ‫‪3‬‬
+ ‫‪11‬‬
+‫תשובות‬
+ ‫בדקו את עצמכם‪ :‬תשובות‬
+ ‫כתובת ‪( IP‬איזה מחשב) ‪ +‬מספר ‪( port‬איזה תהליך)‬ ‫‪1‬‬
+ ‫‪ HTTP‬צריך העברה אמינה – אסור שיחסר חלק מהדף‪.‬‬
+ ‫‪ TCP‬מבטיח את זה‪.‬‬
+ ‫‪ – Timing‬השהיה נמוכה‪ .‬עדיף לאבד פריים מאשר לחכות‬
+ ‫לו‪.‬‬
+ ‫‪12‬‬
+Making a request to a Web server
+1 Type the URL of a Web page into
+ your browser
+2 Your computer sends a connection
+ request to the Web server and waits
+3 The server returns a connection
+ reply
+4 Your computer sends the page name
+ in a GET message
+5 The server returns the page (file)
+ 2 ‫חלק‬
+ HTTP
+HyperText Transfer Protocol: connections and RTT
+ ‫‪ :HTTP‬מה זה?‬
+‫פרוטוקול להעברת דפי ‪ HTML‬והאובייקטים שהם מכילים‪.‬‬
+ ‫ממומש מעל ‪ – TCP‬עובד מעל חיבור אמין‪.‬‬
+ ‫לקוח )‪(client‬‬
+ ‫דפדפן (לא רק) שמבקש‪ ,‬מקבל ומציג‬
+ ‫אובייקטי ‪WEB‬‬
+ ‫שרת )‪(server‬‬
+ ‫שרת ‪ WEB‬ששולח אובייקטים כתגובה‬
+ ‫לבקשה‬
+ ‫‪15‬‬
+ ‫המאפיינים של ‪HTTP‬‬
+ ‫‪Stateless‬‬ ‫טקסט בלבד‬ ‫שכבת האפליקציה‬
+ ‫לא זוכר בקשות‬ ‫הודעות קריאות לבני‬ ‫רץ בתהליכים – בקוד‬
+ ‫קודמות‬ ‫אדם‬ ‫שלנו‬
+ ‫לקוח ‪/‬שרת‬ ‫מגדיר מבנה‬ ‫‪Persistent / Non‬‬
+‫הלקוח תמיד פותח‬ ‫איך תיראה בקשה‬ ‫שני סוגי חיבורים‬
+ ‫ותשובה‬
+ ‫‪16‬‬
+ ‫‪ :Stateless‬שולח ושוכח‬
+ ‫השרת לא שומר מידע על בקשות קודמות של הלקוח‪.‬‬
+ ‫דוגמה‬
+ ‫מבקשים את אותו דף פעמיים ברצף‪:‬‬
+ ‫השרת עונה פעמיים‪ ,‬כאילו זו הפעם הראשונה‪.‬‬
+ ‫שאלה למחשבה‬ ‫למה זה טוב?‬
+‫אז איך אתר זוכר מה יש לי בעגלה?‬ ‫פשוט‪ ,‬מתאים להמון לקוחות‬
+ ‫‪ – Cookies‬בתרגול ‪3‬‬ ‫קריסה = אין מה לשחזר‬
+ ‫‪17‬‬
+Web page = HTML file + objects
+• A web page = a base HTML file + referenced objects
+ (images, CSS, scripts)
+• Each object has its own URL
+ http:// www.someschool.edu /someDept/pic.gif
+ protocol host name path name
+ A page with 10 images = 1 HTML + 10 images = 11 objects
+ → the browser needs 11 requests
+RTT and HTTP 1.0
+ RTT (Round Trip Time)
+ time for a small packet to go
+ client → server → client
+Per object:
+• 1 RTT – open TCP connection
+• 1 RTT – request + first bytes
+• + file transmission time
+ time per object = 2·RTT + transmission time
+ ‫שני סוגים של חיבור ‪HTTP‬‬
+ ‫)‪HTTP 1.1 (Persistent‬‬ ‫)‪HTTP 1.0 (Multiple‬‬
+‫• החיבור לא נסגר עד שהלקוח‬ ‫• החיבור בין הלקוח לשרת נסגר‬
+ ‫מבקש לסגור (או ‪)timeout‬‬ ‫אחרי החזרת תשובה בודדת‬
+‫• כל האובייקטים על אותו חיבור‬ ‫• לכל אובייקט – חיבור ‪TCP‬‬
+ ‫חדש‬
+‫• כל אובייקט נוסף‪ :‬בערך ‪RTT‬‬
+ ‫אחד‬ ‫• כל אובייקט‪ :‬שני ‪RTT‬‬
+ ‫‪20‬‬
+Multiple vs. persistent
+ Multiple (1.0) Persistent (1.1)
+ client server client server
+ open open
+ close
+ open
+ 2 objects 3 objects – same time
+ Exercise
+Exercise: page load time
+A page has 1 base HTML file and 10 small images.
+ Given
+ RTT = 10 ms
+ Transmission time is negligible (ignore it)
+How long until the whole page is loaded with:
+1. HTTP 1.0 – non-persistent, one object at a time?
+2. HTTP 1.1 – persistent, one request at a time?
+Exercise: solution
+ HTTP 1.0 HTTP 1.1
+ 11 objects × 2 RTT 2 RTT (connect + HTML)
+ = 22 RTT + 10 × 1 RTT = 12 RTT
+ = 220 ms = 120 ms
+ Bonus: pipelining (HTTP 1.1)
+ send all 10 requests back-to-back → 2 RTT + 1 RTT = 30 ms
+HTTP versions: then and now
+Version Year What’s new
+HTTP/1.0 1996 one object per TCP connection
+HTTP/1.1 1997 persistent connections, Host header
+HTTP/2 2015 binary frames, parallel requests
+HTTP/3 2022 runs over QUIC (over UDP), faster setup
+Example
+Today most big sites use HTTP/2 or HTTP/3. Messages keep the
+same meaning (GET, 200, headers).
+HTTP vs. HTTPS
+ HTTP · port 80 HTTPS · port 443
+• plain text • HTTP inside TLS
+• anyone sniffing can read it encryption
+• in Wireshark: full message • sniffers see only gibberish
+ • in Wireshark: “Application
+ Data”
+Passwords over HTTP travel in clear text – we’ll see it in the
+ workshop
+ 3 ‫חלק‬
+ HTTP ‫הודעות‬
+Request, response and status codes
+ ‫הודעת בקשה‪ 3 :‬חלקים‬
+ ‫‪ 1‬שורת פתיחה‬
+‫‪GET /index.html HTTP/1.1‬‬ ‫שיטה · כתובת האובייקט · גרסה‪,‬‬
+ ‫מופרדים ברווח‬
+ ‫‪ 2‬כותרות (‪)headers‬‬
+ ‫‪Accept-Language: he‬‬ ‫שם‪ :‬ערך‪ – Host .‬חובה מ‪1.1-‬‬
+ ‫‪ 3‬גוף הבקשה (‪)body‬‬
+ ‫‪uname=test&pass=test‬‬ ‫מידע נוסף; יכול להיות בינארי‪ .‬אורכו ב‪-‬‬
+ ‫‪Content-Length‬‬
+ ‫‪27‬‬
+HTTP request: anatomy
+GET /doc/test.html HTTP/1.1 Request line
+Host: www.test101.com
+Accept: image/gif, image/jpeg
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate Headers
+User-Agent: Mozilla/4.0
+Content-Length: 35
+bookId=12345&author=Tan Blank line
+ Body
+Every line ends with \r\n (CRLF) – look for it in Wireshark
+HTTP methods
+Method What it does
+GET request an object (usually no body)
+POST send data to the server in the body (forms)
+HEAD like GET, but return headers only
+PUT upload / replace a file at the URL
+DELETE delete the object at the URL
+CONNECT open a tunnel (used by proxies)
+The method is always one word, in capital letters
+GET vs. POST: where is the data?
+GET – data in the URL
+GET /search?q=networks&lang=he HTTP/1.1
+Host: www.example.com
+POST – data in the body
+POST /userinfo.php HTTP/1.1
+Host: testphp.vulnweb.com
+uname=test&pass=test
+ Over HTTP, both are readable by anyone sniffing
+ ‫הודעת תשובה‪ 3 :‬חלקים‬
+ ‫השרת מחזיר את מה שהלקוח ביקש – או שגיאה‪.‬‬
+ ‫‪ 1‬שורת מצב‬
+ ‫‪HTTP/1.1 200 OK‬‬ ‫גרסת הפרוטוקול · קוד מצב · הסבר‬
+ ‫קצר‬
+ ‫‪ 2‬כותרות‬
+‫‪Content-Type: text/html‬‬ ‫מידע על התשובה ועל השרת‪ :‬סוג‪,‬‬
+ ‫אורך‪ ,‬תאריכים‬
+ ‫‪ 3‬גוף התשובה‬
+‫>‪<h1>My Home page</h1‬‬ ‫המידע עצמו‪ ,HTML :‬תמונה‪ ...‬אורכו‬
+ ‫ב‪Content-Length-‬‬
+ ‫‪31‬‬
+HTTP response: anatomy
+HTTP/1.1 200 OK Status line
+Date: Sun, 08 Feb 01:11:12 GMT
+Server: Apache/1.3.29
+Last-Modified: Sat, 07 Feb
+ETag: "0-23-4024c3a5" Headers
+Connection: close
+Content-Type: text/html
+ Blank line
+<h1>My Home page</h1>
+ ‫קודי מצב‪ 5 :‬קבוצות‬
+ ‫דוגמאות‬ ‫משמעות‬ ‫קבוצה‬
+ ‫מידע‪ :‬הבקשה התקבלה‪ ,‬עוד אין‬
+ ‫‪100‬‬ ‫‪1XX‬‬
+ ‫תשובה‪ .‬נדיר‬
+ ‫‪200, 201‬‬ ‫הצלחה‬ ‫‪2XX‬‬
+ ‫‪301, 302‬‬ ‫הפניה‪ :‬המשאב נמצא במקום אחר‬ ‫‪3XX‬‬
+‫‪400, 401, 403, 404‬‬ ‫שגיאת לקוח‪ :‬בעיה בבקשה‬ ‫‪4XX‬‬
+ ‫‪500, 503‬‬ ‫שגיאת שרת‬ ‫‪5XX‬‬
+ ‫טריק‪ = 4 :‬הלקוח טעה‪ = 5 ,‬השרת טעה‬
+ ‫‪33‬‬
+ ‫קודים שתראו הכי הרבה‬
+Code Meaning When you see it
+200 OK the request succeeded
+ new URL in the Location
+301 Moved Permanently
+ header
+304 Not Modified your cached copy is fresh
+400 Bad Request server couldn’t understand it
+404 Not Found the page doesn’t exist
+500 Internal Server Error bug or crash on the server
+503 Service Unavailable server overloaded / down
+ ‫איזה קוד יחזור?‬
+ ‫?‬ ‫הקלדתם כתובת עם שגיאת כתיב בשם הדף‬ ‫‪1‬‬
+ ‫?‬ ‫האתר עבר לכתובת חדשה – לתמיד‬ ‫‪2‬‬
+ ‫?‬ ‫לדפדפן יש עותק עדכני ב‪ ,cache-‬והשרת מאשר‬ ‫‪3‬‬
+ ‫?‬ ‫הקוד בשרת קרס בגלל באג‬ ‫‪4‬‬
+ ‫?‬ ‫ניסיתם לפתוח עמוד מנהל בלי הרשאה‬ ‫‪5‬‬
+ ‫‪35‬‬
+ ‫איזה קוד יחזור? תשובות‬
+ ‫‪404‬‬ ‫הקלדתם כתובת עם שגיאת כתיב בשם הדף‬ ‫‪1‬‬
+ ‫‪301‬‬ ‫האתר עבר לכתובת חדשה – לתמיד‬ ‫‪2‬‬
+ ‫‪304‬‬ ‫לדפדפן יש עותק עדכני ב‪ ,cache-‬והשרת מאשר‬ ‫‪3‬‬
+ ‫‪500‬‬ ‫הקוד בשרת קרס בגלל באג‬ ‫‪4‬‬
+ ‫‪403‬‬ ‫ניסיתם לפתוח עמוד מנהל בלי הרשאה‬ ‫‪5‬‬
+ ‫‪36‬‬
+‫‪Conditional GET‬‬
+ ‫• הדפדפן שומר אובייקטים שכבר הורדנו ב‪.cache-‬‬
+ ‫• מטרה‪ :‬לא להוריד שוב דף שלא השתנה – חוסכים זמן‪.‬‬
+ ‫• הלקוח מוסיף לבקשה את הכותרת‪:‬‬
+ ‫>‪If-Modified-Since: <date‬‬
+ ‫‪37‬‬
+Conditional GET: two outcomes
+Object NOT modified since <date>
+ GET … If-Modified-Since: <date>
+ client server
+ HTTP/1.0 304 Not Modified (no body)
+Object modified after <date>
+ HTTP/1.0 200 OK + <data>
+Try it: DevTools and curl
+ Browser DevTools curl (terminal)
+ • F12 → Network • > lines = request
+ • F5 to reload • < lines = response
+ • click a request → Headers • -I sends a HEAD request
+ • see status, request &
+ response headers
+curl -v http://httpforever.com/
+Works on Windows, Mac and Linux
+ 4 ‫חלק‬
+ Wireshark
+Packet sniffing and a hands-on workshop
+Bad guys can sniff packets
+Packet “sniffing”:
+• broadcast media (shared Ethernet, wireless)
+• a promiscuous interface reads/records all packets passing by
+ – including passwords!
+ A B
+ src: B dest: A payload
+ router
+ C
+Wireshark = a free packet sniffer 41
+ ‫מה זה ‪?Wireshark‬‬
+ ‫• כלי תוכנה פאסיבי שמעתיק את תוכן החבילות שעוברות במחשב‬
+ ‫שלכם‪ ,‬מכרטיס רשת שתבחרו‪.‬‬
+ ‫• הכלי רק מאזין ומעתיק – ההורדה והשידור ממשיכים כרגיל‪.‬‬
+ ‫הורדה ומדריך‬
+‫מסניפים רק רשת שלכם או ברשות!‬ ‫‪YouTube guide‬‬
+ ‫‪wireshark.org‬‬
+ ‫‪YouTube guide‬‬
+ ‫‪42‬‬
+Wireshark: how it works
+ Wireshark application
+ (browser, email client)
+ packet analyzer OS
+ Transport (TCP/UDP)
+ Network (IP)
+ packet capture Link (Ethernet)
+ (pcap)
+ copy of all frames Physical
+ sent / received
+Wireshark only copies – it never changes or blocks a packet
+The Wireshark window
+1 Packet list 2 Details by layer 3 Raw bytes (hex)
+Reading a capture
+No
+ Source Destination Protocol Info
+ .
+ 1 145.254.160.237 65.208.228.223 TCP 3372 → 80 [SYN]
+ 2 65.208.228.223 145.254.160.237 TCP 80 → 3372 [SYN, ACK]
+ 3 145.254.160.237 65.208.228.223 TCP 3372 → 80 [ACK]
+ 4 145.254.160.237 65.208.228.223 HTTP GET /download.html HTTP/1.1
+• Frames 1–3: TCP connection setup (the “connection request /
+ reply”)
+• Frame 4: the GET request
+• Client: 145.254.160.237 : 3372 · Server: 65.208.228.223 : 80
+Display filters
+Filter Shows
+http only HTTP packets
+http.request.method == "GET" only GET requests
+http.response.code == 200 only 200 OK responses
+ip.addr == 10.0.0.5 to / from this IP
+tcp.port == 80 to / from port 80
+http.host contains "haifa" host name contains “haifa”
+ Filter bar green = valid · red = syntax error
+ ‫סדנה‬
+‫פתחו את המחשבים‬
+ ‫• ‪ Wireshark‬מותקן‬
+ ‫• דפדפן (כל דפדפן)‬
+ ‫• עבודה בזוגות – מותר ורצוי‬
+ ‫‪Workshop – open your laptop‬‬
+Workshop: start capturing (1/2)
+1 Open your browser – any browser
+2 Clear the cache – in the browser settings (or use
+ incognito mode)
+3 Open Wireshark
+4 Select the active interface (the one with the moving
+ graph, usually Wi-Fi)
+Workshop: start capturing (2/2)
+5 Click Start (the blue fin) or press Ctrl + E
+6 Go back to the browser and visit the URL:
+ http://testphp.vulnweb.com/login.php
+ http://httpforever.com/
+7 When the page loads, go back to Wireshark and stop:
+ Ctrl + E
+8 Type http in the filter bar
+‫‪Workshop: questions‬‬
+ ‫סננו כך שרק חבילות מפרוטוקול מסוים יוצגו‬ ‫‪1‬‬
+ ‫איזו גרסה של ‪ HTTP‬האתר מריץ?‬ ‫‪2‬‬
+ ‫אילו שפות (אם ישנן) הדפדפן מציין שהוא יכול לקבל?‬ ‫‪3‬‬
+ ‫מה כתובת ה‪ IP-‬ואיזה ‪ PORT‬בצד המחשב שלכם?‬ ‫‪4‬‬
+ ‫מה כתובת ה‪ IP-‬ואיזה ‪ PORT‬בצד השרת?‬ ‫‪5‬‬
+ ‫מה קוד הסטטוס שהשרת החזיר לדפדפן שלכם?‬ ‫‪6‬‬
+ ‫כמה בתים של תוכן מוחזרים בחבילה מסוימת?‬ ‫‪7‬‬
+ ‫‪49‬‬
+ Bonus
+Bonus: find the password
+1 On testphp.vulnweb.com log in with test / test
+2 Filter:
+ http.request.method == "POST"
+3 Open the packet → HTML Form URL Encoded
+ uname = test The password is in clear text →
+ pass = test always use HTTPS
+ ‫רמזים‬
+Where to look
+Question Look at
+HTTP version end of the request line: HTTP/1.1
+Languages Accept-Language header
+Your IP / port IP layer Src · TCP Src Port
+Server IP / port IP layer Dst · TCP Dst Port (80)
+Status code status line of the response
+Content bytes Content-Length header
+ ‫לסיכום‬
+ ‫תהליך מזוהה ע"י ‪ ,IP + port‬ומדבר דרך ‪socket‬‬ ‫‪1‬‬
+‫‪ :HTTP‬לקוח ושרת‪ ,‬רץ מעל ‪ ,TCP‬ולא זוכר מצב (‪)stateless‬‬ ‫‪2‬‬
+ ‫גרסה ‪ :1.0‬כל אובייקט עולה שני ‪ .RTT‬גרסה ‪ :1.1‬החיבור‬ ‫‪3‬‬
+ ‫קבוע‬
+ ‫הודעה‪ :‬שורה ראשונה‪ ,‬כותרות‪ ,‬גוף‪ .‬קודי מצב לפי הספרה‬ ‫‪4‬‬
+ ‫הראשונה‬
+ ‫‪ Wireshark‬מראה הכל – ב‪ HTTP-‬גם סיסמאות‬ ‫‪5‬‬
+ ‫‪52‬‬
+ ‫בתרגול הבא‬
+ ‫‪DNS‬‬ ‫‪Proxy server‬‬ ‫‪Cookies‬‬
+‫מתרגם שמות‬ ‫‪ cache‬בדרך לשרת‬ ‫איך אתר זוכר‬
+ ‫לכתובות ‪IP‬‬ ‫אותנו?‬
+ ‫השאירו את ‪ Wireshark‬מותקן – ננתח גם אותם‬
+ ‫שאלות?‬
+ ‫‪53‬‬

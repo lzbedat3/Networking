@@ -1,0 +1,355 @@
+ Chapter 1
+ Data on Links –
+ ‫נתונים במדיה‬
+ ‫מתרגל‬
+ ‫ויאם שאהין‬ Computer
+ Networking: A Top-
+ Down Approach
+ 7th Edition, Global Edition
+ April 2016
+ Introduction 1-1
+ ‫כללי‬
+ ‫• הגשת תרגילי בית בזוגות‬
+‫• מייל של הקורס ‪uohcomm@gmail.com‬‬
+ ‫• שעת קבלה‬
+ ‫▪ בתיאום מראש‪ ,‬לרוב יהיה בזום‪.‬‬
+ ‫▪ רביעי אחרי תרגול ‪2‬‬
+ ‫• חובה לפתוח מצלמה בשיעורי זום‪.‬‬
+ ‫• העתקת תרגילי בית אסורה !‬
+ ‫תקשורת‬
+ ‫▪ המונח תקשורת מתאר העברה של מידע בין שני‬
+ ‫גורמים או יותר‪.‬‬
+‫ישנם כמה סוגי תקשורת‪ :‬תקשורת המונים‪ ,‬בין אישית‬
+ ‫ותקשורת מחשבים (נתונים) אשר בה נעסוק בקורס‬
+ ‫הזה‪.‬‬
+ ‫▪ בכל מערכת תקשורת צד אחד שולח מידע לצד אחר‬
+ ‫שמקבל את המידע‪ .‬מקור ויעד‪.‬‬
+‫▪ מחולקת לשכבות‪ ,‬כל שכבה מספקת שירותי תקשורת‬
+ ‫לשכבה מעל ומתקשרת עם השכבה המקבילה‬
+ ‫במחשב השני‪.‬‬
+ ‫מודל השכבות‬
+‫מודל השכבות בנוי משכבות שמייצגות חלוקה פונקציונלית בין המשימות הדרושות על מנת ליישם רשת‪.‬‬
+ Internet protocol stack
+▪ application: supporting network
+ applications
+ • FTP, SMTP, HTTP application
+▪ transport: process-process data
+ transfer transport
+ • TCP, UDP
+ network
+▪ network: routing of datagrams from
+ source to destination
+ link
+ • IP, routing protocols
+▪ link: data transfer between physical
+ neighboring network elements
+ • Ethernet, 802.111 (WiFi), PPP
+▪ physical: bits “on the wire”
+ ‫ולסיכום‬
+ ‫דוגמא מהאינטרנט‬
+‫דוגמא מהאינטרנט ‪2‬‬
+What is Client-Server architecture ?
+‫העברת מדיה‬
+Physical layer
+▪ The physical layer which is the 1st
+ layer of the OSI model, is
+ responsible for transmitting the
+ data over the different types of
+ physical media that may be
+ present.
+▪ The frames that are received from
+ the data link layer are converted
+ into bits for transmission over the
+ medium in this layer. Depending
+ on the type of physical medium,
+ the physical layer may represent
+ the bits as either; light signals for
+ fiber, electrical signals for copper
+ or waves for transmission over
+ wireless media.
+▪ by this stage in communication, the user data has undergone several
+ processes:
+1. segmentation at the transport layer.
+2. packets in the network layer.
+3. encapsulation into frames at the data link layer.
+4. finally, the data is converted into one of the three forms that can be
+ transmitted over the physical media; electrical, light signals or microwaves in
+ the physical layer.
+▪ The three main forms of transmission media that we use in networks are:
+ • Copper cable
+ • Fiber
+ • Wireless
+ Physical Media: Wired Media
+▪ bit: propagates between
+ transmitter/receiver pairs twisted pair (TP)
+ ▪ two insulated copper
+▪ physical link: what lies wires
+ between transmitter & • Category 5: 100 Mbps, 1
+ receiver Gbps Ethernet
+ • Category 6: 10Gbps
+▪ guided media:
+ • signals propagate in solid
+ media: copper(‫)נחושת‬,
+ fiber(‫)סיב אופטי‬, coax
+▪ unguided media:
+ • signals propagate freely,
+ e.g., radio Introduction 1-14
+Physical Media: coax, fiber
+ coaxial cable: fiber optic cable:
+ ▪ two concentric copper ▪ glass fiber carrying light
+ conductors pulses, each pulse a bit
+ ▪ bidirectional ▪ high-speed operation:
+ ▪ broadband: • high-speed point-to-point
+ • multiple channels on cable transmission (e.g., 10’s-100’s
+ Gbps transmission rate)
+ • HFC
+ ▪ low error rate:
+ • repeaters spaced far apart
+ • immune to electromagnetic
+ noise
+ Introduction 1-15
+Physical Media: Wireless Media
+ ▪ signal carried in radio link types:
+ electromagnetic spectrum ▪ terrestrial microwave
+ • e.g. up to 45 Mbps channels
+ ▪ no physical “wire” ▪ LAN (e.g., WiFi)
+ • 54 Mbps
+ ▪ Bidirectional ▪ wide-area (e.g., cellular)
+ • 4G cellular: ~ 10 Mbps
+ ▪ propagation environment ▪ satellite
+ effects: • Kbps to 45Mbps channel (or
+ multiple smaller channels)
+ • reflection • 270 msec end-end delay
+ • obstruction by objects • geosynchronous versus low
+ • interference altitude
+ Introduction 1-16
+‫מה קצב האינטרנט אצלך בבית (בנייד)?‬
+ ‫מה זה אומר?‬
+ ?)‫מה קצב האינטרנט אצלך בבית (בנייד‬
+ ?‫מה זה אומר‬
+In simple words, it is the maximum amount of data that can be
+transferred per second on a link. It is generally measured in bits per
+second(bps), Mega bits per second(Mbps) or Giga bits per
+second(Gbps).
+For example, if bandwidth is 100 Mbps, it means maximum 100 Mb
+data can be transferred per second on that channel.
+Things we will learn in a bit ;)
+1. Bandwidth (Transmission Rate) – the
+ capacity of the line or the number of bits
+ that are processed per unit of time. This
+ is measured in bp/s (bits per second),
+ kb/s, mb/s, etc...
+2. Throughput (Propagation Delay) – this is
+ the actual transferred data over a certain
+ amount of time, in most cases it is
+ usually less than the bandwidth.
+3. Packet transmission delay – is the
+ amount of time required to push all the
+ packet's bits into the wire. In other words,
+ this is the delay caused by the data-rate
+ of the link
+Host: sends packets of data
+host sending function: two packets,
+▪ takes application message L bits each
+▪ breaks into smaller chunks,
+ known as packets, of length L bits
+ 2 1
+▪ transmits packet into access R: link transmission rate
+ network at transmission rate R host
+ • link transmission rate, aka link
+ capacity, aka link bandwidth
+ packet time needed to L (bits)
+ transmission = transmit L-bit =
+ delay packet into link R (bits/sec)
+ ▪ takes L/R seconds to transmit (push out) packet of L bits on to link at R bps
+What is the transmission rate?
+Packet Switching: queueing delay, loss
+ R = 100 Mb/s C
+ A
+ D
+ R = 1.5 Mb/s
+ B
+ queue of packets E
+ waiting for output link
+ queuing and loss:
+ ▪ if arrival rate (in bits) to link exceeds transmission rate of link
+ for a period of time:
+ • packets will queue, wait to be transmitted on link
+ • packets can be dropped (lost) if memory (buffer) fills up
+How do loss and delay occur?
+packets queue in router buffers
+▪ packet arrival rate to link (temporarily) exceeds output link
+ capacity
+▪ packets queue, wait for turn
+ packet being transmitted (delay)
+ packets queueing (delay)
+ free (available) buffers: arriving packets
+ dropped (loss) if no free buffers
+ Introduction 1-23
+Four sources of packet delay
+ transmission
+ A propagation
+ processing
+ queueing
+ d = dproc + dqueue + dtrans + dprop
+ 1. dproc: processing delay 2. dqueue: queueing delay
+ ▪ check bit errors ▪ time waiting at output link
+ ▪ determine output link for transmission
+ ▪ typically < msec ▪ depends on congestion
+ level of router
+ Introduction 1-24
+ 3. dtrans: transmission delay: 4. dprop: propagation delay:
+ ▪ L: packet length (bits) ▪ d: length of physical link
+ ▪ R: link bandwidth (bps) ▪ s: propagation speed (~2x108 m/sec)
+ ▪ dtrans = L/R dtrans and dprop ▪ dprop = d/s
+ very different
+* Check out the online interactive exercises for more examples: http://gaia.cs.umass.edu/kurose_ross/interactive/
+* Check out the Java applet for an interactive animation on trans vs. prop delay Introduction 1-25
+Transmission vs. Prop. Delay
+ pipe
+ 1. Propagation delay is how long takes to cross the
+ pipe, irrespective of volume
+ 2. Transmission (bandwidth delay) is related to how
+ much water can be pushed in through the opening
+ per unit time
+Caravan analogy
+ 100 km 100 km
+ ten-car toll toll
+ caravan booth booth
+▪ cars “propagate” at
+ 100 km/hr
+▪ toll booth takes 12 sec to
+ service car (bit transmission
+ time)
+▪ car ~ bit; caravan ~ packet
+▪ Q: How long until caravan is
+ lined up before 2nd toll
+ booth?
+ Introduction 1-27
+▪ cars “propagate” at ▪ time to “push” entire
+ 100 km/hr caravan through toll
+▪ toll booth takes 12 sec to booth onto highway =
+ service car (bit transmission 12*10 = 120 sec
+ time) ▪ time for last car to
+▪ car ~ bit; caravan ~ packet propagate from 1st to
+▪ Q: How long until caravan is 2nd toll both:
+ lined up before 2nd toll 100km/(100km/hr)= 1
+ booth? hr
+ ▪ A: 62 minutes
+ Introduction 1-28
+Caravan analogy (more)
+▪ suppose cars now “propagate” at 1000 km/hr
+▪ and suppose toll booth now takes one min to service a car
+▪ Q: Will cars arrive to 2nd booth before all cars are serviced at
+ first booth?
+ Introduction 1-29
+▪ Q: Will cars arrive to 2nd booth before all cars serviced at first
+ • A: Yes! after 7 min, first car arrives at second booth; three
+ cars still at first booth
+ Introduction 1-30
+Total delay
+ 𝑑T𝑜𝑡𝑎𝑙 = 𝑑proc + 𝑑queue + 𝑑trans + 𝑑prop
+ • dproc = processing delay
+ • typically, a few microsecs or less
+ • dqueue = queuing delay
+ • depends on congestion
+ • dtrans = transmission delay
+ • = L/R, significant for low-speed links
+ • dprop = propagation delay
+ • a few microsecs to hundreds of msecs
+ Introduction 1-31
+Units
+• Bits are the units used to describe an amount of data in a network
+ • 1 kilobit (Kbit) ~1 x 103 bits = 1,000 bits
+ • 1 megabit (Mbit) ~1 x 106 bits = 1,000,000 bits
+ • 1 gigabit (Gbit) ~1 x 109 bits = 1,000,000,000 bits
+• Seconds are the units used to measure time
+ • 1 millisecond (msec) = 1 x 10-3 seconds = 0.001 seconds
+ • 1 microsecond (sec) = 1 x 10-6 seconds = 0.000001 seconds
+ • 1 nanosecond (nsec) = 1 x 10-9 seconds = 0.000000001 seconds
+• Bits per second are the units used to measure channel capacity/bandwidth
+ and throughput
+ • bit per second (bps)
+ • kilobits per second (Kbps)
+ • megabits per second (Mbps)
+• Bytes are units that describe a series of eight bits
+ • 1 Byte = 8 bits
+ • Bytes per second (Bps)
+Transmission Time = packet length/channel capacity
+How long does it take A to transmit an entire packet on the link?
+ Relevant information:
+ packet length = 1500 Bytes
+ channel capacity = 100 Mbps
+ Another way to ask this question:
+ If the link can transmit 100 million bits in a second, how many
+ seconds does it take to transmit 1500 Bytes (8x1500 bits)?
+ 1500 x 8 bits Solving for t…
+ t = t = 0.00012 sec (or 120 sec)
+ 100 Mbps
+Propagation Delay
+ How long does it take a single bit to travel on the link
+ from A to B?
+ Relevant information: link distance = 1000 m
+ propagation speed = 1/5 (km/ sec)
+ a signal crosses 1/5 km in 1 sec
+ Propagation Delay = Distance / propagation speed
+ it takes a signal 5 sec to travel 1 km
+ prop. delay factor = 5 sec/km
+ every 5 sec a signal crosses 1 km
+ Propagation speed = 1/ propagation delay factor
+ Relevant information: link distance = 500 m
+ If it takes a signal 5 sec to travel 1 km, then how long does it
+ take a signal to travel 500 meters?
+ 1 time 5 sec t Solving for t…
+ = =
+ Speed distance 1000 m 500 m t = 2.5 sec
+ OR
+ 5 (sec/km) * 0.5 (km) = 2.5
+Example
+ A B
+ 500 m
+ Protocol Processing Time = 40 sec
+ propagation delay factor = 5 sec/km
+1. How long to format the data?
+2. How long does it take a single bit to travel on the link from A to B?
+3. How long does it take A to transmit an entire packet onto the link?
+ Introduction 1-38
+ Timeline Method
+ Host A Host B
+ 40 Protocol Delay
+ 1st bit
+Time Transmission time
+ 2.5 Propagation delay
+ Total time: 40+120+2.5+40 = 202.5 sec
+ Introduction 1-39
+ ‫שאלה לדוגמא‬
+ :‫ בנתונים הבאים‬,‫חבילה עוברת בין שני מחשבים המחוברים ביניהם בלינק ישיר‬
+ ,packet length = 2048 Bytes ,Protocol processing time = 70 µsec
+ Propagation delay factor = 20 sec/km ,Channel capacity = 200 Mbps
+ . 9000 km ‫ שאורכו‬,‫כאשר המחשבים מחוברים בלינק ארוך במיוחד‬
+ ‫ אתם רשאים להזניח השהיות הנגרמות מעיכוב החבילות בחוצצים‬,‫ בתשובתכם‬:‫הערה‬
+ .)‫(תורים‬
+4. What is the total delay?
+• How long to format the data?
+ • Protocol processing time = 70 µsec
+• How long does it take a single bit to travel on the link from A to B?
+ • Link distance = 9000 km
+ • Propagation delay factor = 20 µsec/km
+ • 20*9000 = 180000 µsec
+• How long does it take A to transmit an entire packet onto
+ the link?
+ • packet length/channel capacity
+ • Packet length = 2048 Bytes = 16384 bits
+ • 16384 b /200 Mb = 81.92 µsec
+• What is the total delay?
+ • 70 + 81.92 + 180000 + 70 = 180221.92 µsec
+ ‫מטלת בית מס' ‪:1‬‬
+ ‫‪ -‬הורדת ‪ WireShark‬עפ"י המדריך‪:‬‬
+ ‫‪https://www.youtube.com/watch?v=lb1Dw0elw0Q‬‬
+ ‫צפייה בסרטון ההדרכה‬ ‫‪-‬‬
+‫להעלות למודל צילום מסך של ה‪ Wireshark -‬שלכם עם‬ ‫‪-‬‬
+ ‫הצגת שורות של ‪(sniffing) Packets‬‬
+ ‫פורמט הגשה‪ Ex1_yourID :‬כקובץ תמונה או טקסט‪.‬‬ ‫‪-‬‬
+ ‫הגשה אישית ביחידים‬ ‫‪-‬‬
+ ‫ההגשה עד שעה ‪ 08:00‬בבוקר באותו יום של תרגול ‪2‬‬ ‫‪-‬‬
+ ‫‪Introduction 1-42‬‬

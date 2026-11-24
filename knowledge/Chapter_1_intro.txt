@@ -1,0 +1,397 @@
+Chapter 1
+Introduction
+Osnat (Ossi) Mokryn
+ Computer
+Information Systems Networking: A Top
+ Down Approach
+ 7th Edition, Global Edition
+ April 2016
+ Introduction 1-1
+Chapter 1: introduction
+our goal: overview:
+§ get feel and § whats the Internet?
+ terminology § whats a protocol?
+ § network edge; hosts, access net,
+§ more depth, detail physical media
+ later in course § network core: packet/circuit
+§ approach: switching, Internet structure
+ • use Internet as § performance: loss, delay,
+ throughput
+ example
+ § security
+ § protocol layers, service models
+ § history
+ Introduction 1-2
+Chapter 1: roadmap
+ 1.1 what is the Internet?
+ 1.2 network edge
+ § end systems, access networks, links
+ 1.3 network core
+ § packet switching, circuit switching, network structure
+ 1.4 delay, loss, throughput in networks
+ 1.5 protocol layers, service models
+ 1.6 networks under attack: security
+ 1.7 history
+ Introduction 1-3
+Whats the Internet: nuts and bolts view
+ PC
+ § billions of connected mobile network
+ server computing devices:
+ wireless
+ laptop
+ • hosts = end systems global ISP
+ smartphone • running network apps
+ home
+ § communication links network
+ regional ISP
+ wireless • fiber, copper, radio,
+ links satellite
+ wired
+ links • transmission rate:
+ bandwidth
+ § packet switches: forward
+ router packets (chunks of data) institutional
+ • routers and switches network
+ Introduction 1-4
+Fun Internet-connected devices
+ Web-enabled toaster +
+ weather forecaster
+ IP picture frame
+ http://www.ceiva.com/
+ Tweet-a-watt:
+ Slingbox: watch, monitor energy use
+ control cable TV remotely
+ sensorized,
+ bed
+ mattress
+ Internet
+ refrigerator Internet phones
+ Introduction 1-5
+ mobile network
+ § Internet: network of networks
+ • Interconnected ISPs
+ global ISP
+ § protocols control sending, receiving
+ of messages
+ • e.g., TCP, IP, HTTP, Skype, 802.11 home
+ network
+ § Internet standards regional ISP
+ • RFC: Request for comments
+ • IETF: Internet Engineering Task Force
+ institutional
+ Introduction 1-6
+Whats the Internet: a service view
+§ infrastructure that provides
+ services to applications: global ISP
+ • Web, VoIP, email, games, e-
+ commerce, social nets, … home
+§ provides programming network
+ interface to apps
+ • hooks that allow sending
+ and receiving app programs
+ to connect to Internet
+ • provides service options,
+ analogous to postal service
+ Introduction 1-7
+Whats a protocol?
+human protocols: network protocols:
+§ whats the time? § machines rather than
+§ I have a question humans
+§ introductions § all communication activity
+ in Internet governed by
+… specific messages sent protocols
+… specific actions taken
+ when messages protocols define format, order of
+ received, or other
+ events messages sent and received
+ among network entities, and
+ actions taken on message
+ transmission, receipt
+ Introduction 1-8
+a human protocol and a computer network protocol:
+ Hi TCP connection
+ request
+ response
+ Got the
+ time? Get http://www.awl.com/kurose-ross
+ 2:00
+ <file>
+ time
+Q: other human protocols?
+ Introduction 1-9
+ Introduction 1-10
+A closer look at network structure:
+§ network edge: mobile network
+ • hosts: clients and servers
+ • servers often in data
+ centers
+§ access networks, physical network
+ media: wired, wireless
+ communication links
+§ network core:
+ • interconnected routers
+ • network of networks institutional
+ Introduction 1-11
+Access networks and physical media
+ Q: How to connect end
+ systems to edge router?
+ § residential access nets
+ § institutional access
+ networks (school, company)
+ § mobile access networks
+ keep in mind:
+ § bandwidth (bits per second)
+ of access network?
+ § shared or dedicated?
+ Introduction 1-12
+Access network: digital subscriber line (DSL)
+ central office telephone
+ DSL splitter
+ modem DSLAM
+ ISP
+ voice, data transmitted
+ at different frequencies over DSL access
+ dedicated line to central office multiplexer
+§ use existing telephone line to central office DSLAM
+ • data over DSL phone line goes to Internet
+ • voice over DSL phone line goes to telephone net
+§ < 2.5 Mbps upstream transmission rate (typically < 1 Mbps)
+§ < 24 Mbps downstream transmission rate (typically < 10 Mbps)
+ Introduction 1-13
+Access network: cable network
+ cable headend
+ …
+ cable splitter
+ modem
+ C
+ O
+ V V V V V V N
+ I I I I I I D D T
+ D D D D D D A A R
+ E E E E E E T T O
+ O O O O O O A A L
+ 1 2 3 4 5 6 7 8 9
+ Channels
+ frequency division multiplexing: different channels transmitted
+ in different frequency bands
+ Introduction 1-14
+ cable splitter cable modem
+ modem CMTS termination system
+data, TV transmitted at different
+ frequencies over shared cable ISP
+ distribution network
+§ HFC: hybrid fiber coax
+ • asymmetric: up to 30Mbps downstream transmission rate, 2
+ Mbps upstream transmission rate
+§ network of cable, fiber attaches homes to ISP router
+ • homes share access network to cable headend
+ • unlike DSL, which has dedicated access to central office
+ Introduction 1-15
+ Access network: home network
+ devices
+ to/from headend or
+ central office
+often combined
+ in single box
+ cable or DSL modem
+ wireless access router, firewall, NAT
+ point (54 Mbps)
+ wired Ethernet (1 Gbps)
+ Introduction 1-16
+Enterprise access networks (Ethernet)
+ institutional link to
+ ISP (Internet)
+ institutional router
+ Ethernet institutional mail,
+ switch web servers
+§ typically used in companies, universities, etc.
+§ 10 Mbps, 100Mbps, 1Gbps, 10Gbps transmission rates
+§ today, end systems typically connect into Ethernet switch
+ Introduction 1-17
+Wireless access networks
+§ shared wireless access network connects end system to router
+ • via base station aka access point
+wireless LANs: wide-area wireless access
+ § within building (100 ft.) § provided by telco (cellular)
+ § 802.11b/g/n (WiFi): 11, 54, 450 operator, 10s km
+ Mbps transmission rate § between 1 and 10 Mbps
+ § 3G, 4G: LTE
+ to Internet
+ Introduction 1-18
+Host: sends packets of data
+host sending function:
+§ takes application message
+§ breaks into smaller two packets,
+ chunks, known as packets, L bits each
+ of length L bits
+§ transmits packet into
+ access network at 2 1
+ transmission rate R R: link transmission rate
+ • link transmission rate, host
+ aka link capacity, aka
+ link bandwidth
+ packet time needed to L (bits)
+ transmission = transmit L-bit =
+ delay packet into link R (bits/sec)
+ Introduction 1-19
+Protocol layers
+Networks are complex,
+with many pieces:
+ § hosts Question:
+ § routers is there any hope of
+ § links of various organizing structure of
+ media network?
+ § applications
+ § protocols …. or at least our
+ § hardware, discussion of networks?
+ software
+ Introduction 1-56
+Organization of air travel
+ ticket (purchase) ticket (complain)
+ baggage (check) baggage (claim)
+ gates (load) gates (unload)
+ runway takeoff runway landing
+ airplane routing airplane routing
+ airplane routing
+ § a series of steps
+ Introduction 1-57
+Layering of airline functionality
+ ticket (purchase) ticket (complain) ticket
+ baggage (check) baggage (claim baggage
+ gates (load) gates (unload) gate
+ runway (takeoff) runway (land) takeoff/landing
+ airplane routing airplane routing airplane routing airplane routing airplane routing
+ departure intermediate air-traffic arrival
+ airport control centers airport
+ layers: each layer implements a service
+ § via its own internal-layer actions
+ § relying on services provided by layer below
+ Introduction 1-58
+Why layering?
+dealing with complex systems:
+§ explicit structure allows identification,
+ relationship of complex systems pieces
+ • layered reference model for discussion
+§ modularization eases maintenance, updating of
+ system
+ • change of implementation of layers service
+ transparent to rest of system
+ • e.g., change in gate procedure doesn’t affect rest of
+§ layering considered harmful?
+ Introduction 1-59
+Internet protocol stack
+§ application: supporting network
+ applications
+ • FTP, SMTP, HTTP application
+§ transport: process-process data
+ transfer transport
+ • TCP, UDP
+§ network: routing of datagrams from
+ source to destination
+ link
+ • IP, routing protocols
+§ link: data transfer between physical
+ neighboring network elements
+ • Ethernet, 802.111 (WiFi), PPP
+§ physical: bits on the wire
+ Introduction 1-60
+ISO/OSI reference model
+§ presentation: allow applications
+ to interpret meaning of data, application
+ e.g., encryption, compression,
+ machine-specific conventions presentation
+§ session: synchronization, session
+ checkpointing, recovery of data transport
+ exchange
+§ Internet stack missing these
+ layers! link
+ • these services, if needed, must be physical
+ implemented in application
+ • needed?
+ Introduction 1-61
+ message M
+ source
+ application
+ Encapsulation
+ segment Ht M transport
+datagram Hn Ht M network
+frame Hl Hn Ht M link
+ physical
+ switch
+ destination Hn Ht M network
+ M application Hl Hn Ht M link Hn Ht M
+ Ht M transport physical
+ Hn Ht M network
+Hl Hn Ht M link router
+ Introduction 1-62
+ Introduction 1-63
+Internet history
+1961-1972: Early packet-switching principles
+ § 1961: Kleinrock - § 1972:
+ queueing theory shows • ARPAnet public demo
+ effectiveness of packet- • NCP (Network Control
+ switching Protocol) first host-host
+ § 1964: Baran - packet- protocol
+ switching in military nets • first e-mail program
+ § 1967: ARPAnet • ARPAnet has 15 nodes
+ conceived by Advanced
+ Research Projects
+ Agency
+ § 1969: first ARPAnet node
+ operational
+ Introduction 1-70
+ 1972-1980: Internetworking, new and proprietary nets
+§ 1970: ALOHAnet satellite
+ network in Hawaii Cerf and Kahns
+§ 1974: Cerf and Kahn - internetworking principles:
+ architecture for interconnecting • minimalism, autonomy - no
+ networks internal changes required to
+§ 1976: Ethernet at Xerox PARC interconnect networks
+ • best effort service model
+§ late70s: proprietary
+ architectures: DECnet, SNA, • stateless routers
+ XNA • decentralized control
+§ late 70s: switching fixed length define todays Internet
+ packets (ATM precursor) architecture
+§ 1979: ARPAnet has 200 nodes
+ Introduction 1-71
+1980-1990: new protocols, a proliferation of networks
+§ 1983: deployment of § new national networks:
+ TCP/IP CSnet, BITnet, NSFnet,
+§ 1982: smtp e-mail Minitel
+ protocol defined § 100,000 hosts connected
+§ 1983: DNS defined for to confederation of
+ name-to-IP-address networks
+ translation
+§ 1985: ftp protocol defined
+§ 1988: TCP congestion
+ control
+ Introduction 1-72
+1990, 2000s: commercialization, the Web, new apps
+§ early 1990s: ARPAnet late 1990s – 2000s:
+ decommissioned § more killer apps: instant
+§ 1991: NSF lifts restrictions on messaging, P2P file sharing
+ commercial use of NSFnet § network security to
+ (decommissioned, 1995) forefront
+§ early 1990s: Web § est. 50 million host, 100
+ • hypertext [Bush 1945, million+ users
+ Nelson 1960s] § backbone links running at
+ • HTML, HTTP: Berners-Lee Gbps
+ • 1994: Mosaic, later Netscape
+ • late 1990s:
+ commercialization of the Web
+ Introduction 1-73
+2005-present
+§ ~5B devices attached to Internet (2016)
+ • smartphones and tablets
+§ aggressive deployment of broadband access
+§ increasing ubiquity of high-speed wireless access
+§ emergence of online social networks:
+ • Facebook: ~ one billion users
+§ service providers (Google, Microsoft) create their own
+ networks
+ • bypass Internet, providing instantaneous access to
+ search, video content, email, etc.
+§ e-commerce, universities, enterprises running their
+ services in cloud (e.g., Amazon EC2)
+ Introduction 1-74

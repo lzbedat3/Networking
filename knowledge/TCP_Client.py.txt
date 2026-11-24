@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""
+TCP Client - Python Implementation
+Equivalent to TCP_Client.c
+
+This client demonstrates:
+1. Creating a TCP socket
+2. Connecting to a server
+3. Sending requests to the server
+4. Receiving responses from the server
+5. Interactive menu-driven communication
+6. Proper socket cleanup
+"""
+
+import socket
+import sys
+
+TIME_PORT = 27015  # Server port
+
+
+def check_for_error(bytes_result, error_at, sock):
+    """
+    Check if there was an error and handle it accordingly
+
+    Args:
+        bytes_result: Result from send/recv function
+        error_at: String stating if it was receive or send function
+        sock: The socket to close in case there was an error
+
+    Returns:
+        True if error occurred, False otherwise
+    """
+    if bytes_result <= 0:
+        print(f"Time Client: Error at {error_at}()")
+        if sock:
+            sock.close()
+        return True
+    return False
+
+
+def main():
+    """
+    Client Side Steps:
+    1. Create Socket
+    2. Create Server Address
+    3. Connect
+    4. Send
+    5. Recv
+    """
+
+    # Create a TCP socket
+    # AF_INET = IPv4, SOCK_STREAM = TCP, IPPROTO_TCP = TCP protocol
+    try:
+        conn_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+        print("TCP socket created successfully")
+    except socket.error as e:
+        print(f"Time Client: Error at socket(): {e}")
+        sys.exit(1)
+
+    # Prepare server address structure
+    server_address = "127.0.0.1"
+    server_port = TIME_PORT
+
+    # Connect to server
+    # TCP requires establishing a connection before communication
+    try:
+        conn_socket.connect((server_address, server_port))
+        print("Connection established successfully.")
+    except socket.error as e:
+        print(f"Time Client: Error at connect(): {e}")
+        conn_socket.close()
+        sys.exit(1)
+
+    # Communication loop
+    option = ''
+
+    try:
+        while option != '4':
+            # Display menu
+            print("\nPlease insert an option:")
+            print("\n 1 : Get the current time.")
+            print(" 2 : Get a random word.")
+            print(" 3 : Get server's name.")
+            print(" 4 : Exit.")
+
+            option = input(" Your option: ")
+
+            # Process option
+            if option == '1':
+                send_buff = "What's the time?"
+            elif option == '2':
+                send_buff = "Throw a random word."
+            elif option == '3':
+                send_buff = "What's your name?"
+            elif option == '4':
+                send_buff = "Exit"
+            else:
+                print("\n *-*-* Please enter a valid option only. *-*-*\n")
+                continue
+
+            # Send request to server
+            try:
+                bytes_sent = conn_socket.send(send_buff.encode())
+                if check_for_error(bytes_sent, "send", conn_socket):
+                    return
+            except socket.error as e:
+                print(f"Time Client: Error at send(): {e}")
+                conn_socket.close()
+                return
+
+            # If exit was requested, no need to receive response
+            if option == '4':
+                print("Closing connection.")
+                break
+
+            # Receive response from server
+            try:
+                recv_buff = conn_socket.recv(255)
+                bytes_recv = len(recv_buff)
+                if check_for_error(bytes_recv, "recv", conn_socket):
+                    return
+
+                print(f"\nReceived from server: {recv_buff.decode()}\n")
+            except socket.error as e:
+                print(f"Time Client: Error at recv(): {e}")
+                conn_socket.close()
+                return
+
+    except KeyboardInterrupt:
+        print("\nClosing connection.")
+    finally:
+        # Always close the socket
+        conn_socket.close()
+
+
+if __name__ == "__main__":
+    main()

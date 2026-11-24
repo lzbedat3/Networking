@@ -1,0 +1,13 @@
+‫חזרה קצרה‬
+‫חוזרים בעוד ‪7:00‬‬
+Client-Server communication ?
+What is a socket ?
+ UDP
+UDP Header
+• UDP Architecture
+ TCP
+TCP Header
+ TCP Header
+3 bits
+Architecture
+TCP VS UDP
