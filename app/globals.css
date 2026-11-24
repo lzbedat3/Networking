@@ -64,8 +64,9 @@
   --ws-syn: #d4d4d4;
 }
 
+/* dark: follows the system unless the visitor picked a theme (data-theme on <html>) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --ground: #0a111c;
     --surface: #111b2a;
     --sunken: #0d1622;
@@ -99,6 +100,39 @@
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -12px rgb(0 0 0 / 0.6);
   }
 }
+:root[data-theme="dark"] {
+    --ground: #0a111c;
+    --surface: #111b2a;
+    --sunken: #0d1622;
+    --ink: #e7edf5;
+    --ink-2: #c1ccda;
+    --muted: #8796ad;
+    --line: #1f2c40;
+    --line-strong: #2e3e57;
+    --route: #9a85ff;
+    --route-ink: #0b0820;
+    --route-soft: #221a47;
+    --gold: #e9b44c;
+    --gold-deep: #f0c66e;
+    --gold-soft: #33270d;
+    --l0: #46c486;
+    --l1: #8fcb5c;
+    --l2: #e6ad3c;
+    --l3: #f07a45;
+    --l4: #ff7b6f;
+    --l0-soft: #10301f;
+    --l2-soft: #33270d;
+    --l4-soft: #3a1714;
+    --field: #060c17;
+    --field-2: #0f1a2e;
+    --violet: #8b72ff;
+    --violet-soft: #221a47;
+    --amber: #e9b44c;
+    --cyan: #3cc4dc;
+    --code-bg: #0d1724;
+    --scrim: rgb(2 6 12 / 0.7);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -12px rgb(0 0 0 / 0.6);
+  }
 
 @theme inline {
   --color-ground: var(--ground);
@@ -149,6 +183,7 @@
 
 html {
   -webkit-tap-highlight-color: transparent;
+  color-scheme: light;
   scrollbar-color: var(--line-strong) transparent;
 }
 
@@ -206,3 +241,6 @@ a {
 }
 
 .pb-safe { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+
+:root[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }

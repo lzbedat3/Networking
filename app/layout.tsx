@@ -3,6 +3,7 @@ import { Cairo, Heebo, Ubuntu, Ubuntu_Mono } from "next/font/google";
 import { Suspense } from "react";
 import AssistantBubble from "@/components/Assistant";
 import Pwa from "@/components/Pwa";
+import { THEME_SCRIPT } from "@/components/ThemeToggle";
 import "./globals.css";
 
 /*
@@ -36,7 +37,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="he" dir="rtl">
+    <html lang="he" dir="rtl" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className={`${ubuntu.variable} ${heebo.variable} ${cairo.variable} ${mono.variable} antialiased`}>
         {children}
         <Suspense>
