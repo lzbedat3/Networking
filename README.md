@@ -69,6 +69,7 @@ npm run dev                  # http://localhost:3000
 | `ANTHROPIC_API_KEY` | yes | | API key for the tutor and the course assistant |
 | `TUTOR_MODEL` | no | `claude-opus-5-5` | Model id. `claude-sonnet-5-5` is a cheaper option. |
 | `TUTOR_RATE_PER_HOUR` | no | `40` | Maximum assistant messages per visitor per hour |
+| `APP_PASSCODE` | no | | Locks the whole app behind a passcode screen (`/gate`). Pages, screenshots, the PDF and the API all need it. Changing it signs everyone out. Unset = open. |
 
 ## Deploying to Vercel
 
