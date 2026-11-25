@@ -4,7 +4,7 @@ import { ArrowRight, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { scoreQuestion } from "@/lib/bank";
 import { LEVEL_VAR, levelOf } from "@/lib/mastery";
-import { TOPICS, Topic } from "@/lib/types";
+import { TOPIC_LABEL, Topic } from "@/lib/types";
 import QuestionView from "./QuestionView";
 import { Finished, Session } from "./Runner";
 import Tutor from "./Tutor";
@@ -106,7 +106,7 @@ export default function Results({ session, result, onRetry, onHome }: Props) {
                   <li key={t}>
                     <div className="mb-1 flex items-baseline justify-between gap-3 text-sm">
                       <span className="font-semibold">
-                        {TOPICS[t]} <span className="font-normal text-muted">({c})</span>
+                        {TOPIC_LABEL[t]} <span className="font-normal text-muted">({c})</span>
                       </span>
                       <span className="num font-bold" style={{ color: LEVEL_VAR[levelOf(p / 100)] }}>{p}%</span>
                     </div>
@@ -147,7 +147,7 @@ export default function Results({ session, result, onRetry, onHome }: Props) {
             {shown.map(({ q, i }) => (
               <article key={q.id} className="rounded-2xl border border-line bg-surface p-4 sm:p-6">
                 <p className="mb-3 text-sm font-semibold text-muted">
-                  שאלה {i + 1}, {TOPICS[q.topic]}
+                  שאלה {i + 1}, {TOPIC_LABEL[q.topic]}
                 </p>
                 <QuestionView q={q} picked={result.answers[i]} revealed score={scores[i]} />
                 <div className="mt-5">

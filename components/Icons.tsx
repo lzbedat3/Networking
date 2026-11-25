@@ -98,3 +98,16 @@ export function RetryIcon(p: P) {
     </svg>
   );
 }
+
+/** Past-years bank: an archive box with stacked exam sheets */
+export function ArchiveIcon(p: P) {
+  return (
+    <svg {...base} {...p} aria-hidden>
+      <path d="M7 9V4.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5V9" />
+      <path d="M9.5 6.5h5" />
+      <path d="M3.5 9h17v10.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V9Z" />
+      <path d="M9.5 13h5" />
+      <path d="M5 9 7 7.5M19 9l-2-1.5" />
+    </svg>
+  );
+}

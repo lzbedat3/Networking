@@ -9,7 +9,7 @@ import { SampleIcon, SimIcon } from "@/components/Icons";
 import { EXAM_2026 } from "@/lib/bank";
 import { EXAM_MINUTES, SIM_EXAMS } from "@/lib/exams";
 import { LEVEL_VAR, levelOf } from "@/lib/mastery";
-import { TOPICS, Topic } from "@/lib/types";
+import { TOPIC_LABEL, Topic } from "@/lib/types";
 import { useProgress } from "@/lib/useProgress";
 
 export default function SimulationsPage() {
@@ -79,7 +79,7 @@ export default function SimulationsPage() {
                 <p className="text-muted">
                   {ex.questions.length} שאלות, {EXAM_MINUTES} דקות
                 </p>
-                <p className="mt-3 line-clamp-2 text-sm text-muted">{topics.map((t) => TOPICS[t]).join(", ")}</p>
+                <p className="mt-3 line-clamp-2 text-sm text-muted">{topics.map((t) => TOPIC_LABEL[t]).join(", ")}</p>
                 <span className="mt-5 inline-flex items-center gap-1.5 font-bold text-violet">
                   {rec ? "לנסות שוב" : "להתחיל"}
                   <ArrowLeft className="h-4.5 w-4.5 transition-transform group-hover:-translate-x-1" aria-hidden />

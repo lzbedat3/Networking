@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RouteIcon, SimIcon, HomeIcon, SampleIcon } from "./Icons";
+import { ArchiveIcon, RouteIcon, SimIcon, HomeIcon, SampleIcon } from "./Icons";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/route", label: "המסלול", Icon: RouteIcon },
   { href: "/simulations", label: "סימולציות", Icon: SimIcon },
   { href: "/run?mode=sample", label: "בוחן לדוגמה", Icon: SampleIcon },
+  { href: "/past", label: "שנים קודמות", Icon: ArchiveIcon },
 ];
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
@@ -110,7 +111,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
 
       {/* mobile tab bar */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 pb-safe backdrop-blur-md md:hidden" aria-label="ניווט ראשי">
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-5">
           {NAV.map(({ href, label, Icon }) => {
             const on = active(href);
             return (

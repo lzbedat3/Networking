@@ -1,7 +1,7 @@
 import { ALL_QUESTIONS } from "./bank";
 import { SIM_EXAMS } from "./exams";
 import { ExamStats, Stats } from "./stats";
-import { Question, TOPICS, Topic } from "./types";
+import { Question, TOPICS, TOPIC_LABEL, Topic } from "./types";
 
 export const TOPIC_ORDER = Object.keys(TOPICS) as Topic[];
 
@@ -37,7 +37,7 @@ export type Hop = {
 export const MIN_EVIDENCE = 3;
 
 /** where each topic is taught in the course: the hop's "host" */
-export const TOPIC_SOURCE: Record<Topic, string> = {
+export const TOPIC_SOURCE: Partial<Record<Topic, string>> = {
   delays: "Tirgul 1, Ch.1",
   apps: "Tirgul 2, Ch.2",
   http: "Tirgul 2, Ch.2",
@@ -91,11 +91,11 @@ export function nextStep(stats: Stats, exams: ExamStats): NextStep {
   }
   const weak = hs.filter((h) => h.score !== null && h.score < 0.7).sort((a, b) => (a.score ?? 0) - (b.score ?? 0))[0];
   if (weak) {
-    return { kind: "topic", topic: weak.topic, title: `לחזק: ${TOPICS[weak.topic]}`, why: `הנושא הכי חלש שלך כרגע (${Math.round((weak.score ?? 0) * 100)}%). קודם שאלות שעוד לא ענית עליהן, ואז הטעויות.` };
+    return { kind: "topic", topic: weak.topic, title: `לחזק: ${TOPIC_LABEL[weak.topic]}`, why: `הנושא הכי חלש שלך כרגע (${Math.round((weak.score ?? 0) * 100)}%). קודם שאלות שעוד לא ענית עליהן, ואז הטעויות.` };
   }
   const unseen = hs.find((h) => h.seen === 0);
   if (unseen) {
-    return { kind: "topic", topic: unseen.topic, title: `נושא חדש: ${TOPICS[unseen.topic]}`, why: `עוד לא תרגלת אותו. ${unseen.total} שאלות.` };
+    return { kind: "topic", topic: unseen.topic, title: `נושא חדש: ${TOPIC_LABEL[unseen.topic]}`, why: `עוד לא תרגלת אותו. ${unseen.total} שאלות.` };
   }
   const untaken = SIM_EXAMS.find((s) => !exams[s.id]);
   if (untaken) {

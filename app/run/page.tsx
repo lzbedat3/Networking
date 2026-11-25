@@ -4,17 +4,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Results from "@/components/Results";
 import Runner, { Finished, Session } from "@/components/Runner";
-import { ALL_QUESTIONS, EXAM_2026, scoreQuestion, shuffle } from "@/lib/bank";
+import { ALL_QUESTIONS, EXAM_2026, PAST_QUESTIONS, findQuestion, scoreQuestion, shuffle } from "@/lib/bank";
+import { pastExam } from "@/lib/past/sets";
 import { EXAM_MINUTES, SIM_EXAMS } from "@/lib/exams";
 import { topicQueue } from "@/lib/mastery";
 import { loadStats, recordExam } from "@/lib/stats";
-import { TOPICS, Topic } from "@/lib/types";
+import { Question, TOPICS, TOPIC_LABEL, Topic } from "@/lib/types";
 
-/** /run?mode=topic&t=dns · /run?mode=mixed · /run?mode=mistakes · /run?mode=sample · /run?sim=1 · /run?q=<id> */
+/**
+ * /run?mode=topic&t=dns · /run?mode=mixed · /run?mode=mistakes · /run?mode=sample · /run?sim=1 · /run?q=<id>
+ * past-years bank: /run?bank=past&mode=all|new|mistakes|exam · &mode=topic&t=… · &mode=year&y=…
+ */
 function buildSession(p: URLSearchParams): { session: Session; back: string } | null {
   const stats = loadStats();
-  const q = ALL_QUESTIONS.find((x) => x.id === p.get("q"));
-  if (q) return { session: { kind: "practice", title: "תרגול", questions: [q] }, back: "/route" };
+  const q = findQuestion(p.get("q"));
+  if (q) return { session: { kind: "practice", title: "תרגול", questions: [q] }, back: q.source === "past" ? "/past" : "/route" };
+  if (p.get("bank") === "past") return buildPast(p, stats);
   const sim = SIM_EXAMS.find((s) => s.id === `sim${p.get("sim")}`);
   if (sim) return { session: { kind: "exam", title: sim.title, questions: sim.questions, examId: sim.id, minutes: EXAM_MINUTES }, back: "/simulations" };
   const mode = p.get("mode");
@@ -25,7 +30,29 @@ function buildSession(p: URLSearchParams): { session: Session; back: string } | 
     return ms.length ? { session: { kind: "practice", title: "חזרה על טעויות", questions: shuffle(ms) }, back: "/route" } : null;
   }
   const t = p.get("t") as Topic | null;
-  if (mode === "topic" && t && t in TOPICS) return { session: { kind: "practice", title: TOPICS[t], questions: topicQueue(t, stats) }, back: "/route" };
+  if (mode === "topic" && t && t in TOPICS) return { session: { kind: "practice", title: TOPIC_LABEL[t], questions: topicQueue(t, stats) }, back: "/route" };
+  return null;
+}
+
+function buildPast(p: URLSearchParams, stats: ReturnType<typeof loadStats>): { session: Session; back: string } | null {
+  const back = "/past";
+  const mode = p.get("mode");
+  const practice = (title: string, qs: Question[]) => (qs.length ? { session: { kind: "practice" as const, title, questions: qs }, back } : null);
+  if (mode === "all") return practice("מאגר שנים קודמות", shuffle(PAST_QUESTIONS));
+  if (mode === "new") return practice("שאלות שעוד לא פתרת", shuffle(PAST_QUESTIONS.filter((x) => !stats[x.id])));
+  if (mode === "mistakes") return practice("טעויות במאגר שנים קודמות", shuffle(PAST_QUESTIONS.filter((x) => stats[x.id] && stats[x.id].lastScore < 1)));
+  if (mode === "topic") {
+    const t = p.get("t") as Topic | null;
+    if (t && t in TOPIC_LABEL) return practice(`שנים קודמות: ${TOPIC_LABEL[t]}`, shuffle(PAST_QUESTIONS.filter((x) => x.topic === t)));
+  }
+  if (mode === "year") {
+    const y = p.get("y");
+    if (y) return practice(`שנים קודמות: ${y}`, PAST_QUESTIONS.filter((x) => (x.year ?? "ללא שנה") === y));
+  }
+  if (mode === "exam") {
+    const qs = pastExam(Number(p.get("seed")) || Date.now());
+    return qs.length ? { session: { kind: "exam", title: "מבחן משנים קודמות", questions: qs, minutes: EXAM_MINUTES }, back } : null;
+  }
   return null;
 }
 

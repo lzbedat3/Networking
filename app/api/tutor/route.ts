@@ -1,8 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { ALL_QUESTIONS } from "@/lib/bank";
-import { Question, TOPICS } from "@/lib/types";
+import { findQuestion } from "@/lib/bank";
+import { Question, TOPIC_LABEL } from "@/lib/types";
 import { COURSE_NOTES } from "@/lib/courseNotes";
 import { readdir } from "node:fs/promises";
 import { EXAM_2026 } from "@/lib/bank";
@@ -108,7 +108,7 @@ const REVEAL_RULES = `
 
 function describeQuestion(q: Question, withKey: boolean, picked?: number[]): string {
   const parts: string[] = [];
-  parts.push(`נושא: ${TOPICS[q.topic]}${q.source === "exam2026" ? " (שאלה מהבוחן לדוגמה)" : ""}`);
+  parts.push(`נושא: ${TOPIC_LABEL[q.topic]}${q.source === "exam2026" ? " (שאלה מהבוחן לדוגמה)" : q.source === "past" ? ` (שאלה ממאגר המבחנים משנים קודמות${q.year ? `, ${q.year}` : ""})` : ""}`);
   parts.push(`סוג: ${q.multi ? "רב-ברירה (אפשר כמה תשובות נכונות, סימון שגוי מוריד ניקוד)" : "בחירה יחידה"}`);
   parts.push(`השאלה:\n${q.prompt}`);
   if (q.pre) parts.push(`נתונים/צילום (תמליל):\n${q.pre}`);
@@ -130,7 +130,9 @@ async function imageBlocks(q: Question): Promise<Anthropic.ImageBlockParam[]> {
   for (const img of q.images ?? []) {
     try {
       const data = await readFile(path.join(process.cwd(), "public", img.src));
-      out.push({ type: "image", source: { type: "base64", media_type: "image/png", data: data.toString("base64") } });
+      const ext = path.extname(img.src).toLowerCase();
+      const media_type = ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" : ext === ".webp" ? "image/webp" : "image/png";
+      out.push({ type: "image", source: { type: "base64", media_type, data: data.toString("base64") } });
     } catch {
       /* image missing: the text transcript still covers it */
     }
@@ -171,7 +173,7 @@ export async function POST(req: Request) {
     return streamText(stream);
   }
 
-  const q = ALL_QUESTIONS.find((x) => x.id === body.questionId);
+  const q = findQuestion(body.questionId);
   if (!q) return Response.json({ error: "שאלה לא נמצאה" }, { status: 400 });
   const reveal = !!body.answerVisible || body.messages.some((m) => m.role === "user" && asksForAnswer(m.content));
 

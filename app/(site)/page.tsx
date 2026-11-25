@@ -4,11 +4,11 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { openAssistant } from "@/components/Assistant";
-import { AssistantIcon, MixIcon, RetryIcon, RouteIcon, SampleIcon, SimIcon } from "@/components/Icons";
-import { EXAM_2026 } from "@/lib/bank";
+import { ArchiveIcon, AssistantIcon, MixIcon, RetryIcon, RouteIcon, SampleIcon, SimIcon } from "@/components/Icons";
+import { EXAM_2026, PAST_QUESTIONS } from "@/lib/bank";
 import { EXAM_MINUTES, SIM_EXAMS } from "@/lib/exams";
 import { Hop, LEVEL_VAR, NextStep, hops, levelOf, nextStep, readiness } from "@/lib/mastery";
-import { TOPICS } from "@/lib/types";
+import { TOPIC_LABEL } from "@/lib/types";
 import { useProgress } from "@/lib/useProgress";
 
 const QUIZ_AT = new Date("2026-11-27T09:00:00+02:00").getTime();
@@ -86,7 +86,7 @@ export default function HomePage() {
                     className="h-2.5 rounded-sm"
                     style={{ background: h.level === null ? "var(--sunken)" : h.provisional ? "var(--line-strong)" : LEVEL_VAR[h.level], boxShadow: h.level === null ? "inset 0 0 0 1px var(--line-strong)" : undefined }}
                   />
-                  <span className="line-clamp-2 text-[0.7rem] leading-tight text-muted">{TOPICS[h.topic]}</span>
+                  <span className="line-clamp-2 text-[0.7rem] leading-tight text-muted">{TOPIC_LABEL[h.topic]}</span>
                 </span>
               ))}
             </div>
@@ -153,6 +153,18 @@ export default function HomePage() {
               להתחיל
               <ArrowLeft className="h-4.5 w-4.5" aria-hidden />
             </span>
+          </Link>
+
+          {/* past-years bank */}
+          <Link href="/past" className="group flex items-center gap-5 rounded-xl bg-field p-6 text-field-ink md:col-span-6">
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white/10 text-gold">
+              <ArchiveIcon className="h-9 w-9" />
+            </span>
+            <span className="flex-1">
+              <span className="block text-2xl font-extrabold">שנים קודמות</span>
+              <span className="block text-field-ink/75">מאגר נפרד של {PAST_QUESTIONS.length} שאלות ממבחנים של 2020 עד 2025, עם הסבר לכל תשובה ועזרה מהעוזר.</span>
+            </span>
+            <ArrowLeft className="h-6 w-6 transition-transform group-hover:-translate-x-1" aria-hidden />
           </Link>
 
           {/* assistant */}

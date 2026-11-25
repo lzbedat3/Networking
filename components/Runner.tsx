@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { scoreQuestion } from "@/lib/bank";
 import { LEVEL_VAR, levelOf } from "@/lib/mastery";
 import { recordResult } from "@/lib/stats";
-import { Question, TOPICS } from "@/lib/types";
+import { Question, TOPIC_LABEL } from "@/lib/types";
 import { openAssistant } from "./Assistant";
 import ConfirmDialog, { ConfirmSpec } from "./ConfirmDialog";
 import QuestionView from "./QuestionView";
@@ -173,7 +173,7 @@ export default function Runner({ session, onExit, onFinish, onStatsChange }: Pro
             <p className="truncate text-sm leading-tight font-bold">{session.title}</p>
             <p className="flex items-center gap-1.5 truncate text-xs text-muted">
               <span className="num">{idx + 1}/{qs.length}</span>
-              {!exam && <span>{TOPICS[q.topic]}</span>}
+              {!exam && <span>{TOPIC_LABEL[q.topic]}</span>}
               {q.source === "exam2026" && (
                 <span className="inline-flex items-center gap-0.5 font-semibold text-l2">
                   <Star className="h-3 w-3 fill-current" aria-hidden />

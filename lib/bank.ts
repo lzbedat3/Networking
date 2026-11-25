@@ -2,9 +2,15 @@ import { Question } from "./types";
 import { exam2026 } from "./questions/exam2026";
 import { appQuestions } from "./questions/app";
 import { transportQuestions } from "./questions/transport";
+import { PAST_QUESTIONS } from "./past";
 
 export const ALL_QUESTIONS: Question[] = [...exam2026, ...appQuestions, ...transportQuestions];
 export const EXAM_2026 = exam2026;
+export { PAST_QUESTIONS };
+
+/** any question, from either bank */
+export const findQuestion = (id: string | null | undefined) =>
+  id ? (ALL_QUESTIONS.find((q) => q.id === id) ?? PAST_QUESTIONS.find((q) => q.id === id)) : undefined;
 
 export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];

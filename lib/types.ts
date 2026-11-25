@@ -1,4 +1,5 @@
-export type Topic =
+/** the ten syllabus topics of quiz 1 (the route) */
+export type CoreTopic =
   | "delays"
   | "apps"
   | "http"
@@ -10,7 +11,10 @@ export type Topic =
   | "congestion"
   | "sockets";
 
-export const TOPICS: Record<Topic, string> = {
+/** past-years questions also reach beyond quiz 1 */
+export type Topic = CoreTopic | "network" | "general";
+
+export const TOPICS: Record<CoreTopic, string> = {
   delays: "השהיות וחישובי זמן",
   apps: "שכבת האפליקציה ושכבות",
   http: "HTTP",
@@ -21,6 +25,12 @@ export const TOPICS: Record<Topic, string> = {
   tcp: "TCP: Seq/ACK, טיימרים, Flow",
   congestion: "בקרת עומס",
   sockets: "תכנות Sockets",
+};
+
+export const TOPIC_LABEL: Record<Topic, string> = {
+  ...TOPICS,
+  network: "שכבת הרשת והלינק",
+  general: "כללי",
 };
 
 /** each topic borrows one of Wireshark's default coloring rules */
@@ -35,6 +45,8 @@ export const TOPIC_COLOR: Record<Topic, { bg: string; fg: string }> = {
   tcp: { bg: "var(--ws-tcp)", fg: "var(--ws-ink)" },
   congestion: { bg: "var(--ws-bad-bg)", fg: "var(--ws-bad-fg)" },
   sockets: { bg: "#e0f2f1", fg: "var(--ws-ink)" },
+  network: { bg: "var(--ws-arp)", fg: "var(--ws-ink)" },
+  general: { bg: "var(--ws-routing)", fg: "var(--ws-ink)" },
 };
 
 export type Option = {
@@ -67,8 +79,11 @@ export type Diagram =
 export type Question = {
   id: string;
   topic: Topic;
-  /** "exam2026" = taken from the real past quiz */
-  source: "exam2026" | "practice";
+  /** "exam2026" = the sample quiz · "past" = the past-years bank (2020–2025) */
+  source: "exam2026" | "practice" | "past";
+  /** past-years bank: academic year and where the question came from, e.g. "2021", "מועד ב" */
+  year?: string;
+  origin?: string;
   multi?: boolean;
   prompt: string;
   code?: string;

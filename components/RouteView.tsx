@@ -7,7 +7,7 @@ import { EXAM_2026 } from "@/lib/bank";
 import { EXAM_MINUTES, SIM_EXAMS } from "@/lib/exams";
 import { Hop, LEVEL_LABEL, LEVEL_VAR, MIN_EVIDENCE, NextStep, TOPIC_SOURCE, hops, latencyMs, levelOf, nextStep, readiness } from "@/lib/mastery";
 import { ExamStats, Stats } from "@/lib/stats";
-import { TOPICS, Topic } from "@/lib/types";
+import { TOPIC_LABEL, Topic } from "@/lib/types";
 import { openAssistant } from "./Assistant";
 
 
@@ -202,7 +202,7 @@ function HopRow({ hop, i, isNext, onClick }: { hop: Hop; i: number; isNext: bool
       <button
         onClick={onClick}
         className={`${ROW} relative w-full rounded-xl px-1 py-3 text-right transition-colors ${isNext ? "bg-route-soft" : "hover:bg-surface"}`}
-        aria-label={`${TOPICS[hop.topic]}: ${meta}`}
+        aria-label={`${TOPIC_LABEL[hop.topic]}: ${meta}`}
       >
         <span className="num text-sm text-muted">{String(hop.no).padStart(2, "0")}</span>
         <span className="flex justify-center" aria-hidden>
@@ -216,7 +216,7 @@ function HopRow({ hop, i, isNext, onClick }: { hop: Hop; i: number; isNext: bool
           />
         </span>
         <span className="min-w-0">
-          <span className="block font-bold leading-snug">{TOPICS[hop.topic]}</span>
+          <span className="block font-bold leading-snug">{TOPIC_LABEL[hop.topic]}</span>
           <span className="block text-sm text-muted">
             <span className="num hidden text-xs sm:inline" dir="ltr">{TOPIC_SOURCE[hop.topic]}</span>
             <span className="hidden sm:inline"> · </span>

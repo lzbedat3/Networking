@@ -32,6 +32,7 @@
 | **Route** | The ten syllabus topics are shown as hops on a route. Each hop shows your mastery, the last three answers, and a latency score. A topic is marked "mastered" only after at least 3 answers. |
 | **Practice** | One tap checks an answer. Every option gets its own explanation of why it is right or wrong, plus the principle behind the question. Diagrams, Wireshark captures and code are shown inline. |
 | **Simulations** | Six fixed exams of 15 to 22 questions each, with a 90-minute timer, free navigation, flag-for-review, and a question map. Scores and explanations appear only after you submit. |
+| **Past years** | A separate bank of 167 questions from 2020–2025 exams and quizzes, with its own page (`/past`): practice by topic or year, a random timed exam, unsolved and mistakes queues. Progress there stays out of the route and the simulations. |
 | **Sample quiz** | 14 questions in the exact style of the real quiz, including the original screenshots. |
 | **Tutor** | Sits under every question. It explains the question and gives hints. It reveals the answer only when the student explicitly asks for it in the chat. |
 | **Course assistant** | A floating bubble you can drag anywhere on the screen. It answers from the full course material (lectures, tirgulim, homework, code) and draws real tables, timing diagrams and SVG sketches. |
@@ -87,6 +88,7 @@ app/
 components/            UI: runner, question view, diagrams, chat, floating assistant
 lib/
   questions/           the question bank
+  past/                the past-years bank (separate pool)
   mastery.ts           readiness, topic levels, next-step logic
   exams.ts             the six fixed simulations
   stats.ts             local progress storage
