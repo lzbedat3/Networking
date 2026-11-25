@@ -37,6 +37,7 @@
 | **Tutor** | Sits under every question. It explains the question and gives hints. It reveals the answer only when the student explicitly asks for it in the chat. |
 | **Course assistant** | A floating bubble you can drag anywhere on the screen. It answers from the full course material (lectures, tirgulim, homework, code) and draws real tables, timing diagrams and SVG sketches. |
 | **Progress** | Stored on the device: per-question results, best score per simulation, and a mistakes review queue. |
+| **Cheat sheet** | A dense two-sided A4 summary of the quiz 1 material: `public/cheatsheet.html` (source) and `public/cheatsheet.pdf` (print), linked in the footer. |
 | **PWA** | Installable on phone and desktop. Works offline after the first visit (the assistant still needs a connection). |
 
 ## Tech stack

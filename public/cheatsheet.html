@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>דף עזר · תקשורת נתונים · בוחן 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Ubuntu:wght@400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --ink: #0e1a2b; --mut: #4a5568; --line: #9aa3b2; --v: #5b3fd6; --vs: #eeebfc; --g: #b07a12; --gs: #fbf1dc; --r: #b42318; --gr: #1f7a4a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #d9dde3; }
+  body { font-family: "Ubuntu", "Heebo", sans-serif; color: var(--ink); font-size: 6.55pt; line-height: 1.24; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; margin: 6mm auto; background: #fff; padding: 3mm; overflow: hidden; }
+  .cols { --z: 1; zoom: var(--z); width: calc(204mm / var(--z)); height: calc(291mm / var(--z)); column-count: 3; column-gap: 1.6mm; column-fill: auto; }
+  @media print { html, body { background: #fff; } .page { margin: 0; break-after: page; } }
+  .b { break-inside: avoid; border: 0.6pt solid var(--line); border-radius: 1.2mm; padding: 0.9mm 1.2mm 1mm; margin-bottom: 1.3mm; }
+  .b > h { display: block; font-family: "Heebo", "Ubuntu", sans-serif; font-weight: 800; font-size: 7.4pt; color: #fff; background: var(--v); margin: -0.9mm -1.2mm 0.8mm; padding: 0.35mm 1.2mm 0.45mm; border-radius: 1mm 1mm 0 0; }
+  .b.gold > h { background: var(--g); }
+  .b.ink > h { background: var(--ink); }
+  .b.red > h { background: var(--r); }
+  h5 { font-family: "Heebo", sans-serif; font-size: 6.7pt; font-weight: 800; color: var(--v); margin: 0.7mm 0 0.2mm; }
+  p { margin: 0 0 0.45mm; }
+  ul { margin: 0 0 0.4mm; padding: 0 2.6mm 0 0; }
+  li { margin: 0 0 0.15mm; }
+  b { font-weight: 700; }
+  .f { direction: ltr; unicode-bidi: isolate; font-family: "Ubuntu Mono", "Heebo", monospace; font-size: 6.9pt; background: var(--vs); border-radius: 0.6mm; padding: 0 0.6mm; white-space: nowrap; }
+  .fb { direction: ltr; text-align: left; font-family: "Ubuntu Mono", "Heebo", monospace; font-size: 6.85pt; background: var(--vs); border-right: 0.9mm solid var(--v); border-left: 0; border-radius: 0.8mm; padding: 0.4mm 1mm; margin: 0.3mm 0 0.6mm; line-height: 1.28; white-space: pre-wrap; }
+  .gs { background: var(--gs); border-right-color: var(--g); }
+  .l { direction: ltr; unicode-bidi: isolate; }
+  .warn { color: var(--r); font-weight: 700; }
+  .ok { color: var(--gr); font-weight: 700; }
+  .mut { color: var(--mut); }
+  table { width: 100%; border-collapse: collapse; margin: 0.3mm 0 0.6mm; font-size: 6.3pt; }
+  th, td { border: 0.4pt solid #c3c9d3; padding: 0.15mm 0.6mm; text-align: right; vertical-align: top; }
+  th { background: #eef1f5; font-family: "Heebo", sans-serif; font-weight: 700; }
+  td.l, th.l { text-align: left; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8mm; }
+  .head { break-inside: avoid; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1pt solid var(--ink); margin-bottom: 1.2mm; padding-bottom: 0.4mm; }
+  .head b { font-family: "Heebo", sans-serif; font-size: 9pt; font-weight: 800; }
+  .head span { font-size: 6pt; color: var(--mut); }
+</style>
+</head>
+<body>
+
+<!-- ═════════════ FRONT ═════════════ -->
+<div class="page"><div class="cols" style="--z: 1.237">
+  <div class="head"><b>דף עזר · תקשורת נתונים 214.2900 · בוחן 1</b><span>עמ' 1/2</span></div>
+
+  <div class="b">
+    <h>השהיות (Delays): הנוסחאות</h>
+    <div class="fb">d_nodal = d_proc + d_queue + d_trans + d_prop
+d_trans = L / R      (L בביטים! B×8)
+d_prop  = d / s  = מרחק × factor (μs/km)
+Traffic intensity = L·a / R   (≥1 → התור גדל לאינסוף)</div>
+    <ul>
+      <li><b>Trans</b> = זמן לדחוף את כל החבילה ללינק (תלוי בגודל וב-R, לא במרחק). <b>Prop</b> = זמן של ביט אחד לעבור את הלינק (תלוי במרחק ובמהירות, לא בגודל).</li>
+      <li>אף אחד מהם לא "תמיד קצר" מהשני → "כל התשובות אינן נכונות".</li>
+      <li>אנלוגיית השיירה: מכונית = ביט, שיירה = חבילה, אגרה = ראוטר (service = trans), כביש = prop.</li>
+    </ul>
+    <h5>שיטת ציר הזמן של הקורס (תרגול 1)</h5>
+    <div class="fb gs">סה"כ = proc(A) + L/R + prop + proc(B)
+"ביט אחד מגיע ל-B"      = prop (בלבד)
+"כל החבילה על הלינק"     = L/R
+"עד שמגיעה כולה ל-B"     = L/R + prop (+proc לפי השאלה)</div>
+    <h5>יחידות (לרוב בחישוב ב-μs)</h5>
+    <ul>
+      <li><span class="f">1 Mbps = 1 bit/μs</span> → <span class="f">L/R[μs] = bits / Mbps</span>. <span class="f">1 Gbps = 1000 bit/μs</span>.</li>
+      <li><span class="f">1 B = 8 bit</span>, <span class="f">MBps ≠ Mbps</span>. בשאלות: <span class="f">1K = 1000</span> (אלא אם נאמר 1024).</li>
+      <li><span class="f">1 s = 10³ ms = 10⁶ μs</span>. מהירות באור ≈ <span class="f">2×10⁸ m/s</span> → <span class="f">5 μs/km</span>.</li>
+    </ul>
+    <h5>דוגמה (שאלת בוחן)</h5>
+    <div class="fb">1250B, 50Mbps, 2000km, 5μs/km, proc 30μs
+L/R = 10000/50 = 200μs ; prop = 2000×5 = 10000μs
+סה"כ = 30 + 200 + 10000 + 30 = 10,260 μs</div>
+    <div class="fb">1024B, 80Mbps, 4000km, 10μs/km, proc 60μs
+L/R = 8192/80 = 102.4 ; prop = 40,000
+ביט אחד: 40,000 μs ; סה"כ: 60+102.4+40000+60 = 40,222.4</div>
+  </div>
+
+  <div class="b">
+    <h>כמה לינקים / כמה חבילות</h>
+    <ul>
+      <li><b>Store-and-forward</b>: נתב מקבל את כל החבילה לפני שהוא משדר אותה הלאה.</li>
+      <li>חבילה אחת דרך N לינקים זהים: <span class="f">N·L/R</span> (+props +procs).</li>
+      <li>P חבילות דרך N לינקים זהים: <span class="f">(N+P−1)·L/R</span>.</li>
+      <li>קצבים שונים (R1,R2,R3): כל לינק <span class="f">L/Ri</span> בנפרד וסוכמים. P חבילות: חבילה ראשונה עוברת את כולם, השאר מוגבלות ע"י צוואר הבקבוק: <span class="f">ΣL/Ri + (P−1)·L/Rmin</span>.</li>
+      <li><b>Throughput</b> (bits/sec) מקצה לקצה = <span class="f">min(R1..Rn)</span> = צוואר הבקבוק. <b>Bandwidth</b> = כמות נתונים שהרשת מסוגלת להעביר ביחידת זמן.</li>
+      <li>"גודל החבילה כש-trans כולל T דרך K רשתות זהות R": <span class="f">L = T·R / K</span> (למשל 4000ms, 4 רשתות, 3Mbps → 3,000,000 bit = 375,000 B).</li>
+    </ul>
+  </div>
+
+  <div class="b gold">
+    <h>מיתוג מעגלים מול מיתוג מנות</h>
+    <ul>
+      <li><b>Circuit</b>: משאבים שמורים (FDM תדר / TDM חריצי זמן), קצב מובטח, בזבוז כשאין שידור. <b>חיסרון</b>: פחות משתמשים יכולים לשתף את הרשת.</li>
+      <li><b>Packet</b>: statistical multiplexing, store-and-forward, תורים ואובדן, אין קצב מובטח, יותר משתמשים.</li>
+      <li>TDM: קצב לכל משתמש = <span class="f">R / slots</span>. זמן = <span class="f">setup + bits / (R/slots)</span>.</li>
+      <li>תרשים frequency×time עם פסים לאורך הזמן = <b>TDM</b>; פסים לאורך התדר = <b>FDM</b>.</li>
+    </ul>
+  </div>
+
+  <div class="b ink">
+    <h>מודל השכבות (5 שכבות TCP/IP)</h>
+    <table>
+      <tr><th>שכבה</th><th>PDU</th><th>כתובת</th><th>דוגמאות</th></tr>
+      <tr><td>Application</td><td>message</td><td>שם/URL</td><td class="l">HTTP, DNS, SMTP, FTP, SIP</td></tr>
+      <tr><td>Transport</td><td>segment</td><td>port 16bit</td><td class="l">TCP, UDP</td></tr>
+      <tr><td>Network</td><td>datagram/packet</td><td>IP 32bit</td><td class="l">IP, ICMP, TTL, IGRP, RIP</td></tr>
+      <tr><td>Link</td><td>frame</td><td>MAC 48bit</td><td class="l">Ethernet, WiFi, ARP*, switch</td></tr>
+      <tr><td>Physical</td><td>bits</td><td>-</td><td class="l">hub, repeater, cable</td></tr>
+    </table>
+    <ul>
+      <li>Encapsulation: <span class="f">message → segment → datagram → frame</span>; כל שכבה מוסיפה header.</li>
+      <li>host: 5 שכבות. <b>router</b>: Physical+Link+Network. <b>switch</b>, NIC, מודם: Physical+Link.</li>
+      <li><b>קצה-לקצה</b>: Application, Transport. <b>Per hop</b>: Network, Link, Physical.</li>
+      <li>תהליך רץ ב-Application. תקשורת process↔process = <b>Transport</b>; host↔host = Network. ניתוב (routing) = Network. חלוקת קובץ לסגמנטים = Transport.</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>HTTP: זמני טעינה (RTT)</h>
+    <p>RTT = זמן הלוך-חזור של חבילה קטנה. 1 RTT להקמת TCP + 1 RTT לבקשה/תגובה.</p>
+    <table>
+      <tr><th>מצב (HTML + N אובייקטים)</th><th class="l">זמן</th></tr>
+      <tr><td>Non-persistent (1.0), טורי</td><td class="l">2RTT·(N+1) + trans</td></tr>
+      <tr><td>Non-persistent, k חיבורים מקבילים</td><td class="l">2RTT + 2RTT·⌈N/k⌉</td></tr>
+      <tr><td>Persistent (1.1) בלי pipelining</td><td class="l">2RTT + N·RTT</td></tr>
+      <tr><td>Persistent עם pipelining</td><td class="l">2RTT + 1RTT</td></tr>
+    </table>
+    <ul>
+      <li>HTTP 1.0: <b>חיבור TCP לכל אובייקט</b>: דף + 6 תמונות = <b>7</b> חיבורים. HTTP 1.1 persistent: חיבור אחד.</li>
+      <li>קובץ בודד = חיבור TCP אחד (לא שניים). HTTP <b>stateless</b>, מעל TCP 80. HTTPS = TLS על 443.</li>
+      <li>HTTP/2: frames בינאריים, multiplexing. HTTP/3: מעל <b>QUIC/UDP</b>. 1.1 לא נבנה ל"גלישה בטוחה".</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>HTTP: הודעות וקודים</h>
+    <div class="fb">GET /index.html HTTP/1.1      ← request line
+Host: www.x.com               ← חובה מ-1.1
+If-Modified-Since: &lt;date&gt;
+(שורה ריקה)  [body ב-POST]</div>
+    <ul>
+      <li>GET (פרמטרים ב-URL), POST (ב-body), HEAD (בלי האובייקט), PUT, DELETE.</li>
+      <li>200 OK · 301 Moved · <b>304 Not Modified</b> · 400 Bad Request · 401 Unauthorized · 403 Forbidden · 404 Not Found · 500 · 503 · 505 Version.</li>
+      <li><b>Conditional GET</b>: לא השתנה מאז If-Modified-Since → <b>304 בלי body</b>; השתנה → 200 + data. משווים מול If-Modified-Since (לא Date).</li>
+      <li>HTTPS ב-Wireshark: רק "Application Data". HTTP רגיל: סיסמה גלויה ב-POST.</li>
+      <li>קבוצות הודעות: <b>2</b> (request, response).</li>
+    </ul>
+  </div>
+
+  <div class="b gold">
+    <h>Cookies ו-Proxy (Web cache)</h>
+    <ul>
+      <li>4 רכיבים: <span class="f">Set-Cookie</span> ב-<b>Response</b>, <span class="f">Cookie</span> ב-Request, קובץ <b>אצל הלקוח</b> (דפדפן), DB בשרת. צריך: דפדפן + שרת HTTP. פותר את ה-stateless.</li>
+      <li>ניקוי cache מוחק עותקי תוכן; ניקוי cookies מוחק זהות/מצב.</li>
+      <li><b>Proxy = גם לקוח וגם שרת</b>. hit → עותק מקומי; miss → מביא מ-origin, שומר, שולח.</li>
+      <li>בקשות ל-origin = <span class="f">(1 − hit rate) × total</span> (30% hit, 250 → 175).</li>
+      <li>יתרון: קיצור זמן תגובה + הורדת עומס מה-access link (זול מהרחבת הלינק).</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>DNS</h>
+    <ul>
+      <li><b>מבוזר + היררכי</b> (לא מרכזי: single point of failure, נפח, מרחק, תחזוקה).</li>
+      <li><b>Root</b> (13 שמות לוגיים a–m, anycast, מנוהל גלובלית) → <b>TLD</b> (com, edu, il; .edu = Educause) → <b>Authoritative</b> (של הארגון).</li>
+      <li><b>Local NS</b>: של ה-ISP/ארגון, <b>לא חלק מההיררכיה</b>, נשאל ראשון, יש לו cache. Root לא מתרגם לכל ארגון.</li>
+      <li><b>איטרטיבי</b>: ה-Local פונה לכל שרת בעצמו. <b>רקורסיבי</b>: כל שרת פונה לבא (עומס על העליונים).</li>
+      <li>סדר מטמון: דפדפן → מערכת הפעלה → Local NS. אין חבילות DNS ב-Wireshark → התשובה במטמון.</li>
+    </ul>
+    <table>
+      <tr><th>Type</th><th>name → value</th></tr>
+      <tr><td class="l">A</td><td>שם host → IP</td></tr>
+      <tr><td class="l">NS</td><td>דומיין → שם השרת הסמכותי</td></tr>
+      <tr><td class="l">CNAME</td><td>alias → שם קנוני (host aliasing)</td></tr>
+      <tr><td class="l">MX</td><td>דומיין → שרת דואר (mail aliasing)</td></tr>
+    </table>
+    <ul>
+      <li>RR = <span class="f">(name, value, type, TTL)</span>. TLD מחזיר NS + A (glue). 2 סוגי הודעות: query, reply.</li>
+      <li><b>UDP 53</b>; <b>TCP 53</b> לתשובה גדולה / zone transfer. DoH 443, DoT 853.</li>
+      <li><span class="f">nslookup name [server]</span>; "Non-authoritative answer" = מהמטמון. <span class="f">ipconfig /displaydns /flushdns /all</span>.</li>
+    </ul>
+  </div>
+
+  <div class="b ink">
+    <h>שכבת התעבורה, Mux/Demux, פורטים</h>
+    <ul>
+      <li>תקשורת לוגית בין <b>תהליכים</b>. אן וביל: בתים = hosts, ילדים = processes, אן וביל = transport, הדואר = network.</li>
+      <li><b>port</b> (16 ביט) מזהה process; ההקצאה ע"י <b>מערכת ההפעלה</b>. 0–1023 well-known, 1024–65535 ephemeral.</li>
+      <li>80 HTTP · 443 HTTPS · 53 DNS · 25 SMTP · 21 FTP.</li>
+      <li><b>UDP demux</b>: לפי <span class="f">(dst IP, dst port)</span>: לקוחות שונים → <b>אותו סוקט</b>.</li>
+      <li><b>TCP demux</b>: 4-tuple <span class="f">(src IP, src port, dst IP, dst port)</span>: סוקט נפרד לכל חיבור. אותו src port מ-2 IP שונים → 2 סוקטים, אין התנגשות.</li>
+      <li>שרת עם 1000 חיבורי TCP: <b>1001 sockets</b> (+welcome), אבל <b>מספר הלקוחות לא ידוע</b> (דפדפן פותח כמה).</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>UDP + Checksum</h>
+    <ul>
+      <li>Best effort, connectionless, בלי flow/congestion control, בלי סדר. כותרת <b>8 בתים</b>: src port, dst port, length, checksum. גודל מינימלי 8.</li>
+      <li>למה UDP: אין handshake, אין מצב, כותרת קטנה, בלי ויסות קצב (DNS, VoIP, streaming, QUIC). UDP + seq + ACK + retransmission = העברה אמינה.</li>
+    </ul>
+    <div class="fb">Checksum: חיבור מילים של 16 ביט
+carry מחוץ ל-16 ביט → wraparound (+1)
+בסוף: היפוך כל הביטים (1's complement)
+מקבל: סוכם הכל + checksum = 1111…1 → תקין</div>
+    <p>מזהה שגיאות בלבד (לא מתקן, לא תמיד מזהה 2 שגיאות שמתקזזות).</p>
+  </div>
+</div></div>
+
+<!-- ═════════════ BACK ═════════════ -->
+<div class="page"><div class="cols" style="--z: 1.169">
+  <div class="head"><b>דף עזר · תקשורת נתונים · בוחן 1</b><span>עמ' 2/2</span></div>
+
+  <div class="b">
+    <h>העברה אמינה (rdt)</h>
+    <ul>
+      <li>rdt2: checksum + ACK/NAK. ACK שנפגם → כפילויות → <b>seq# 0/1</b>. rdt3: אובדן → <b>טיימר</b>.</li>
+      <li>ACK אבד: טיימר A פוקע → שולח שוב → B מזהה כפילות לפי seq, <b>זורק</b> ושולח ACK שוב.</li>
+    </ul>
+    <div class="fb">Stop-and-Wait: U = (L/R) / (RTT + L/R)
+1Gbps, 8000bit, RTT 30ms → 0.008/30.008 = 0.027%
+Pipelining עם N חבילות: U = N·(L/R)/(RTT+L/R)</div>
+    <table>
+      <tr><th></th><th>Go-Back-N</th><th>Selective Repeat</th></tr>
+      <tr><td>ACK</td><td>מצטבר</td><td>לכל חבילה</td></tr>
+      <tr><td>טיימר</td><td>אחד (לוותיקה)</td><td>לכל חבילה</td></tr>
+      <tr><td>Timeout</td><td>כל החלון מחדש</td><td>רק החבילה</td></tr>
+      <tr><td>לא לפי סדר</td><td><b>זורק</b> + ACK לאחרונה תקינה</td><td>שומר ב-buffer</td></tr>
+    </table>
+    <p>GBN N=4: 0,1,2,3, 1 אבד → ACK0, ACK0, ACK0 → timeout → שולח <b>1,2,3</b>. Stop&amp;wait שומר על סדר.</p>
+  </div>
+
+  <div class="b ink">
+    <h>TCP: Seq / ACK</h>
+    <ul>
+      <li>point-to-point, <b>full duplex</b>, byte stream, MSS (לרוב 1460). כותרת מינ' <b>20 בתים</b>.</li>
+      <li><b>Seq</b> = מספר הבית הראשון בסגמנט. <b>ACK</b> = הבית הבא שמצופה (מצטבר).</li>
+    </ul>
+    <div class="fb gs">Next Seq = Seq + Len     (לא Seq+1!)
+SYN ו-FIN "צורכים" מספר אחד
+Telnet: A: Seq=42,ACK=79,'C' → B: Seq=79,ACK=43
+אבד 1007, הגיע 1008 → ACK = Seq של 1007 (dup)</div>
+    <ul>
+      <li>B בלי נתונים עדיין שולח ACKs (סגמנטים ריקים). ACK על piggyback כשיש נתונים.</li>
+      <li>TCP שולח מחדש גם ב-<b>timeout</b> (לא רק אחרי 3 dup ACKs).</li>
+    </ul>
+    <table>
+      <tr><th>אירוע במקבל (RFC 1122)</th><th>תגובה</th></tr>
+      <tr><td>לפי הסדר, אין ACK ממתין</td><td>delayed ACK עד <b>200ms</b></td></tr>
+      <tr><td>לפי הסדר, יש ACK ממתין</td><td>ACK מצטבר מיד</td></tr>
+      <tr><td>שלא לפי הסדר (חור)</td><td><b>dup ACK</b> מיד, שומר ב-buffer</td></tr>
+      <tr><td>ממלא חור</td><td>ACK מיד</td></tr>
+    </table>
+    <p><b>Fast retransmit</b> (חלק מה-reliable data transfer): <b>3 dup ACKs</b> → שליחה מחדש לפני timeout. ACKs 1000,2000,2000,2000,2000 → שולח מחדש 2000.</p>
+  </div>
+
+  <div class="b">
+    <h>TCP: RTT וטיימר</h>
+    <div class="fb">EstRTT  = (1−α)·EstRTT + α·SampleRTT     α=0.125
+DevRTT  = (1−β)·DevRTT + β·|Sample−Est|   β=0.25
+Timeout = EstRTT + 4·DevRTT
+100,140 → 0.875·100+0.125·140 = 105
+Est 200, Dev 25 → 200 + 4·25 = 300</div>
+    <ul>
+      <li>SampleRTT <b>לא</b> נמדד לכל סגמנט, ו<b>לא</b> על סגמנט ששודר מחדש. טיימר יחיד לוותיק שלא אושר.</li>
+      <li>Timeout חוזר: הטיימר <b>מוכפל</b> (exponential backoff: 1,3,6,12,24,48,64…) = Retransmission Timeout.</li>
+    </ul>
+  </div>
+
+  <div class="b gold">
+    <h>Flow control + SWS + Nagle</h>
+    <div class="fb">RcvWindow = RcvBuffer − (LastByteRcvd − LastByteRead)
+65536 − (50000 − 30000) = 45,536
+Sent−Acked ≤ min(CongWin, RcvWindow)</div>
+    <ul>
+      <li>נקבע ע"י <b>המקבל</b> (חלון המקבל). חלון 0 → השולח עוצר (zero window, probe). החלון <b>משתנה</b> לאורך החיבור.</li>
+      <li><b>Silly Window</b>: tinygram 1B + 40B כותרת (20 TCP + 20 IP) = 97.6% תקורה.</li>
+      <li><b>Nagle</b> (שולח): מידע קטן נשלח רק כשיש MSS מלא או כשהגיע ACK על הקודם.</li>
+      <li><b>Clark</b> (מקבל): לפרסם 0 עד שיש MSS פנוי או 50% buffer. Delayed ACK.</li>
+      <li>Nagle + delayed ACK → השרת מחכה ל-ACK. תגובה מהירה (מקלדת/מצלמה) → <b>לכבות Nagle</b>.</li>
+    </ul>
+  </div>
+
+  <div class="b red">
+    <h>TCP: חיבור וסגירה</h>
+    <div class="fb">SYN(seq=x) → SYN-ACK(seq=y, ack=x+1) → ACK(seq=x+1, ack=y+1)
+ISN 500 / 9000 → שלישי: seq=501, ack=9001</div>
+    <ul>
+      <li>למה 3 ולא 2: שני הצדדים קובעים ומאשרים ISN; מונע delayed duplicate SYN.</li>
+      <li>מצבים: לקוח <span class="f">CLOSED→SYN_SENT→ESTABLISHED</span>; שרת <span class="f">LISTEN→SYN_RCVD→ESTABLISHED</span>.</li>
+      <li>סגירה: <b>דו-צדדית</b> FIN, ACK, FIN, ACK. <b>Timed wait</b> אצל מי שסגר ראשון.</li>
+      <li><b>שני הצבאות</b> = בעיית <b>סגירת</b> קשר: אין ודאות מלאה; מי ששלח את ההודעה האחרונה לוקח סיכון (צבא 1).</li>
+      <li>SYN flood: תור חצי-פתוחים מתמלא.</li>
+      <li>Wireshark: SYN, SYN-ACK, ACK, FIN… Len=0 בכולם = פתיחה וסגירה <b>בלי נתונים</b>.</li>
+    </ul>
+  </div>
+
+  <div class="b ink">
+    <h>בקרת עומס (Congestion control)</h>
+    <ul>
+      <li>מבוסס <b>שולח</b>, מגן על הרשת (flow control מגן על המקבל). אובדן = timeout או 3 dup ACKs.</li>
+    </ul>
+    <table>
+      <tr><th>אירוע</th><th>ssthresh</th><th>cwnd</th></tr>
+      <tr><td>Slow start (cwnd&lt;ssthresh)</td><td>-</td><td>×2 לכל RTT (+1MSS לכל ACK)</td></tr>
+      <tr><td>Cong. avoidance</td><td>-</td><td>+1 MSS לכל RTT</td></tr>
+      <tr><td><b>3 dup ACKs</b></td><td>cwnd/2</td><td>= ssthresh (fast recovery)</td></tr>
+      <tr><td><b>Timeout</b></td><td>cwnd/2</td><td><b>1 MSS</b> → slow start</td></tr>
+    </table>
+    <ul>
+      <li>cwnd=16, ssthresh=32, 3dup → ss=8, cwnd=8. cwnd=20 + timeout → ss=10, cwnd=1.</li>
+      <li>מ-1 בלי אובדן: 1→2→4→8 (אחרי 3 RTT=8). AIMD = שן מסור.</li>
+      <li>Throughput ממוצע ≈ <span class="f">0.75·W/RTT</span> (W=120,000B, RTT 0.1s → 7.2Mbps).</li>
+      <li><b>Fairness</b>: K חיבורים → R/K כל אחד (התכנסות לאלכסון). חיבורים מקבילים מקבלים יותר (9 קיימים + 11 חדשים → 11/20 R). <b>UDP לא הוגן</b>.</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>Sockets (פייתון)</h>
+    <table>
+      <tr><th>UDP server</th><th>TCP server</th></tr>
+      <tr><td class="l">socket(AF_INET, SOCK_DGRAM)<br>bind(('',5000))<br>while: recvfrom → sendto</td><td class="l">socket(AF_INET, SOCK_STREAM)<br>bind(('',27015)) → listen(5)<br>while: accept → while: recv/send<br>close</td></tr>
+      <tr><th>UDP client</th><th>TCP client</th></tr>
+      <tr><td class="l">socket → sendto(msg,(ip,port))<br>→ recvfrom → close</td><td class="l">socket → connect((ip,port))<br>→ send/recv → close</td></tr>
+    </table>
+    <ul>
+      <li><b>bind</b> = קושר port (וכתובת) לסוקט. <span class="f">''</span> = כל הממשקים. <b>listen(backlog)</b> = תור ממתינים.</li>
+      <li><b>accept</b> מחזיר <b>סוקט חדש</b> + כתובת הלקוח. UDP בלי accept/listen/connect.</li>
+      <li>לולאות מקוננות מינ': <b>UDP 1, TCP 2</b>. n חיבורי TCP → <b>n+1</b> סוקטים.</li>
+      <li>שרת UDP עם sendto לפני recvfrom: לא יודע לאן לשלוח.</li>
+      <li><b>Non-blocking</b>: התוכנית לא נתקעת ב-recv/accept, ממשיכה לשרת לקוחות אחרים (גם לקוחות שקטים). Blocking: נתקע עד שמגיע מידע.</li>
+      <li>"recv ואז send" = שרת. send/recv בלי כתובת = TCP.</li>
+    </ul>
+  </div>
+
+  <div class="b gold">
+    <h>Wireshark</h>
+    <ul>
+      <li>מסננים: <span class="f">http</span> <span class="f">dns</span> <span class="f">tcp.port == 80</span> <span class="f">udp.port == 5000</span> <span class="f">ip.addr == x</span> <span class="f">http.request.method == "GET"</span> <span class="f">tcp.flags.syn==1 &amp;&amp; tcp.flags.ack==0</span></li>
+      <li>צבעים: TCP לילך, HTTP ירוק, UDP/DNS תכלת, SYN/FIN אפור, Bad TCP שחור/אדום.</li>
+      <li>פרטים: Frame → Ethernet II (MAC) → IP → TCP (ports, Seq, Ack, Len) → HTTP.</li>
+      <li>לכידה על אותו מחשב (localhost): אפשרי, אבל צריך לבחור במפורש ממשק <b>Npcap Loopback</b>.</li>
+      <li>[Time since request] בתשובה שנייה על חיבור persistent ≈ 1 RTT.</li>
+    </ul>
+  </div>
+
+  <div class="b red">
+    <h>עובדות שחוזרות במבחנים קודמים</h>
+    <ul>
+      <li>SIP = Application · IGRP, ICMP, TTL, Port-forwarding = Network · Fast Retransmit = reliable data transfer.</li>
+      <li>גודל מינימלי: UDP 8 · TCP 20 · IPv4 20 · Ethernet frame 64 בתים. IPv6 = 128 ביט.</li>
+      <li>HTTP (מעל TCP) ברשת בלי שגיאות: מגיע לתהליך לפי הסדר = <b>כן</b>. גם עם שגיאות: <b>כן</b> (TCP מסדר). DNS/UDP: <b>לא</b> מובטח.</li>
+      <li>גם אם כל החבילות מגיעות, עדיין צריך TCP (סדר, flow, congestion).</li>
+      <li>Root DNS <b>לא</b> אחראי לתרגם לכל ארגון; Local NS <b>לא</b> בהיררכיה.</li>
+      <li>אין חבילת DNS בגלישה → במטמון. cookie נשמר אצל <b>הלקוח</b>.</li>
+      <li>Throughput נמדד ב-bits/sec. RTT = Round Trip Time. Propagation = d/s.</li>
+      <li>פרוטוקולי HTTP, DNS, WhatsApp: כולם client/server.</li>
+      <li>"כל התשובות אינן נכונות": בדקו תמיד, מופיעה הרבה כתשובה נכונה ("תמיד קצר יותר", "זהה ל-UDP").</li>
+      <li>"לא ניתן לחשב": כשחסר נתון (למשל גודל data בלי גודל frame).</li>
+      <li>רב-ברירה: סימון שגוי <b>מוריד</b> ניקוד: ציון = נכונים/סה"כ_נכונים − שגויים/סה"כ_שגויים.</li>
+    </ul>
+  </div>
+
+  <div class="b">
+    <h>שכבת הרשת והלינק (הופיע בשנים קודמות)</h>
+    <ul>
+      <li>CIDR <span class="f">a.b.c.d/x</span>: x ביטי רשת. /21 → 148.224.128.0–135.255. hosts = <span class="f">2^(32−x) − 2</span> (255.255.240.0 = /20 → 4094).</li>
+      <li>מ-/25 ל-/30: <span class="f">2^(30−25) = 2^5</span> תתי-רשתות. אי אפשר להגדיר /25 בתוך מרחב /26.</li>
+      <li>Class A 0–127, <b>B 128–191</b>, C 192–223. בעבר Classful, היום CIDR. פתרון למחסור: NAT + IPv6.</li>
+      <li>NAT משנה את כתובת המקור ביציאה; NAPT מתרגם גם פורטים. 172.20.x פרטי → גלישה דרך NAT.</li>
+      <li><b>ARP</b>: IP → MAC. ping לפי שם: ARP (gateway/DNS), DNS query/reply, ואז ICMP.</li>
+      <li>Collision domain: כל פורט של switch/router = דומיין; hub = דומיין אחד.</li>
+      <li>frame עצמו: כתובות MAC של מקור ויעד.</li>
+    </ul>
+  </div>
+  <div class="b gold">
+    <h>שכבת האפליקציה: ארכיטקטורות ודרישות</h>
+    <ul>
+      <li><b>Client-server</b>: שרת תמיד דלוק, IP קבוע, data centers; לקוחות לא מדברים ביניהם. <b>P2P</b>: אין שרת קבוע, self-scalability, peers מתחלפים. Overlay network ב-P2P = peers + קשרי TCP לוגיים, <b>בלי ראוטרים</b>.</li>
+      <li>דרישות: data integrity (אמינות), throughput, timing, security. TCP: אמינות, flow, congestion, connection-oriented; <b>לא</b>: timing, throughput מובטח, אבטחה. UDP: כלום מזה.</li>
+      <li>socket = הממשק בין תהליך לשכבת התעבורה ("דלת"). מזהה תהליך = IP + port. Socket מזהה תקשורת בין שני תהליכים.</li>
+      <li>Cloud: מבוסס על <b>מודל כלכלי</b> (pay per use).</li>
+    </ul>
+  </div>
+
+  <div class="b red">
+    <h>חישובים פתורים משאלות קודמות</h>
+    <div class="fb">HTML + 6 objects, persistent, no pipelining:
+  2RTT + 6·1RTT = 8RTT ; HTTP 1.0 serial: 2RTT·7 = 14RTT
+TDM: 30KB in 5s, link 1.536Mbps → slots?
+  240,000 bit / 5s = 48kbps → 1536k / 48k = 32
+1.875MB over 3 equal links, total trans 3000ms:
+  1 link = 1000ms → 15,000,000 bit / 1s = 15Mbps
+2500B over 10Mbps then 2Mbps (store-and-forward):
+  20000/10 + 20000/2 = 2000 + 10000 = 12,000 μs</div>
+    <ul>
+      <li>Delayed ACK + Nagle בתרשים: כל צד שולח data עם ACK, ולפעמים "ack" לבד או 2 סגמנטים ביחד = <b>Nagle</b>.</li>
+      <li>Telnet: הלקוח שולח תו → השרת מחזיר הד (echo) + ACK → הלקוח מאשר.</li>
+      <li>Sequence של אליס (אתר דינמי, אחרי הפסקה, cache תקף): SYN, SYN-ACK, ACK+GET (אין DNS/ARP חדשים).</li>
+    </ul>
+  </div>
+</div></div>
+
+</body>
+</html>

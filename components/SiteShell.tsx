@@ -82,6 +82,11 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
                     תרגול מעורב
                   </Link>
                 </li>
+                <li>
+                  <a href="/cheatsheet.pdf" target="_blank" rel="noreferrer" className="text-field-ink/75 transition-colors hover:text-field-ink">
+                    דף עזר להדפסה (PDF)
+                  </a>
+                </li>
               </ul>
             </nav>
 
