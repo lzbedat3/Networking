@@ -234,3 +234,17 @@ export const focusC: Record<string, Focus> = {
     cond: ["האתר הינו דינמי", "ויש cache גם ל-browser", "בדיוק לפני שגלשה לאתר"],
   },
 };
+
+/** the original photos each question was taken from (sanitized copies) */
+export const srcC: Record<string, string[]> = {
+  "pyC-1": ["/past/src/43.jpg", "/past/src/45.jpg"],
+  "pyC-2": ["/past/src/44.jpg"],
+  "pyC-3": ["/past/src/46.jpg"],
+  "pyC-4": ["/past/src/47.jpg"],
+  "pyC-5": ["/past/src/49.jpg"],
+  "pyC-6": ["/past/src/50.jpg"],
+  "pyC-7": ["/past/src/51.jpg", "/past/src/52.jpg"],
+  "pyC-8": ["/past/src/53.jpg"],
+  "pyC-9": ["/past/src/56-1.jpg", "/past/src/56-2.jpg", "/past/src/56-3.jpg", "/past/src/56-4.jpg", "/past/src/56-5.jpg"],
+  "pyC-10": ["/past/src/54.jpg"],
+};

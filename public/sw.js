@@ -1,5 +1,5 @@
 /* Service worker: the app works offline after the first visit (except the Claude assistant). */
-const VERSION = "v3";
+const VERSION = "v4";
 const STATIC = `static-${VERSION}`;
 const PAGES = `pages-${VERSION}`;
 const PRECACHE = ["/", "/route", "/simulations", "/past", "/run", "/icons/icon-dark-192.png", "/icons/icon-dark-512.png"];

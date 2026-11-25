@@ -280,3 +280,17 @@ export const focusA: Record<string, Focus> = {
   "pyA-9": { ask: ["תפקידה של פונקציית Bind"] },
   "pyA-10": { ask: ["מספר הלולאות המקוננות המינימלי"] },
 };
+
+/** the original photos each question was transcribed from (duplicates included) */
+export const srcA: Record<string, string[]> = {
+  "pyA-1": ["/past/src/1.jpg"],
+  "pyA-2": ["/past/src/19.jpg", "/past/src/2.jpg"],
+  "pyA-3": ["/past/src/3.jpg"],
+  "pyA-4": ["/past/src/4.jpg"],
+  "pyA-5": ["/past/src/15.jpg", "/past/src/5.jpg"],
+  "pyA-6": ["/past/src/7.jpg", "/past/src/13.jpg", "/past/src/18.jpg"],
+  "pyA-7": ["/past/src/11.jpg"],
+  "pyA-8": ["/past/src/14.jpg", "/past/src/12.jpg"],
+  "pyA-9": ["/past/src/16.jpg"],
+  "pyA-10": ["/past/src/17.jpg"],
+};

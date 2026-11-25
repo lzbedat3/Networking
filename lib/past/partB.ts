@@ -246,3 +246,18 @@ export const focusB: Record<string, Focus> = {
   "pyB-10": { ask: ["מה נכון"], cond: ["1000 חיבורי TCP"] },
   "pyB-11": { ask: ["רמת הוודאות של תיאום ההתקפה"], cond: ["כל שלוש ההודעות עברו בהצלחה", "צבא שלא יקבל אחת ההודעות להן הוא מחכה, פשוט לא יתקוף"] },
 };
+
+/** the original photos of each question (sanitized copies), for the "show the original" toggle */
+export const srcB: Record<string, string[]> = {
+  "pyB-1": ["/past/src/21.jpg", "/past/src/33.jpg"],
+  "pyB-2": ["/past/src/22.jpg"],
+  "pyB-3": ["/past/src/23.jpg", "/past/src/37.jpg", "/past/src/38.jpg"],
+  "pyB-4": ["/past/src/26.jpg"],
+  "pyB-5": ["/past/src/30.jpg"],
+  "pyB-6": ["/past/src/31.jpg", "/past/src/32.jpg"],
+  "pyB-7": ["/past/src/35.jpg"],
+  "pyB-8": ["/past/src/42.jpg"],
+  "pyB-9": ["/past/src/39.jpg"],
+  "pyB-10": ["/past/src/40.jpg"],
+  "pyB-11": ["/past/src/41.jpg"],
+};
